@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.ViewPagerAdapter;
+import com.cureinstant.cureinstant.fragments.read.FeedFragment;
+import com.cureinstant.cureinstant.fragments.read.TrendingFragment;
 
 
 /**
@@ -79,14 +81,14 @@ public class ReadFragment extends Fragment {
 
     private void setupTabIcons() {
 
-        View customTab1 = LayoutInflater.from(getContext()).inflate(R.layout.custom_tab_layout, null);
+        View customTab1 = LayoutInflater.from(getContext()).inflate(R.layout.layout_custom_tab, null);
         TextView tabOneText = (TextView) customTab1.findViewById(R.id.custom_tab_text);
         ImageView tabOneIcon = (ImageView) customTab1.findViewById(R.id.custom_tab_icon);
         tabOneText.setText(getString(R.string.feed));
         tabOneIcon.setImageResource(R.drawable.ic_read);
         tabLayout.getTabAt(0).setCustomView(customTab1);
 
-        View customTab2 = LayoutInflater.from(getContext()).inflate(R.layout.custom_tab_layout, null);
+        View customTab2 = LayoutInflater.from(getContext()).inflate(R.layout.layout_custom_tab, null);
         TextView tabTwoText = (TextView) customTab2.findViewById(R.id.custom_tab_text);
         ImageView tabTwoIcon = (ImageView) customTab2.findViewById(R.id.custom_tab_icon);
         tabTwoIcon.setAlpha((float) 0.5);

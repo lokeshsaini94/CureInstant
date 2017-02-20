@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
             action.setDisplayShowCustomEnabled(true); //enable it to display a
             // custom view in the action bar.
-            action.setCustomView(R.layout.search_bar_layout);//add the custom view
+            action.setCustomView(R.layout.layout_search_bar);//add the custom view
             action.setDisplayShowTitleEnabled(false); //hide the title
 
             edtSeach = (EditText) action.getCustomView().findViewById(R.id.edtSearch); //the text editor

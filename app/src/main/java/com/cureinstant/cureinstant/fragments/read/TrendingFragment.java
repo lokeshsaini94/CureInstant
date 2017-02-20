@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.fragments;
+package com.cureinstant.cureinstant.fragments.read;
 
 
 import android.os.Bundle;
