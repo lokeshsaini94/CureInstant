@@ -79,7 +79,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View itemView = inflater.inflate(R.layout.layout_new_user_viewpager, container,
+            View itemView = inflater.inflate(R.layout.layout_welcome_viewpager, container,
                     false);
 
             image = (ImageView) itemView.findViewById(R.id.image);
