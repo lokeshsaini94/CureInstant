@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("");
+        toolbar.setLogo(R.drawable.ic_logo);
         setSupportActionBar(toolbar);
 
         setupNavigationView();
