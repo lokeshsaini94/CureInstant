@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.cureinstant.cureinstant.NewUserActivity">
+    tools:context="com.cureinstant.cureinstant.WelcomeActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

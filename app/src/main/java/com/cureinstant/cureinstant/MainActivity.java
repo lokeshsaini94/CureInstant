@@ -1,5 +1,6 @@
 package com.cureinstant.cureinstant;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.cureinstant.cureinstant.fragments.AppointmentFragment;
 import com.cureinstant.cureinstant.fragments.NotificationFragment;
 import com.cureinstant.cureinstant.fragments.ProfileFragment;
 import com.cureinstant.cureinstant.fragments.ReadFragment;
+import com.cureinstant.cureinstant.fragments.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_notification:
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                NotificationFragment frag = new NotificationFragment();
+                frag.show(fragmentManager, "notif_frag");
+                return true;
             case R.id.action_search:
                 handleMenuSearch();
                 return true;
@@ -96,8 +103,10 @@ public class MainActivity extends AppCompatActivity {
             action.setDisplayShowTitleEnabled(true); //show the title in the action bar
 
             //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
+//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
 
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
@@ -124,13 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
             edtSeach.requestFocus();
 
             //open the keyboard focused in the edtSearch
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
-
 
             //add the close icon
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear));
@@ -194,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 pushFragment(appointmentFragment);
                 break;
-            case R.id.action_notification:
+            case R.id.action_records:
                 // Action to perform when Bag Menu item is selected.
                 if (notificationFragment == null) {
-                    notificationFragment = new NotificationFragment();
+                    notificationFragment = new RecordsFragment();
                 }
                 pushFragment(notificationFragment);
                 break;

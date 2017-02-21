@@ -5,7 +5,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
+    <string name="notif">Notifications</string>
     <string name="feed">Feed</string>
     <string name="trending">Trending</string>
+    <string name="nav_title_read">Read</string>
+    <string name="nav_title_appointments">Appointments</string>
+    <string name="nav_title_records">Records</string>
+    <string name="nav_title_profile">Profile</string>
 
 </resources>

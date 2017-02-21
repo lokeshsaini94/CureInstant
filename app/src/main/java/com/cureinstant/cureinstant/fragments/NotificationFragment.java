@@ -1,8 +1,10 @@
 package com.cureinstant.cureinstant.fragments;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.NotificationAdapter;
@@ -20,11 +23,10 @@ import com.cureinstant.cureinstant.model.Notification;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationFragment extends Fragment {
+public class NotificationFragment extends DialogFragment implements View.OnClickListener {
 
     private List<Notification> notificationList = new ArrayList<>();
     private NotificationAdapter notificationAdapter;
@@ -41,6 +43,9 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notification, container, false);
+
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.action_close_notif_frag);
+        imageButton.setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.notification_recycler_view);
 
@@ -88,6 +93,23 @@ public class NotificationFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog d = getDialog();
+        if (d != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            d.getWindow().setLayout(width, height);
+        }
     }
 
     private void prepareMovieData() {
@@ -142,4 +164,12 @@ public class NotificationFragment extends Fragment {
         notificationAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.action_close_notif_frag:
+                getDialog().dismiss();
+                break;
+        }
+    }
 }

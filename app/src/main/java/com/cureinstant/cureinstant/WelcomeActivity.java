@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class NewUserActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
     int[] mResources = {
             R.drawable.cure_instant_logo,
@@ -27,7 +27,7 @@ public class NewUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_user);
+        setContentView(R.layout.activity_welcome);
 
         Button button = (Button) findViewById(R.id.login_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class NewUserActivity extends AppCompatActivity {
         });
 
         viewPager = (ViewPager) findViewById(R.id.new_user_pager);
-        adapter = new CustomPagerAdapter(NewUserActivity.this, mResources);
+        adapter = new CustomPagerAdapter(WelcomeActivity.this, mResources);
         viewPager.setAdapter(adapter);
         CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);
@@ -46,7 +46,7 @@ public class NewUserActivity extends AppCompatActivity {
 
     private void logIn() {
         Utilities.loggedInBool(this, true);
-        Intent i = new Intent(NewUserActivity.this, MainActivity.class);
+        Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }

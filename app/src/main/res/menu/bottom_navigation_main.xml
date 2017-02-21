@@ -5,24 +5,24 @@
         android:id="@+id/action_read"
         android:enabled="true"
         android:icon="@drawable/ic_read"
-        android:title="Read"
+        android:title="@string/nav_title_read"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_appointments"
         android:enabled="true"
         android:icon="@drawable/ic_appointments"
-        android:title="Appointments"
+        android:title="@string/nav_title_appointments"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_notification"
+        android:id="@+id/action_records"
         android:enabled="true"
-        android:icon="@drawable/ic_notifications"
-        android:title="Notification"
+        android:icon="@drawable/ic_records"
+        android:title="@string/nav_title_records"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"
+        android:title="@string/nav_title_profile"
         app:showAsAction="ifRoom" />
 </menu>

@@ -21,7 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (Utilities.isLoggedIn(this)) {
             i = new Intent(SplashScreenActivity.this, MainActivity.class);
         } else {
-            i = new Intent(SplashScreenActivity.this, NewUserActivity.class);
+            i = new Intent(SplashScreenActivity.this, WelcomeActivity.class);
         }
 
         new Handler().postDelayed(new Runnable() {
