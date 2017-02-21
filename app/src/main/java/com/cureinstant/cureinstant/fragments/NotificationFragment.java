@@ -37,10 +37,10 @@ public class NotificationFragment extends DialogFragment implements View.OnClick
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notification, container, false);
 
@@ -98,7 +98,7 @@ public class NotificationFragment extends DialogFragment implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.NotifDialogTheme);
     }
 
     @Override
