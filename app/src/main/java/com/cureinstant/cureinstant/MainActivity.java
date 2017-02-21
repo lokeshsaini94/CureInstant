@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
             action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+            action.setLogo(R.drawable.ic_logo); //set the logo in the action bar
 
             //hides the keyboard
 //            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             // custom view in the action bar.
             action.setCustomView(R.layout.layout_search_bar);//add the custom view
             action.setDisplayShowTitleEnabled(false); //hide the title
+            action.setLogo(null);//remove the logo
 
             edtSeach = (EditText) action.getCustomView().findViewById(R.id.edtSearch); //the text editor
 
