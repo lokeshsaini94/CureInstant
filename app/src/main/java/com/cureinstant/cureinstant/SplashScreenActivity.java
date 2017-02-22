@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 public class SplashScreenActivity extends AppCompatActivity {
 
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 2000;
     public Intent i;
 
     @Override
@@ -16,7 +16,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-//        Utilities.loggedInBool(this, false);
+        Utilities.loggedInBool(this, false);
 
         if (Utilities.isLoggedIn(this)) {
             i = new Intent(SplashScreenActivity.this, MainActivity.class);

@@ -44,11 +44,20 @@ public class WelcomeActivity extends AppCompatActivity {
         indicator.setViewPager(viewPager);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Utilities.isLoggedIn(getApplicationContext())) {
+            Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+    }
+
     private void logIn() {
-        Utilities.loggedInBool(this, true);
-        Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+        Utilities.loggedInBool(this, false);
+        Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(i);
-        finish();
     }
 
     class CustomPagerAdapter extends PagerAdapter {
