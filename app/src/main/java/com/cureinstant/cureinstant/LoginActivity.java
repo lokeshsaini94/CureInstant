@@ -19,7 +19,7 @@ import android.widget.TextView;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     /**
      * Dummy username and password for login
@@ -56,22 +56,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                attemptLogin();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(this);
 
         ImageButton closeLogin = (ImageButton) findViewById(R.id.close_login);
-        closeLogin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        closeLogin.setOnClickListener(this);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -140,6 +128,20 @@ public class LoginActivity extends AppCompatActivity {
     private void showProgress(final boolean show) {
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.sign_in_button:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                attemptLogin();
+                break;
+            case R.id.close_login:
+                finish();
+                break;
+        }
     }
 
     /**

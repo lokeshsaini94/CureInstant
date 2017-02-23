@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     int[] mResources = {
             R.drawable.cure_instant_logo,
@@ -29,13 +29,10 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        Button button = (Button) findViewById(R.id.login_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logIn();
-            }
-        });
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        Button signUpButton = (Button) findViewById(R.id.signup_button);
+        loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
 
         viewPager = (ViewPager) findViewById(R.id.new_user_pager);
         adapter = new CustomPagerAdapter(WelcomeActivity.this, mResources);
@@ -54,10 +51,20 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    private void logIn() {
-        Utilities.loggedInBool(this, false);
-        Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
-        startActivity(i);
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.login_button:
+                Intent login = new Intent(WelcomeActivity.this, LoginActivity.class);
+                startActivity(login);
+                break;
+            case R.id.signup_button:
+                Intent signup = new Intent(WelcomeActivity.this, SignupActivity.class);
+                startActivity(signup);
+                break;
+        }
+
     }
 
     class CustomPagerAdapter extends PagerAdapter {
