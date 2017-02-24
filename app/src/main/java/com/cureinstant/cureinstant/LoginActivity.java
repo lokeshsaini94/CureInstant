@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 /**
  * A login screen that offers login via email/password.
@@ -24,7 +21,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     /**
      * Dummy username and password for login
      */
-    private String[] pieces = new String[]{"a", "123456"};
+    private String[] dummyUser = new String[]{"a", "123456"};
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -42,18 +39,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username);
-
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.sign_in_button);
         mEmailSignInButton.setOnClickListener(this);
@@ -111,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
@@ -120,14 +105,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    private void showProgress(final boolean show) {
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -145,7 +122,15 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
+     * Shows the progress UI and hides the login form.
+     */
+    private void showProgress(final boolean show) {
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Represents an asynchronous login task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
@@ -159,6 +144,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
+        }
+
+        @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
@@ -167,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 Thread.sleep(2000);
 
                 // Account exists, return true if the email and password matches.
-                return pieces[0].equals(mUsername) && pieces[1].equals(mPassword);
+                return dummyUser[0].equals(mUsername) && dummyUser[1].equals(mPassword);
             } catch (InterruptedException e) {
                 return false;
             }

@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="First Name"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapWords"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapWords"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -80,6 +80,7 @@
                 android:id="@+id/radioMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="M" />
 
             <RadioButton
