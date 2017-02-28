@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
-    private Fragment readFragment, appointmentFragment, notificationFragment, profileFragment;
+    private Fragment readFragment, appointmentFragment, recordFragment, profileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");
         toolbar.setLogo(R.drawable.ic_logo);
@@ -207,10 +208,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_records:
                 // Action to perform when Bag Menu item is selected.
-                if (notificationFragment == null) {
-                    notificationFragment = new RecordsFragment();
+                if (recordFragment == null) {
+                    recordFragment = new RecordsFragment();
                 }
-                pushFragment(notificationFragment);
+                pushFragment(recordFragment);
                 break;
             case R.id.action_profile:
                 // Action to perform when Account Menu item is selected.
