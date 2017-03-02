@@ -5,22 +5,22 @@ package com.cureinstant.cureinstant.model;
  */
 
 public class Record {
-    private String file;
+    private String filePath;
     private String title;
     private int icon;
 
-    public Record(String file, String title, int icon) {
-        this.file = file;
+    public Record(String filePath, String title, int icon) {
+        this.filePath = filePath;
         this.title = title;
         this.icon = icon;
     }
 
-    public String getFile() {
-        return file;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public String getTitle() {

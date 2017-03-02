@@ -1,6 +1,10 @@
 package com.cureinstant.cureinstant.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,8 @@ import java.util.List;
  */
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHolder> {
+
+    private Context context;
 
     private List<Record> recordList;
 
@@ -48,7 +54,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
         recordList.remove(position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView title;
         private ImageView icon;
 
@@ -56,6 +62,21 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.record_title);
             icon = (ImageView) itemView.findViewById(R.id.record_icon);
+            context = itemView.getContext();
+        }
+
+        @Override
+        public void onClick(View view) {
+            // TODO: 02-03-2017 OnClick not working!
+            Log.e("AHG", "onClick: ");
+            int position = getPosition();
+            Record record = recordList.get(position);
+            String filePath = record.getFilePath();
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse("file://" + filePath), "image/*");
+            context.startActivity(intent);
+
         }
     }
 }

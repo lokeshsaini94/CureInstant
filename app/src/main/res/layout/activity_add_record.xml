@@ -10,33 +10,50 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
-        <ImageButton
-            android:id="@+id/close_add_record"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_clear"
-            android:tint="@color/icons" />
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/close_add_record"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_clear"
+                android:tint="@color/icons" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/add_record"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <TextView
-        android:id="@+id/select_icon_text"
+        android:id="@+id/select_record_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/close_add_record_appbar"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_horizontal"
-        android:text="Select Icon" />
+        android:text="Select Record Type" />
 
     <LinearLayout
         android:id="@+id/add_record_icon_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/select_icon_text"
+        android:layout_below="@id/select_record_type"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -47,6 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:alpha="0.5"
             android:src="@drawable/ic_appointments"
             android:tint="@color/colorPrimary" />
 
@@ -70,47 +88,25 @@
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/add_record_title"
+        android:id="@+id/add_record_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/add_record_icon_container"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/add_record_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Record Title"
-            android:maxLines="3" />
+            android:inputType="text"
+            android:maxLength="100"
+            android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/add_record_title"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/add_record_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_attachment" />
-
-        <TextView
-            android:id="@+id/add_record_image_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="No record attached" />
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/add_record_button"
@@ -118,9 +114,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:background="@color/colorAccent"
         android:text="Add Record"
         android:textColor="@color/primary_text"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,23 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddRecordActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
     private int iconSelected = R.drawable.ic_appointments;
-    private TextView imageAttached;
-    private ImageButton imageButton;
     private ImageView icon1;
     private ImageView icon2;
     private ImageView icon3;
     private EditText recordTitle;
     private Button addRecord;
-    private ImageButton closeAddRecord;
-    private File file = null;
+    private String filePath = "/sdcard/CureInstant/Records/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +36,13 @@ public class AddRecordActivity extends AppCompatActivity {
 
         // TODO: 28-02-2017 Handle permission requests for storing records.
 
-        imageAttached = (TextView) findViewById(R.id.add_record_image_text);
-        imageButton = (ImageButton) findViewById(R.id.add_record_image_button);
         icon1 = (ImageView) findViewById(R.id.add_record_icon1);
         icon2 = (ImageView) findViewById(R.id.add_record_icon2);
         icon3 = (ImageView) findViewById(R.id.add_record_icon3);
         iconSelected = R.drawable.ic_appointments;
         recordTitle = (EditText) findViewById(R.id.add_record_title_et);
         addRecord = (Button) findViewById(R.id.add_record_button);
-        closeAddRecord = (ImageButton) findViewById(R.id.close_add_record);
+        ImageButton closeAddRecord = (ImageButton) findViewById(R.id.close_add_record);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -55,43 +53,21 @@ public class AddRecordActivity extends AppCompatActivity {
                         icon1.setAlpha((float) 1);
                         icon2.setAlpha((float) 0.5);
                         icon3.setAlpha((float) 0.5);
+                        addRecordMethod();
                         break;
                     case R.id.add_record_icon2:
                         iconSelected = R.drawable.ic_records;
                         icon1.setAlpha((float) 0.5);
                         icon2.setAlpha((float) 1);
                         icon3.setAlpha((float) 0.5);
+                        addRecordMethod();
                         break;
                     case R.id.add_record_icon3:
                         iconSelected = R.drawable.ic_notifications;
                         icon1.setAlpha((float) 0.5);
                         icon2.setAlpha((float) 0.5);
                         icon3.setAlpha((float) 1);
-                        break;
-                    case R.id.add_record_image_button:
-
-                        // TODO: 28-02-2017 Add camera intent with thumbnail
-                        // http://stackoverflow.com/questions/19648957/take-photo-w-camera-intent-and-display-in-imageview-or-textview
-
-                        file = Utilities.createNewRecordFile();
-                        Uri outputFileUri = Uri.fromFile(file);
-
-                        Intent pickIntent = new Intent();
-                        pickIntent.setType("image/*");
-                        pickIntent.setAction(Intent.ACTION_GET_CONTENT);
-                        pickIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
-                        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
-                        Intent chooserIntent = Intent.createChooser(pickIntent, pickTitle);
-                        chooserIntent.putExtra
-                                (
-                                        Intent.EXTRA_INITIAL_INTENTS,
-                                        new Intent[]{takePhotoIntent}
-                                );
-
-                        startActivityForResult(chooserIntent, SELECT_PICTURE);
+                        addRecordMethod();
                         break;
                     case R.id.add_record_button:
                         String title = recordTitle.getText().toString();
@@ -102,6 +78,7 @@ public class AddRecordActivity extends AppCompatActivity {
                             Intent returnIntent = new Intent();
                             returnIntent.putExtra("title", title);
                             returnIntent.putExtra("icon", icon);
+                            returnIntent.putExtra("filePath", filePath);
                             setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
@@ -118,7 +95,6 @@ public class AddRecordActivity extends AppCompatActivity {
         icon1.setOnClickListener(onClickListener);
         icon2.setOnClickListener(onClickListener);
         icon3.setOnClickListener(onClickListener);
-        imageButton.setOnClickListener(onClickListener);
         closeAddRecord.setOnClickListener(onClickListener);
     }
 
@@ -127,8 +103,43 @@ public class AddRecordActivity extends AppCompatActivity {
         if (resultCode != RESULT_OK) {
             return;
         } else if (requestCode == SELECT_PICTURE) {
-            imageAttached.setText("Record attached");
+            View view = findViewById(R.id.add_record_title_container);
+            view.setVisibility(View.VISIBLE);
+            addRecord.setVisibility(View.VISIBLE);
         }
     }
 
+    private void addRecordMethod() {
+
+        // TODO: 28-02-2017 Add camera intent with thumbnail
+        // http://stackoverflow.com/questions/19648957/take-photo-w-camera-intent-and-display-in-imageview-or-textview
+
+        // fetching the root directory
+        String root = Environment.getExternalStorageDirectory().toString()
+                + "/CureInstant";
+
+        // Creating folders for Image
+        String imageFolderPath = root + "/Records";
+        File imagesFolder = new File(imageFolderPath);
+        imagesFolder.mkdirs();
+
+        // Generating file name
+        String fileName = "Record_" + (new SimpleDateFormat("ddMMyyyy_HHmmss", Locale
+                .getDefault())).format(new Date());
+        String imageName = fileName + ".jpeg";
+
+        filePath += imageName;
+
+        // Creating image here
+
+        File image = new File(imageFolderPath, imageName);
+
+        Uri fileUri = Uri.fromFile(image);
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+        startActivityForResult(takePictureIntent, SELECT_PICTURE);
+    }
 }

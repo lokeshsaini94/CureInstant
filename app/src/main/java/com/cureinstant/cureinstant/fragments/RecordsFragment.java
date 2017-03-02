@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +31,6 @@ public class RecordsFragment extends Fragment {
     private List<Record> recordList = new ArrayList<>();
     private RecordAdapter recordAdapter;
     private static final int ADD_RECORD = 99;
-    Record addRecordFAB;
 
 
     public RecordsFragment() {
@@ -55,25 +54,9 @@ public class RecordsFragment extends Fragment {
 
         if (recordList.isEmpty()) {
             prepareRecords();
+            prepareRecords();
+            prepareRecords();
         }
-
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                recordAdapter.remove(position);
-                // TODO: 28-02-2017 Remove record file too from the storage
-                recordAdapter.notifyItemRemoved(position);
-                recordAdapter.notifyItemRangeChanged(position, recordAdapter.getItemCount());
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.records_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +72,13 @@ public class RecordsFragment extends Fragment {
 
     private void prepareRecords() {
         Record record = new Record(null, "ABC Health Record", R.drawable.ic_appointments);
-        recordList.add(record);
+        recordList.add(0, record);
 
         record = new Record(null, "MNO Health Record", R.drawable.ic_appointments);
-        recordList.add(record);
+        recordList.add(0, record);
 
         record = new Record(null, "XYZ Health Record", R.drawable.ic_appointments);
-        recordList.add(record);
+        recordList.add(0, record);
 
         recordAdapter.notifyDataSetChanged();
     }
@@ -107,8 +90,10 @@ public class RecordsFragment extends Fragment {
 
                 String title = data.getStringExtra("title");
                 int icon = data.getIntExtra("icon", R.drawable.ic_appointments);
-                Record record = new Record(null, title, icon);
-                recordList.add(record);
+                String filePath = data.getStringExtra("filePath");
+                Log.e("TAG", filePath);
+                Record record = new Record(filePath, title, icon);
+                recordList.add(0, record);
                 recordAdapter.notifyDataSetChanged();
             }
         }
