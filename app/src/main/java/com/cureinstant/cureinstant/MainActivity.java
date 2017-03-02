@@ -1,6 +1,5 @@
 package com.cureinstant.cureinstant;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -107,10 +106,7 @@ public class MainActivity extends AppCompatActivity {
             action.setLogo(R.drawable.ic_logo); //set the logo in the action bar
 
             //hides the keyboard
-//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
-            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
+            Utilities.hideSoftKeyboard(this);
 
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
