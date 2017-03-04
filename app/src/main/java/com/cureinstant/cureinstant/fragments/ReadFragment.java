@@ -1,9 +1,9 @@
 package com.cureinstant.cureinstant.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cureinstant.cureinstant.NewQuestionActivity;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.ViewPagerAdapter;
 import com.cureinstant.cureinstant.fragments.read.FeedFragment;
 import com.cureinstant.cureinstant.fragments.read.TrendingFragment;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -24,15 +27,18 @@ import com.cureinstant.cureinstant.fragments.read.TrendingFragment;
  */
 public class ReadFragment extends Fragment {
 
+    private static final int NEW_QUESTION = 21;
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
 
     public ReadFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_read, container, false);
@@ -64,8 +70,8 @@ public class ReadFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), NewQuestionActivity.class);
+                startActivityForResult(intent, NEW_QUESTION);
             }
         });
 
@@ -73,7 +79,7 @@ public class ReadFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new FeedFragment(), getString(R.string.feed));
         adapter.addFragment(new TrendingFragment(), getString(R.string.trending));
         viewPager.setAdapter(adapter);
@@ -95,5 +101,18 @@ public class ReadFragment extends Fragment {
         tabTwoText.setText(getString(R.string.trending));
         tabTwoIcon.setImageResource(R.drawable.ic_trending);
         tabLayout.getTabAt(1).setCustomView(customTab2);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_QUESTION) {
+            if (resultCode == RESULT_OK) {
+                String title = data.getStringExtra("title");
+                String desc = data.getStringExtra("desc");
+                FeedFragment fragment = (FeedFragment) adapter.getItem(0);
+                fragment.newFeedPost(title, desc);
+            }
+        }
     }
 }

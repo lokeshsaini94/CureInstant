@@ -36,5 +36,9 @@
     <string name="doctor_name">Rameshwar Kumar</string>
     <string name="doctor_speciality">Orthopedic Surgeon</string>
     <string name="post_desc">Sun rash and sun allergy are terms often used to describe a number of conditions in which an itchy red rash occurs on skin that\'s been exposed to sunlight. The most common form of sun rash is polymorphic light eruption, also known as sun poisoning. Some people have a hereditary type of sun allergy, while others develop signs and symptoms only when triggered by another factor — such as certain types of medications or skin exposure to certain plants, such as limes or wild parsnip. Mild cases of sun rash may resolve without treatment. More-severe cases may require steroid creams or pills. People who have a severe sun allergy may need to take preventative measures, such as: Limit exposure. Avoid spending time in the sun, especially when the sun\'s rays are most intense — between 10 a.m. and 4 p.m. Use sunscreen. Use a high-SPF sunscreen that specifically blocks both ultraviolet A and ultraviolet B rays. Apply sunscreen generously, and reapply every two hours — or more often if you\'re swimming or perspiring. Cover up. Wear a broad-brimmed hat and cover your arms and legs with clothing that\'s tightly woven or specifically designed to protect from the sun.</string>
+    <string name="write_your_question_here">Write your question here</string>
+    <string name="enter_more_details_here">Enter more details here</string>
+    <string name="question">Question</string>
+    <string name="ask_question">Ask Question</string>
 
 </resources>

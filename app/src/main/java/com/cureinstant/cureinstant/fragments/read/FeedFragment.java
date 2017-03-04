@@ -21,6 +21,10 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
 
     boolean isFollowing = false;
 
+    private LayoutInflater layoutInflater;
+    private LinearLayout.LayoutParams params;
+    private LinearLayout feedContainer;
+
 
     public FeedFragment() {
         // Required empty public constructor
@@ -33,11 +37,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(
+        layoutInflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout feedContainer = (LinearLayout) rootView.findViewById(R.id.feed_container);
+        feedContainer = (LinearLayout) rootView.findViewById(R.id.feed_container);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
@@ -86,6 +90,21 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources()
                         .getDisplayMetrics());
         return marginInDp;
+    }
+
+    public void newFeedPost(String title, String desc) {
+        View item = layoutInflater.inflate(R.layout.layout_feed_post, null);
+        TextView postType = (TextView) item.findViewById(R.id.post_type);
+        postType.setText("Question");
+        TextView postTitle = (TextView) item.findViewById(R.id.post_title);
+        postTitle.setText(title);
+        TextView postDesc = (TextView) item.findViewById(R.id.post_desc);
+        postDesc.setText(desc);
+        item.findViewById(R.id.doctor_info_container).setVisibility(View.GONE);
+        item.setLayoutParams(params);
+        Button follow2 = (Button) item.findViewById(R.id.post_follow_button);
+        follow2.setOnClickListener(this);
+        feedContainer.addView(item, 0);
     }
 
     @Override
