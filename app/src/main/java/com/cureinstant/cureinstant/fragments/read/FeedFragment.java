@@ -43,13 +43,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         );
         params.setMargins(0, 0, 0, marginInDP(8));
 
-        View item1 = layoutInflater.inflate(R.layout.layout_feed_question, null);
+        View item1 = layoutInflater.inflate(R.layout.layout_feed_post, null);
         item1.setLayoutParams(params);
         Button follow1 = (Button) item1.findViewById(R.id.post_follow_button);
         follow1.setOnClickListener(this);
         feedContainer.addView(item1);
 
-        View item2 = layoutInflater.inflate(R.layout.layout_feed_question, null);
+        View item2 = layoutInflater.inflate(R.layout.layout_feed_post, null);
         TextView postType = (TextView) item2.findViewById(R.id.post_type);
         postType.setText("Question");
         TextView postTitle = (TextView) item2.findViewById(R.id.post_title);
@@ -60,7 +60,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         follow2.setOnClickListener(this);
         feedContainer.addView(item2);
 
-        View item3 = layoutInflater.inflate(R.layout.layout_feed_question, null);
+        View item3 = layoutInflater.inflate(R.layout.layout_feed_post, null);
         TextView postType3 = (TextView) item3.findViewById(R.id.post_type);
         postType3.setText("Post");
         View title3 = item3.findViewById(R.id.post_title);
@@ -70,7 +70,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         follow3.setOnClickListener(this);
         feedContainer.addView(item3);
 
-        View item4 = layoutInflater.inflate(R.layout.layout_feed_question, null);
+        View item4 = layoutInflater.inflate(R.layout.layout_feed_post, null);
         TextView postType4 = (TextView) item4.findViewById(R.id.post_type);
         postType4.setText("Article");
         item4.setLayoutParams(params);
