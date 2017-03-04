@@ -19,6 +19,8 @@ import com.cureinstant.cureinstant.R;
  */
 public class FeedFragment extends Fragment implements View.OnClickListener {
 
+    boolean isFollowing = false;
+
 
     public FeedFragment() {
         // Required empty public constructor
@@ -93,30 +95,23 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 Button button = (Button) view;
                 View parentView = (View) button.getParent();
                 TextView count = (TextView) parentView.findViewById(R.id.post_follow_count);
-                boolean visibility = isVisible(count);
-                count.setVisibility(visibility ? View.GONE : View.VISIBLE);
-                changeButtonColours(visibility, button);
+                changeFollowingViews(isFollowing, button, count);
         }
     }
 
-    private boolean isVisible(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
-            return true;
-        } else if (view.getVisibility() == View.GONE) {
-            return false;
-        }
-        return false;
-    }
-
-    private void changeButtonColours(boolean b, Button button) {
+    private void changeFollowingViews(boolean b, Button button, TextView count) {
         if (b) {
             button.setTextColor(getResources().getColor(R.color.colorPrimary));
             button.setBackgroundColor(getResources().getColor(R.color.white));
             button.setText("Follow");
+            count.setText("0");
+            isFollowing = false;
         } else {
             button.setTextColor(getResources().getColor(R.color.primary_text));
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             button.setText("Unfollow");
+            count.setText("1");
+            isFollowing = true;
         }
     }
 }
