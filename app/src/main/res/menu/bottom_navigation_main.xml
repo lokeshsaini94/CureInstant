@@ -20,7 +20,7 @@
         android:title="@string/nav_title_records"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_more"
         android:enabled="true"
         android:icon="@drawable/ic_menu_hamburger"
         android:title="@string/nav_title_more"

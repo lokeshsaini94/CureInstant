@@ -20,7 +20,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
 import com.cureinstant.cureinstant.fragment.AppointmentFragment;
 import com.cureinstant.cureinstant.fragment.NotificationFragment;
-import com.cureinstant.cureinstant.fragment.ProfileFragment;
+import com.cureinstant.cureinstant.fragment.MoreFragment;
 import com.cureinstant.cureinstant.fragment.ReadFragment;
 import com.cureinstant.cureinstant.fragment.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
-    private Fragment readFragment, appointmentFragment, recordFragment, profileFragment;
+    private Fragment readFragment, appointmentFragment, recordFragment, moreFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,12 +211,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 pushFragment(recordFragment);
                 break;
-            case R.id.action_profile:
+            case R.id.action_more:
                 // Action to perform when Account Menu item is selected.
-                if (profileFragment == null) {
-                    profileFragment = new ProfileFragment();
+                if (moreFragment == null) {
+                    moreFragment = new MoreFragment();
                 }
-                pushFragment(profileFragment);
+                pushFragment(moreFragment);
                 break;
         }
     }
