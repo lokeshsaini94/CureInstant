@@ -4,11 +4,14 @@ package com.cureinstant.cureinstant.fragment.read;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +54,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         item1.setLayoutParams(params);
         Button follow1 = (Button) item1.findViewById(R.id.post_follow_button);
         follow1.setOnClickListener(this);
+        ImageButton menu1 = (ImageButton) item1.findViewById(R.id.post_menu_overflow);
+        menu1.setOnClickListener(this);
         feedContainer.addView(item1);
 
         View item2 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -62,6 +67,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         item2.setLayoutParams(params);
         Button follow2 = (Button) item2.findViewById(R.id.post_follow_button);
         follow2.setOnClickListener(this);
+        ImageButton menu2 = (ImageButton) item2.findViewById(R.id.post_menu_overflow);
+        menu2.setOnClickListener(this);
         feedContainer.addView(item2);
 
         View item3 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -72,6 +79,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         item3.setLayoutParams(params);
         Button follow3 = (Button) item3.findViewById(R.id.post_follow_button);
         follow3.setOnClickListener(this);
+        ImageButton menu3 = (ImageButton) item3.findViewById(R.id.post_menu_overflow);
+        menu3.setOnClickListener(this);
         feedContainer.addView(item3);
 
         View item4 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -80,6 +89,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         item4.setLayoutParams(params);
         Button follow4 = (Button) item4.findViewById(R.id.post_follow_button);
         follow4.setOnClickListener(this);
+        ImageButton menu4 = (ImageButton) item4.findViewById(R.id.post_menu_overflow);
+        menu4.setOnClickListener(this);
         feedContainer.addView(item4);
 
         return rootView;
@@ -115,6 +126,19 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 View parentView = (View) button.getParent();
                 TextView count = (TextView) parentView.findViewById(R.id.post_follow_count);
                 changeFollowingViews(isFollowing, button, count);
+                break;
+            case R.id.post_menu_overflow:
+                ImageButton menuButton = (ImageButton) view;
+                PopupMenu popupMenu = new PopupMenu(getContext(), menuButton);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return false;
+                    }
+                });
+                popupMenu.show();
+                break;
         }
     }
 

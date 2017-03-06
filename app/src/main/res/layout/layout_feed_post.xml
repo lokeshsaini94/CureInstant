@@ -121,17 +121,13 @@
             android:textColor="@color/primary_text"
             android:gravity="center_vertical"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <Button
             android:id="@+id/post_comment_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:background="@color/white"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="Comment"
             android:textColor="@color/colorPrimary" />
 
@@ -144,6 +140,19 @@
             android:background="@color/white"
             android:text="Share"
             android:textColor="@color/colorPrimary" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/post_menu_overflow"
+            android:src="@drawable/ic_menu_overflow"
+            android:tint="@color/colorPrimary"
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 
