@@ -50,7 +50,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/question"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/text_color_secondary_light"
+        android:textColor="@android:color/secondary_text_light"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/close_add_record_appbar" />
