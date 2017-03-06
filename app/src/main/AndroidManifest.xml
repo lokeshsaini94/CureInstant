@@ -39,6 +39,8 @@
         <activity
             android:name=".activity.NewQuestionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

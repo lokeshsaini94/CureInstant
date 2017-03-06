@@ -1,35 +1,24 @@
 package com.cureinstant.cureinstant.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.cureinstant.cureinstant.R;
-import com.cureinstant.cureinstant.util.Utilities;
 import com.cureinstant.cureinstant.fragment.AppointmentFragment;
-import com.cureinstant.cureinstant.fragment.NotificationFragment;
 import com.cureinstant.cureinstant.fragment.MoreFragment;
+import com.cureinstant.cureinstant.fragment.NotificationFragment;
 import com.cureinstant.cureinstant.fragment.ReadFragment;
 import com.cureinstant.cureinstant.fragment.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends AppCompatActivity {
-
-    private MenuItem mSearchAction;
-    private boolean isSearchOpened = false;
-    private EditText edtSeach;
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
@@ -56,12 +45,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        mSearchAction = menu.findItem(R.id.action_search);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -72,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 frag.show(fragmentManager, "notif_frag");
                 return true;
             case R.id.action_search:
-                handleMenuSearch();
+                Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
         }
 
@@ -81,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isSearchOpened) {
-            handleMenuSearch();
-            return;
-        } else {
             MenuItem homeItem = bottomNavigationView.getMenu().getItem(0);
             if (bottomNavSelectedItem != homeItem.getItemId()) {
                 // select home item
@@ -93,66 +73,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 super.onBackPressed();
             }
-        }
 
         super.onBackPressed();
-    }
-
-    protected void handleMenuSearch() {
-        ActionBar action = getSupportActionBar(); //get the actionbar
-
-        if (isSearchOpened) { //test if the search is open
-
-            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-            action.setLogo(R.drawable.ic_logo); //set the logo in the action bar
-
-            //hides the keyboard
-            Utilities.hideSoftKeyboard(this);
-
-            //add the search icon in the action bar
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
-
-            isSearchOpened = false;
-        } else { //open the search entry
-
-            action.setDisplayShowCustomEnabled(true); //enable it to display a
-            // custom view in the action bar.
-            action.setCustomView(R.layout.layout_search_bar);//add the custom view
-            action.setDisplayShowTitleEnabled(false); //hide the title
-            action.setLogo(null);//remove the logo
-
-            edtSeach = (EditText) action.getCustomView().findViewById(R.id.edtSearch); //the text editor
-
-            //this is a listener to do a search when the user clicks on search button
-            edtSeach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        doSearch();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            edtSeach.requestFocus();
-
-            //open the keyboard focused in the edtSearch
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
-
-            //add the close icon
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear));
-
-            isSearchOpened = true;
-        }
-    }
-
-    private void doSearch() {
-        edtSeach.setText("");
-        isSearchOpened = true;
-        handleMenuSearch();
     }
 
     /**
