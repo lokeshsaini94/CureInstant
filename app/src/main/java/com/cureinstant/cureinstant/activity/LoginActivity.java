@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -12,6 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
 
 /**
  * A login screen that offers login via email/password.

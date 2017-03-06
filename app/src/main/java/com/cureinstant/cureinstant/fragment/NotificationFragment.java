@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.fragments;
+package com.cureinstant.cureinstant.fragment;
 
 
 import android.app.Dialog;

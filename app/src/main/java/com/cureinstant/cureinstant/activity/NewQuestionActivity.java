@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
+
+import com.cureinstant.cureinstant.R;
 
 public class NewQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 

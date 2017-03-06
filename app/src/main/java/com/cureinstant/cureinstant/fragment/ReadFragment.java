@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.fragments;
+package com.cureinstant.cureinstant.fragment;
 
 
 import android.content.Intent;
@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cureinstant.cureinstant.NewQuestionActivity;
+import com.cureinstant.cureinstant.activity.NewQuestionActivity;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.ViewPagerAdapter;
-import com.cureinstant.cureinstant.fragments.read.FeedFragment;
-import com.cureinstant.cureinstant.fragments.read.TrendingFragment;
+import com.cureinstant.cureinstant.fragment.read.FeedFragment;
+import com.cureinstant.cureinstant.fragment.read.TrendingFragment;
 
 import static android.app.Activity.RESULT_OK;
 

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
 import com.philliphsu.bottomsheetpickers.date.BottomSheetDatePickerDialog;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 

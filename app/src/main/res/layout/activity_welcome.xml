@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.cureinstant.cureinstant.WelcomeActivity">
+    tools:context="com.cureinstant.cureinstant.activity.WelcomeActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.cureinstant.cureinstant.R;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

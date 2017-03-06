@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    tools:context="com.cureinstant.cureinstant.fragments.NotificationFragment">
+    tools:context="com.cureinstant.cureinstant.fragment.NotificationFragment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

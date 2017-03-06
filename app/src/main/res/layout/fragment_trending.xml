@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="com.cureinstant.cureinstant.fragments.read.TrendingFragment">
+    tools:context="com.cureinstant.cureinstant.fragment.read.TrendingFragment">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

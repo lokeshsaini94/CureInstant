@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.util;
 
 import android.app.Activity;
 import android.content.Context;

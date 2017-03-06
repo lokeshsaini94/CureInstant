@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.fragments;
+package com.cureinstant.cureinstant.fragment;
 
 
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cureinstant.cureinstant.AddRecordActivity;
+import com.cureinstant.cureinstant.activity.AddRecordActivity;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.RecordAdapter;
 import com.cureinstant.cureinstant.model.Record;

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
 
 import me.relex.circleindicator.CircleIndicator;
 

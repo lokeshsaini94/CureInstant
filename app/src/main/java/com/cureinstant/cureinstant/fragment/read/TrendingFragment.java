@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.fragments.read;
+package com.cureinstant.cureinstant.fragment.read;
 
 
 import android.content.Context;
@@ -17,16 +17,10 @@ import com.cureinstant.cureinstant.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedFragment extends Fragment implements View.OnClickListener {
-
-    boolean isFollowing = false;
-
-    private LayoutInflater layoutInflater;
-    private LinearLayout.LayoutParams params;
-    private LinearLayout feedContainer;
+public class TrendingFragment extends Fragment implements View.OnClickListener {
 
 
-    public FeedFragment() {
+    public TrendingFragment() {
         // Required empty public constructor
     }
 
@@ -35,13 +29,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_trending, container, false);
 
-        layoutInflater = (LayoutInflater) getContext().getSystemService(
+        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
-        feedContainer = (LinearLayout) rootView.findViewById(R.id.feed_container);
+        LinearLayout feedContainer = (LinearLayout) rootView.findViewById(R.id.feed_container);
 
-        params = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
@@ -85,26 +79,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    private int marginInDP (int dp) {
+    private int marginInDP(int dp) {
         int marginInDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources()
                         .getDisplayMetrics());
         return marginInDp;
-    }
-
-    public void newFeedPost(String title, String desc) {
-        View item = layoutInflater.inflate(R.layout.layout_feed_post, null);
-        TextView postType = (TextView) item.findViewById(R.id.post_type);
-        postType.setText("Question");
-        TextView postTitle = (TextView) item.findViewById(R.id.post_title);
-        postTitle.setText(title);
-        TextView postDesc = (TextView) item.findViewById(R.id.post_desc);
-        postDesc.setText(desc);
-        item.findViewById(R.id.doctor_info_container).setVisibility(View.GONE);
-        item.setLayoutParams(params);
-        Button follow2 = (Button) item.findViewById(R.id.post_follow_button);
-        follow2.setOnClickListener(this);
-        feedContainer.addView(item, 0);
     }
 
     @Override
@@ -114,23 +93,30 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 Button button = (Button) view;
                 View parentView = (View) button.getParent();
                 TextView count = (TextView) parentView.findViewById(R.id.post_follow_count);
-                changeFollowingViews(isFollowing, button, count);
+                boolean visibility = isVisible(count);
+                count.setVisibility(visibility ? View.GONE : View.VISIBLE);
+                changeButtonColours(visibility, button);
         }
     }
 
-    private void changeFollowingViews(boolean b, Button button, TextView count) {
+    private boolean isVisible(View view) {
+        if (view.getVisibility() == View.VISIBLE) {
+            return true;
+        } else if (view.getVisibility() == View.GONE) {
+            return false;
+        }
+        return false;
+    }
+
+    private void changeButtonColours(boolean b, Button button) {
         if (b) {
             button.setTextColor(getResources().getColor(R.color.colorPrimary));
             button.setBackgroundColor(getResources().getColor(R.color.white));
             button.setText("Follow");
-            count.setText("0");
-            isFollowing = false;
         } else {
             button.setTextColor(getResources().getColor(R.color.primary_text));
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             button.setText("Unfollow");
-            count.setText("1");
-            isFollowing = true;
         }
     }
 }

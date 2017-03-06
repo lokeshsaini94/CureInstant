@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cureinstant.cureinstant.NewQuestionActivity">
+    tools:context="com.cureinstant.cureinstant.activity.NewQuestionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/close_add_record_appbar"

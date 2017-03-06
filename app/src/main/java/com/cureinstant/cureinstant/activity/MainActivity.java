@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,11 +16,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cureinstant.cureinstant.fragments.AppointmentFragment;
-import com.cureinstant.cureinstant.fragments.NotificationFragment;
-import com.cureinstant.cureinstant.fragments.ProfileFragment;
-import com.cureinstant.cureinstant.fragments.ReadFragment;
-import com.cureinstant.cureinstant.fragments.RecordsFragment;
+import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
+import com.cureinstant.cureinstant.fragment.AppointmentFragment;
+import com.cureinstant.cureinstant.fragment.NotificationFragment;
+import com.cureinstant.cureinstant.fragment.ProfileFragment;
+import com.cureinstant.cureinstant.fragment.ReadFragment;
+import com.cureinstant.cureinstant.fragment.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends AppCompatActivity {

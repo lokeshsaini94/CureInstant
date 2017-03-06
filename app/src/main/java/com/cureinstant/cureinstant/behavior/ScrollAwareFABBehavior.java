@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant;
+package com.cureinstant.cureinstant.behavior;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
