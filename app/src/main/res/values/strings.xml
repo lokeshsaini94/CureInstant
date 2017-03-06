@@ -10,7 +10,7 @@
     <string name="nav_title_read">Read</string>
     <string name="nav_title_appointments">Appointments</string>
     <string name="nav_title_records">Records</string>
-    <string name="nav_title_profile">Profile</string>
+    <string name="nav_title_more">More</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
