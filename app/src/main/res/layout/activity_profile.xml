@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cureinstant.cureinstant.activity.ProfileActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/profile_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/profile_close"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_clear"
+                android:tint="@color/icons" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Profile"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/user_bg"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/cureinstant_bg" />
+
+            <ImageView
+                android:id="@+id/user_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/user_bg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="-50dp"
+                android:src="@drawable/doctor_placeholder" />
+
+            <TextView
+                android:id="@+id/user_name_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_picture"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_picture"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_toRightOf="@id/user_name_title"
+                android:text="@string/doctor_name" />
+
+            <TextView
+                android:id="@+id/user_dob_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_name_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="DOB"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_dob"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_name_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_toRightOf="@id/user_dob_title"
+                android:text="26/11/1994" />
+
+            <TextView
+                android:id="@+id/user_sex_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_dob_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Sex"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_sex"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_dob_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_toRightOf="@id/user_sex_title"
+                android:text="Male" />
+
+            <TextView
+                android:id="@+id/user_number_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_sex_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Number"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_number"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_sex_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_toRightOf="@id/user_number_title"
+                android:text="+91-9876543210" />
+
+        </RelativeLayout>
+    </ScrollView>
+</FrameLayout>

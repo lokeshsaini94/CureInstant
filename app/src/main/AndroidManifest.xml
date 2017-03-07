@@ -39,7 +39,10 @@
         <activity
             android:name=".activity.NewQuestionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.SearchActivity"
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
