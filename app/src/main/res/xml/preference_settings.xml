@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._0123456789"
+        android:inputType="text"
+        android:key="preference_username"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Enter your username"
+        android:text="lokeshsaini94"
+        android:title="Username" />
+    <EditTextPreference
+        android:inputType="textEmailAddress"
+        android:key="preference_email"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Enter your email"
+        android:text="lokeshsaini94@gmail.com"
+        android:title="Email" />
+    <EditTextPreference
+        android:inputType="textPassword"
+        android:key="preference_password"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Enter your password"
+        android:text="123456"
+        android:title="Password" />
+</PreferenceScreen>

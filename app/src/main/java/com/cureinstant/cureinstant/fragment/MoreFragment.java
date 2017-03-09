@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cureinstant.cureinstant.MyPreferencesActivity;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.ProfileActivity;
 
@@ -31,6 +32,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         View profileView = rootView.findViewById(R.id.user_details_container);
         profileView.setOnClickListener(this);
+        View settings = rootView.findViewById(R.id.more_settings);
+        settings.setOnClickListener(this);
         return rootView;
     }
 
@@ -40,6 +43,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.user_details_container:
                 Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
                 startActivity(profileIntent);
+                break;
+            case R.id.more_settings:
+                Intent settingsIntent = new Intent(getContext(), MyPreferencesActivity.class);
+                startActivity(settingsIntent);
                 break;
         }
 
