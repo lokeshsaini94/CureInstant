@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cureinstant.cureinstant.MyPreferencesActivity;
+import com.cureinstant.cureinstant.activity.MyPreferencesActivity;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.ProfileActivity;
 
