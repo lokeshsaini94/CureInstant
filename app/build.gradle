@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.cureinstant.cureinstant"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -38,5 +38,6 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:25.2.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.github.igalata:Bubble-Picker:v0.1.1'
     testCompile 'junit:junit:4.12'
 }

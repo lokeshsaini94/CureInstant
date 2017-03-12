@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="bodyParts">
+        <item>Bone</item>
+        <item>Brain</item>
+        <item>Ear</item>
+        <item>Eye</item>
+        <item>Heart</item>
+        <item>Intestine</item>
+        <item>Kidney</item>
+        <item>Liver</item>
+        <item>Lung</item>
+        <item>Nose</item>
+        <item>Throat</item>
+        <item>Tooth</item>
+    </string-array>
+
+    <integer-array name="images">
+        <item>@drawable/bone</item>
+        <item>@drawable/brain</item>
+        <item>@drawable/ear</item>
+        <item>@drawable/eye</item>
+        <item>@drawable/heart</item>
+        <item>@drawable/intestine</item>
+        <item>@drawable/kidney</item>
+        <item>@drawable/liver</item>
+        <item>@drawable/lung</item>
+        <item>@drawable/nose</item>
+        <item>@drawable/throat</item>
+        <item>@drawable/tooth</item>
+    </integer-array>
+
+    <integer-array name="colors">
+        <item>@color/roseStart</item>
+        <item>@color/roseEnd</item>
+        <item>@color/blueStart</item>
+        <item>@color/blueEnd</item>
+        <item>@color/greenStart</item>
+        <item>@color/greenEnd</item>
+        <item>@color/purpleStart</item>
+        <item>@color/purpleEnd</item>
+    </integer-array>
+
+</resources>
