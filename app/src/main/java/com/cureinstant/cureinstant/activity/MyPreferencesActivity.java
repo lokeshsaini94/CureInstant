@@ -26,10 +26,11 @@ public class MyPreferencesActivity extends PreferenceActivity {
         super.onPostCreate(savedInstanceState);
 
         LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
-        AppBarLayout appBarLayout = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.layout_settings_toolbar, root, false);
+        AppBarLayout appBarLayout = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.layout_toolbar, root, false);
         root.addView(appBarLayout, 0); // insert at top
 
         Toolbar bar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        bar.setTitle(R.string.action_settings);
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
