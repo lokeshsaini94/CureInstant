@@ -1,14 +1,18 @@
 package com.cureinstant.cureinstant.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.fragment.AppointmentFragment;
@@ -17,6 +21,17 @@ import com.cureinstant.cureinstant.fragment.NotificationFragment;
 import com.cureinstant.cureinstant.fragment.ReadFragment;
 import com.cureinstant.cureinstant.fragment.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static com.cureinstant.cureinstant.util.Utilities.accessTokenKey;
+import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
+import static com.cureinstant.cureinstant.util.Utilities.refreshTokenKey;
+import static com.cureinstant.cureinstant.util.Utilities.refreshTokenValue;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
@@ -28,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        accessTokenValue = preferences.getString(accessTokenKey, "");
+        refreshTokenValue = preferences.getString(refreshTokenKey, "");
+        RequestData requestData = new RequestData();
+        requestData.execute();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");
@@ -65,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            MenuItem homeItem = bottomNavigationView.getMenu().getItem(0);
-            if (bottomNavSelectedItem != homeItem.getItemId()) {
-                // select home item
-                selectFragment(homeItem);
-                return;
-            } else {
-                super.onBackPressed();
-            }
+        MenuItem homeItem = bottomNavigationView.getMenu().getItem(0);
+        if (bottomNavSelectedItem != homeItem.getItemId()) {
+            // select home item
+            selectFragment(homeItem);
+            return;
+        } else {
+            super.onBackPressed();
+        }
 
         super.onBackPressed();
     }
@@ -159,6 +180,41 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.rootLayout, fragment);
                 ft.commit();
             }
+        }
+    }
+
+    private class RequestData extends AsyncTask<Void, Void, String> {
+
+        View progress = findViewById(R.id.progress_container);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("http://www.cureinstant.com/api/get-user-dashboard")
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+                Log.e("SplashScreen", "doInBackground: " + accessTokenValue);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progress.setVisibility(View.GONE);
         }
     }
 }

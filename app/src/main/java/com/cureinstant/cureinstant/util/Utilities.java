@@ -11,25 +11,29 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Utilities {
 
-    public static final String PREFS_NAME = "LOGIN_PREFS";
-    public static final String PREFS_KEY = "LOGIN_PREFS_String";
+    public static final String prefName = "prefName";
+    public static final String loginBoolKey = "loginBoolKey";
+    public static final String accessTokenKey = "accessTokenKey";
+    public static final String refreshTokenKey = "refreshTokenKey";
+    public static String accessTokenValue;
+    public static String refreshTokenValue;
 
     public static void loggedInBool(Context context, Boolean b) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putBoolean(PREFS_KEY, b);
+        editor.putBoolean(loginBoolKey, b);
         editor.commit();
     }
 
     public static Boolean isLoggedIn(Context context) {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(PREFS_KEY, false);
+        return context.getSharedPreferences(prefName, Context.MODE_PRIVATE).getBoolean(loginBoolKey, false);
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 }

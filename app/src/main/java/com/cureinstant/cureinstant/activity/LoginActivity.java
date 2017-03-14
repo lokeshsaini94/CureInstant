@@ -1,6 +1,7 @@
 package com.cureinstant.cureinstant.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,15 +17,25 @@ import android.widget.ImageButton;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
-    /**
-     * Dummy username and password for login
-     */
-    private String[] dummyUser = new String[]{"a", "123456"};
+    String accessToken;
+    String refreshToken;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -154,17 +165,35 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                    .add("grant_type", "password")
+                    .add("client_id", "3")
+                    .add("client_secret", "4RI6m61rJi5XZLjArXSTNogD1qwRn5CVXXYVJxTW")
+                    .add("username", mUsername)
+                    .add("password", mPassword)
+                    .add("scope", "*")
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://www.cureinstant.com/oauth/token")
+                    .post(body)
+                    .build();
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-
-                // Account exists, return true if the email and password matches.
-                return dummyUser[0].equals(mUsername) && dummyUser[1].equals(mPassword);
-            } catch (InterruptedException e) {
-                return false;
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+                JSONObject reader = new JSONObject(s);
+                accessToken = reader.getString("access_token");
+                refreshToken = reader.getString("refresh_token");
+                if (!accessToken.isEmpty() && !refreshToken.isEmpty()) {
+                    return true;
+                }
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
             }
+            return false;
         }
 
         @Override
@@ -173,6 +202,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             showProgress(false);
 
             if (success) {
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(Utilities.accessTokenKey, accessToken);
+                editor.putString(Utilities.refreshTokenKey, refreshToken);
+                editor.commit();
                 Utilities.loggedInBool(getApplicationContext(), true);
                 finish();
             } else {
