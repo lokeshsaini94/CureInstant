@@ -6,42 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.cureinstant.cureinstant.activity.NewQuestionActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/close_add_record_appbar"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/close_new_question"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_clear"
-                android:tint="@color/icons" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/ask_question"
-                android:textColor="@color/primary_text" />
-
-        </LinearLayout>
-
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/question_toolbar"/>
 
     <TextView
         android:id="@+id/title_tw"
@@ -53,7 +19,7 @@
         android:textColor="@android:color/secondary_text_light"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/close_add_record_appbar" />
+        app:layout_constraintTop_toBottomOf="@id/question_toolbar" />
 
     <EditText
         android:id="@+id/question_title"

@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,18 +34,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
+        bar.setTitle(R.string.doctor_name);
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         profilePicture = (ImageView) findViewById(R.id.user_picture);
         name = (TextView) findViewById(R.id.user_name);
         dob = (TextView) findViewById(R.id.user_dob);
         sex = (TextView) findViewById(R.id.user_sex);
         number = (TextView) findViewById(R.id.user_number);
-        ImageButton closeProfile = (ImageButton) findViewById(R.id.profile_close);
         profilePicture.setOnClickListener(this);
         name.setOnClickListener(this);
         dob.setOnClickListener(this);
         sex.setOnClickListener(this);
         number.setOnClickListener(this);
-        closeProfile.setOnClickListener(this);
     }
 
     @Override
@@ -68,9 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.user_number:
                 numberDialog();
-                break;
-            case R.id.profile_close:
-                finish();
                 break;
         }
     }
