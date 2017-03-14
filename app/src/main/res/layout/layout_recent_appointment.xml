@@ -6,6 +6,7 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
+    android:id="@+id/doctor_info_card"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout

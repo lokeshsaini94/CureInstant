@@ -48,6 +48,9 @@
         <activity
             android:name=".activity.MyPreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.DoctorProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
