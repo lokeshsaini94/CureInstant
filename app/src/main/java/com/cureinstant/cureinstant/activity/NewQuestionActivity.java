@@ -1,7 +1,5 @@
 package com.cureinstant.cureinstant.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -68,10 +66,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
                 if (title.isEmpty()) {
                     questionTitle.setError(getString(R.string.error_field_required));
                 } else {
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("title", title);
-                    returnIntent.putExtra("desc", desc);
-                    setResult(Activity.RESULT_OK, returnIntent);
+                    // TODO: 15-03-2017 Handle new question code here
                     finish();
                 }
                 break;

@@ -18,6 +18,9 @@ public class Utilities {
     public static String accessTokenValue;
     public static String refreshTokenValue;
 
+    public static final String profilePicBaseUrl = "http://cureinstant.com/profile_pics/";
+    public static final String profilePicSmallBaseUrl = "http://cureinstant.com/profile_pics_avatar/";
+
     public static void loggedInBool(Context context, Boolean b) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;

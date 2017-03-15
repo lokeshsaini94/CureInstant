@@ -7,7 +7,8 @@
     android:paddingBottom="8dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    android:layout_marginBottom="4dp">
 
     <RelativeLayout
         android:id="@+id/post_info_container"
@@ -54,6 +55,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:scaleType="fitCenter"
             android:src="@drawable/doctor_placeholder" />
 
         <TextView

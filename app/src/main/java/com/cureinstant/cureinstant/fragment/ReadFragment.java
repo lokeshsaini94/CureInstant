@@ -13,21 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cureinstant.cureinstant.activity.NewQuestionActivity;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.NewQuestionActivity;
 import com.cureinstant.cureinstant.adapter.ViewPagerAdapter;
 import com.cureinstant.cureinstant.fragment.read.FeedFragment;
 import com.cureinstant.cureinstant.fragment.read.TrendingFragment;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ReadFragment extends Fragment {
-
-    private static final int NEW_QUESTION = 21;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -71,7 +67,7 @@ public class ReadFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), NewQuestionActivity.class);
-                startActivityForResult(intent, NEW_QUESTION);
+                startActivity(intent);
             }
         });
 
@@ -101,18 +97,5 @@ public class ReadFragment extends Fragment {
         tabTwoText.setText(getString(R.string.trending));
         tabTwoIcon.setImageResource(R.drawable.ic_trending);
         tabLayout.getTabAt(1).setCustomView(customTab2);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_QUESTION) {
-            if (resultCode == RESULT_OK) {
-                String title = data.getStringExtra("title");
-                String desc = data.getStringExtra("desc");
-                FeedFragment fragment = (FeedFragment) adapter.getItem(0);
-                fragment.newFeedPost(title, desc);
-            }
-        }
     }
 }

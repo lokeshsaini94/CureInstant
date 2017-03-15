@@ -5,17 +5,8 @@
     android:background="@color/bg"
     tools:context="com.cureinstant.cureinstant.fragment.read.FeedFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/feed_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="8dp">
-
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent"
+        android:id="@+id/feed_list"/>
 </android.support.v4.widget.SwipeRefreshLayout>
