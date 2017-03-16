@@ -2,13 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="8dp"
-    android:layout_marginBottom="4dp">
+    android:paddingTop="8dp">
+
+    <RelativeLayout
+        android:id="@+id/post_action_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/post_action_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="utsav Gupta"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/post_action_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/post_action_name"
+            android:text=" commented on this"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/post_action_name"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/divider" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/post_info_container"
@@ -89,11 +121,58 @@
         android:maxLines="3"
         android:text="@string/post_desc" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/post_follow_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="8dp"
+            android:text="0 Following"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/post_helpful_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="8dp"
+            android:text="0 Helpful"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/post_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="8dp"
+            android:text="0 Comments"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/post_share_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="8dp"
+            android:text="0 Share"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="8dp"
-        android:background="@color/divider"/>
+        android:background="@color/divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,34 +181,37 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/post_helpful_button"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Helpful"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
             android:id="@+id/post_follow_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:background="@color/white"
+            android:clickable="true"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="Follow"
             android:textColor="@color/colorPrimary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:id="@+id/post_follow_count"
-            android:text="0"
-            android:textColor="@color/primary_text"
-            android:gravity="center_vertical"/>
 
         <Button
             android:id="@+id/post_comment_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:background="@color/white"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/white"
+            android:clickable="true"
             android:text="Comment"
             android:textColor="@color/colorPrimary" />
 
@@ -140,6 +222,7 @@
             android:layout_height="25dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:background="@color/white"
+            android:clickable="true"
             android:text="Share"
             android:textColor="@color/colorPrimary" />
 
@@ -149,12 +232,12 @@
             android:layout_weight="1" />
 
         <ImageButton
+            android:id="@+id/post_menu_overflow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/post_menu_overflow"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_menu_overflow"
-            android:tint="@color/colorPrimary"
-            android:background="@android:color/transparent"/>
+            android:tint="@color/colorPrimary" />
 
     </LinearLayout>
 

@@ -9,11 +9,14 @@ import android.os.Parcelable;
 
 public class Feed implements Parcelable {
 
-    private String type, title, content, time, likes, followings, comments, shares;
+    private String type, actionName, actionType;
+    private String title, content, time, likes, followings, comments, shares;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String title, String content, String time, String likes, String followings, String comments, String shares, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String title, String content, String time, String likes, String followings, String comments, String shares, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
+        this.actionName = actionName;
+        this.actionType = actionType;
         this.title = title;
         this.content = content;
         this.time = time;
@@ -33,6 +36,22 @@ public class Feed implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
     }
 
     public String getTitle() {
@@ -132,6 +151,8 @@ public class Feed implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.type);
+        dest.writeString(this.actionName);
+        dest.writeString(this.actionType);
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.time);
@@ -147,6 +168,8 @@ public class Feed implements Parcelable {
 
     protected Feed(Parcel in) {
         this.type = in.readString();
+        this.actionName = in.readString();
+        this.actionType = in.readString();
         this.title = in.readString();
         this.content = in.readString();
         this.time = in.readString();

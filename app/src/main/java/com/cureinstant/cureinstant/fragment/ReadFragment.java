@@ -25,6 +25,9 @@ import com.cureinstant.cureinstant.fragment.read.TrendingFragment;
  */
 public class ReadFragment extends Fragment {
 
+    private FeedFragment feedFragment;
+    private TrendingFragment trendingFragment;
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -76,8 +79,14 @@ public class ReadFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new FeedFragment(), getString(R.string.feed));
-        adapter.addFragment(new TrendingFragment(), getString(R.string.trending));
+        if (feedFragment == null) {
+            feedFragment = new FeedFragment();
+        }
+        if (trendingFragment == null) {
+            trendingFragment = new TrendingFragment();
+        }
+        adapter.addFragment(feedFragment, getString(R.string.feed));
+        adapter.addFragment(trendingFragment, getString(R.string.trending));
         viewPager.setAdapter(adapter);
     }
 
