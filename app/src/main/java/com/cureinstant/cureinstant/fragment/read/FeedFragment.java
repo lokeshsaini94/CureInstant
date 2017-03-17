@@ -199,7 +199,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
                 JSONObject picture = doctor.getJSONObject("profile_pic");
                 doctorPicture = picture.getString("pic_name");
-//                Log.e(TAG, "fetchBlog: doctorPicture" + doctorPicture );
             }
             feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, doctorName, doctorUsername, doctorSpec, doctorPicture);
         } else if (type.equals("POST")) {
@@ -215,7 +214,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
                 JSONObject picture = doctor.getJSONObject("profile_pic");
                 doctorPicture = picture.getString("pic_name");
-//                Log.e(TAG, "fetchBlog: doctorPicture" + doctorPicture );
             }
             feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, doctorName, doctorUsername, doctorSpec, doctorPicture);
         } else if (type.equals("QUERY")) {
@@ -230,7 +228,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
-//                    Log.e(TAG, "fetchBlog: doctorPicture" + doctorPicture );
                 }
             } else {
                 content = feedItemContent.getString("description");

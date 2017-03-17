@@ -3,15 +3,14 @@ package com.cureinstant.cureinstant.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lokeshsaini94 on 20-02-2017.
@@ -48,21 +47,43 @@ public class Utilities {
         inputMethodManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
+    // Returns days, hours, minutes, seconds from a give date string
+    public static long[] getDateDifference(String postDate) throws ParseException {
+
+        // Makes date object with UTC
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date value = null;
         try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
+            value = formatter.parse(postDate);
+        } catch (ParseException e) {
             e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
         }
+        // Makes date object with current timezone
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        dateFormatter.setTimeZone(TimeZone.getDefault());
+        String dt = dateFormatter.format(value);
+
+        // Makes a date object with current date and time
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH) + 1;
+        Date currentDate = dateFormatter.parse(c.get(Calendar.YEAR) + "-" +
+                month + "-" +
+                c.get(Calendar.DAY_OF_MONTH) + " " +
+                c.get(Calendar.HOUR) + ":" +
+                c.get(Calendar.MINUTE) + ":" +
+                c.get(Calendar.SECOND));
+        Date postdate = (Date)dateFormatter.parse(dt);
+
+        // Gives difference b/w two dates in milliseconds
+        long different = currentDate.getTime() - postdate.getTime();
+
+        // Converts difference to days, hours, minutes, seconds
+        long diffInDays = TimeUnit.MILLISECONDS.toDays(different);
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(different);
+        long diffInMin = TimeUnit.MILLISECONDS.toMinutes(different);
+        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(different);
+
+        return new long[]{diffInDays, diffInHours, diffInMin, diffInSec};
     }
 }

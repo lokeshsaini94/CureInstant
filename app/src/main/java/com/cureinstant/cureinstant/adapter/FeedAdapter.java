@@ -2,6 +2,7 @@ package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
+import java.text.ParseException;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by lokeshsaini94 on 15-03-2017.
@@ -41,7 +45,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
     @Override
     public void onBindViewHolder(MyFeedViewHolder holder, int position) {
         Feed feed = feedList.get(position);
-        holder.type.setText(feed.getType());
+        if (feed.getType().equals("POST")) {
+            holder.type.setText("Post");
+        } else if (feed.getType().equals("BLOG")) {
+            holder.type.setText("Article");
+        } else if (feed.getType().equals("QUERY")) {
+            holder.type.setText("Question");
+        } else {
+            holder.type.setVisibility(View.GONE);
+        }
         if (feed.getActionName().equals("")) {
             holder.actionContainer.setVisibility(View.GONE);
         } else {
@@ -62,7 +74,24 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.content.setText(feed.getContent());
         }
         // TODO: 16-03-2017 fix formating of time
-        holder.time.setText(feed.getTime());
+        try {
+            long[] time = Utilities.getDateDifference(feed.getTime());
+            if (time[0] > 0) {
+                holder.time.setText(time[0] + " days ago");
+            } else {
+                if (time[1] > 0) {
+                    holder.time.setText(time[1] + " hours ago");
+                } else {
+                    if (time[2] > 0) {
+                        holder.time.setText(time[2] + " minutes ago");
+                    } else {
+                        holder.time.setText("just now");
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "onBindViewHolder: " + e);
+        }
         if (feed.getType().equals("QUERY") && !feed.getActionType().equals(" answered this")) {
             holder.doctorContainer.setVisibility(View.GONE);
         } else {
