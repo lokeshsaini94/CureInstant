@@ -11,9 +11,10 @@ public class Feed implements Parcelable {
 
     private String type, actionName, actionType;
     private String title, content, time, likes, followings, comments, shares;
+    private boolean liked, followed;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String actionName, String actionType, String title, String content, String time, String likes, String followings, String comments, String shares, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String title, String content, String time, String likes, String followings, String comments, String shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
         this.actionName = actionName;
         this.actionType = actionType;
@@ -24,6 +25,8 @@ public class Feed implements Parcelable {
         this.followings = followings;
         this.comments = comments;
         this.shares = shares;
+        this.liked = liked;
+        this.followed = followed;
         this.doctorName = doctorName;
         this.doctorUsername = doctorUsername;
         this.doctorSpec = doctorSpec;
@@ -110,6 +113,22 @@ public class Feed implements Parcelable {
         this.shares = shares;
     }
 
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
     public String getDoctorName() {
         return doctorName;
     }
@@ -160,6 +179,8 @@ public class Feed implements Parcelable {
         dest.writeString(this.followings);
         dest.writeString(this.comments);
         dest.writeString(this.shares);
+        dest.writeByte(this.liked ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.followed ? (byte) 1 : (byte) 0);
         dest.writeString(this.doctorName);
         dest.writeString(this.doctorUsername);
         dest.writeString(this.doctorSpec);
@@ -177,6 +198,8 @@ public class Feed implements Parcelable {
         this.followings = in.readString();
         this.comments = in.readString();
         this.shares = in.readString();
+        this.liked = in.readByte() != 0;
+        this.followed = in.readByte() != 0;
         this.doctorName = in.readString();
         this.doctorUsername = in.readString();
         this.doctorSpec = in.readString();

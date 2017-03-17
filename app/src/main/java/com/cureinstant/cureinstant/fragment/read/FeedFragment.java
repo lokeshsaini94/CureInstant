@@ -114,7 +114,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     }
 
     private void prepareFeedData() {
-        Feed feed1 = new Feed("BLOG", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
+        Feed feed1 = new Feed("BLOG", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
         feedList.add(feed1);
         feedList.add(feed1);
         feedList.add(feed1);
@@ -165,7 +165,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     private Feed fetchBlog(JSONObject feedItem) throws JSONException {
 
         String title = "", actionName = "", actionType = "", content, time, likes = "0", followings = "0", comments = "0", shares = "0", doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
-
+        boolean liked = false, followed = false;
         Feed feed = null;
 
         String type = feedItem.getString("type");
@@ -188,10 +188,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             JSONObject header = feedItemContent.getJSONObject("blog_header");
             title = header.getString("title");
             content = feedItemContent.getString("content");
-            time = feedItemContent.getString("updated_at");
+            time = feedItemContent.getString("created_at");
             likes = feedItemContent.getString("likes");
             comments = feedItemContent.getString("comments");
             shares = feedItemContent.getString("shares");
+            liked = !feedItemContent.isNull("liked");
             JSONObject doctor = feedItemContent.getJSONObject("user");
             doctorName = doctor.getString("name");
             doctorUsername = doctor.getString("username");
@@ -200,13 +201,14 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 JSONObject picture = doctor.getJSONObject("profile_pic");
                 doctorPicture = picture.getString("pic_name");
             }
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, doctorName, doctorUsername, doctorSpec, doctorPicture);
+            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
         } else if (type.equals("POST")) {
             content = feedItemContent.getString("content");
-            time = feedItemContent.getString("updated_at");
+            time = feedItemContent.getString("created_at");
             likes = feedItemContent.getString("likes");
             comments = feedItemContent.getString("comments");
             shares = feedItemContent.getString("shares");
+            liked = !feedItemContent.isNull("liked");
             JSONObject doctor = feedItemContent.getJSONObject("user");
             doctorName = doctor.getString("name");
             doctorUsername = doctor.getString("username");
@@ -215,7 +217,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 JSONObject picture = doctor.getJSONObject("profile_pic");
                 doctorPicture = picture.getString("pic_name");
             }
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, doctorName, doctorUsername, doctorSpec, doctorPicture);
+            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
         } else if (type.equals("QUERY")) {
             title = feedItemContent.getString("question");
             if (actionTypeTitle.equals("ANSWER")) {
@@ -232,10 +234,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             } else {
                 content = feedItemContent.getString("description");
             }
-            time = feedItemContent.getString("updated_at");
+            time = feedItemContent.getString("created_at");
             followings = feedItemContent.getString("followings");
             comments = feedItemContent.getString("comments");
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, doctorName, doctorUsername, doctorSpec, doctorPicture);
+            followed = !feedItemContent.isNull("followed");
+            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
         }
 
         return feed;

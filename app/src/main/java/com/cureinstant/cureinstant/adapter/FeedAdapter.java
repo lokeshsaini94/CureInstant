@@ -1,14 +1,18 @@
 package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
@@ -44,7 +48,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
 
     @Override
     public void onBindViewHolder(MyFeedViewHolder holder, int position) {
-        Feed feed = feedList.get(position);
+        final Feed feed = feedList.get(position);
         if (feed.getType().equals("POST")) {
             holder.type.setText("Post");
         } else if (feed.getType().equals("BLOG")) {
@@ -118,9 +122,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.countHelpful.setVisibility(View.GONE);
             holder.followButton.setVisibility(View.VISIBLE);
             holder.helpfulButton.setVisibility(View.GONE);
+            holder.countShare.setVisibility(View.GONE);
             holder.countFollow.setText(feed.getFollowings() + " Following");
             holder.countComment.setText(feed.getComments() + " Comments");
-            holder.countShare.setText(feed.getShares() + " Shares");
+            if (feed.isFollowed()) {
+                holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
+            } else {
+                holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            }
         } else {
             holder.countFollow.setVisibility(View.GONE);
             holder.countHelpful.setVisibility(View.VISIBLE);
@@ -129,7 +140,40 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.countHelpful.setText(feed.getLikes() + " Helpful");
             holder.countComment.setText(feed.getComments() + " Comments");
             holder.countShare.setText(feed.getShares() + " Shares");
+            if (feed.isLiked()) {
+                holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.white));
+            } else {
+                holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            }
         }
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.post_title:
+                        Toast.makeText(context, "Title " + feed.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.post_menu_overflow:
+                        ImageButton menuButton = (ImageButton) v;
+                        PopupMenu popupMenu = new PopupMenu(context, menuButton);
+                        popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                return false;
+                            }
+                        });
+                        popupMenu.show();
+                        break;
+                }
+            }
+        };
+
+        holder.title.setOnClickListener(onClickListener);
+        holder.menuOverflow.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -143,7 +187,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         TextView title, content, time, doctorName, doctorSpeciality;
         TextView countFollow, countHelpful, countComment, countShare;
         ImageView doctorPicture;
-        View actionContainer, doctorContainer;
+        View actionContainer, doctorContainer, menuOverflow;
         Button followButton, helpfulButton;
 
         public MyFeedViewHolder(View itemView) {
@@ -165,6 +209,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             countShare = (TextView) itemView.findViewById(R.id.post_share_count);
             followButton = (Button) itemView.findViewById(R.id.post_follow_button);
             helpfulButton = (Button) itemView.findViewById(R.id.post_helpful_button);
+            menuOverflow = itemView.findViewById(R.id.post_menu_overflow);
         }
     }
 }

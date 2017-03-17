@@ -28,6 +28,7 @@ public class Utilities {
     public static String refreshTokenValue;
     public static String pageData = "";
 
+    // Stores logged in boolean in SharedPreference
     public static void loggedInBool(Context context, Boolean b) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
@@ -38,6 +39,7 @@ public class Utilities {
         editor.commit();
     }
 
+    // Returns boolean for logged in status
     public static Boolean isLoggedIn(Context context) {
         return context.getSharedPreferences(prefName, Context.MODE_PRIVATE).getBoolean(loginBoolKey, false);
     }
