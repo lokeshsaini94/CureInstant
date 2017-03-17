@@ -17,7 +17,7 @@ import com.cureinstant.cureinstant.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TrendingFragment extends Fragment implements View.OnClickListener {
+public class TrendingFragment extends Fragment {
 
 
     public TrendingFragment() {
@@ -44,7 +44,6 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
         View item1 = layoutInflater.inflate(R.layout.layout_feed_post, null);
         item1.setLayoutParams(params);
         Button follow1 = (Button) item1.findViewById(R.id.post_follow_button);
-        follow1.setOnClickListener(this);
         feedContainer.addView(item1);
 
         View item2 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -55,7 +54,6 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
         item2.findViewById(R.id.doctor_info_container).setVisibility(View.GONE);
         item2.setLayoutParams(params);
         Button follow2 = (Button) item2.findViewById(R.id.post_follow_button);
-        follow2.setOnClickListener(this);
         feedContainer.addView(item2);
 
         View item3 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -65,7 +63,6 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
         title3.setVisibility(View.GONE);
         item3.setLayoutParams(params);
         Button follow3 = (Button) item3.findViewById(R.id.post_follow_button);
-        follow3.setOnClickListener(this);
         feedContainer.addView(item3);
 
         View item4 = layoutInflater.inflate(R.layout.layout_feed_post, null);
@@ -73,7 +70,6 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
         postType4.setText("Article");
         item4.setLayoutParams(params);
         Button follow4 = (Button) item4.findViewById(R.id.post_follow_button);
-        follow4.setOnClickListener(this);
         feedContainer.addView(item4);
 
         return rootView;
@@ -84,39 +80,5 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources()
                         .getDisplayMetrics());
         return marginInDp;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.post_follow_button:
-                Button button = (Button) view;
-                View parentView = (View) button.getParent();
-                TextView count = (TextView) parentView.findViewById(R.id.post_follow_count);
-                boolean visibility = isVisible(count);
-                count.setVisibility(visibility ? View.GONE : View.VISIBLE);
-                changeButtonColours(visibility, button);
-        }
-    }
-
-    private boolean isVisible(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
-            return true;
-        } else if (view.getVisibility() == View.GONE) {
-            return false;
-        }
-        return false;
-    }
-
-    private void changeButtonColours(boolean b, Button button) {
-        if (b) {
-            button.setTextColor(getResources().getColor(R.color.colorPrimary));
-            button.setBackgroundColor(getResources().getColor(R.color.white));
-            button.setText("Follow");
-        } else {
-            button.setTextColor(getResources().getColor(R.color.primary_text));
-            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            button.setText("Unfollow");
-        }
     }
 }

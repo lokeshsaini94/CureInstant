@@ -7,16 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.FeedAdapter;
@@ -42,17 +37,17 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedFragment extends Fragment implements View.OnClickListener {
+public class FeedFragment extends Fragment {
 
     boolean isFollowing = false;
 
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
     boolean loading = true;
 
     private List<Feed> feedList;
     private FeedAdapter feedAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
+    private View moreProgresbar;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -67,6 +62,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_refresh);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_list);
+        moreProgresbar = rootView.findViewById(R.id.feed_more_progressbar);
         feedList = new ArrayList<>();
 
         feedAdapter = new FeedAdapter(getContext(), feedList);
@@ -87,17 +83,19 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        // Requests more data when recyclerView's last item becomes visible
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int pastVisibleItems, visibleItemCount, totalItemCount;
                 if (dy > 0) {
                     visibleItemCount = mLayoutManager.getChildCount();
                     totalItemCount = mLayoutManager.getItemCount();
-                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                    pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
                     if (loading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 2) {
                             loading = false;
                             RequestMoreData requestMoreData = new RequestMoreData();
                             requestMoreData.execute();
@@ -113,6 +111,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
+    // Dummy data for feed
     private void prepareFeedData() {
         Feed feed1 = new Feed("BLOG", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
         feedList.add(feed1);
@@ -122,46 +121,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         feedAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.post_follow_button:
-                Button button = (Button) view;
-                View parentView = (View) button.getParent();
-                TextView count = (TextView) parentView.findViewById(R.id.post_follow_count);
-                changeFollowingViews(isFollowing, button, count);
-                break;
-            case R.id.post_menu_overflow:
-                ImageButton menuButton = (ImageButton) view;
-                PopupMenu popupMenu = new PopupMenu(getContext(), menuButton);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        return false;
-                    }
-                });
-                popupMenu.show();
-                break;
-        }
-    }
-
-    private void changeFollowingViews(boolean b, Button button, TextView count) {
-        if (b) {
-            button.setTextColor(getResources().getColor(R.color.colorPrimary));
-            button.setBackgroundColor(getResources().getColor(R.color.white));
-            button.setText("Follow");
-            count.setText("0");
-            isFollowing = false;
-        } else {
-            button.setTextColor(getResources().getColor(R.color.primary_text));
-            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            button.setText("Unfollow");
-            count.setText("1");
-            isFollowing = true;
-        }
-    }
-
+    // Returns Feed object from feedItem jsonObject
     private Feed fetchBlog(JSONObject feedItem) throws JSONException {
 
         String title = "", actionName = "", actionType = "", content, time, likes = "0", followings = "0", comments = "0", shares = "0", doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
@@ -172,57 +132,32 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         String actionTypeTitle = feedItem.getString("feed");
         JSONObject feedItemContent = feedItem.getJSONObject("content");
 
-        if (actionTypeTitle.equals("COMMENT")) {
-            actionName = feedItem.getString("sec_name");
-            actionType = " commented on this";
-        } else if (actionTypeTitle.equals("ANSWER")) {
-            actionName = feedItem.getString("sec_name");
-            actionType = " answered this";
-        } else if (actionTypeTitle.equals("SHARE")) {
-            actionName = feedItem.getString("sec_name");
-            actionType = " shared this";
+        switch (actionTypeTitle) {
+            case "COMMENT":
+                actionName = feedItem.getString("sec_name");
+                actionType = " commented on this";
+                break;
+            case "ANSWER":
+                actionName = feedItem.getString("sec_name");
+                actionType = " answered this";
+                break;
+            case "SHARE":
+                actionName = feedItem.getString("sec_name");
+                actionType = " shared this";
+                break;
         }
 
 
-        if (type.equals("BLOG")) {
-            JSONObject header = feedItemContent.getJSONObject("blog_header");
-            title = header.getString("title");
-            content = feedItemContent.getString("content");
-            time = feedItemContent.getString("created_at");
-            likes = feedItemContent.getString("likes");
-            comments = feedItemContent.getString("comments");
-            shares = feedItemContent.getString("shares");
-            liked = !feedItemContent.isNull("liked");
-            JSONObject doctor = feedItemContent.getJSONObject("user");
-            doctorName = doctor.getString("name");
-            doctorUsername = doctor.getString("username");
-            doctorSpec = doctor.getString("speciality");
-            if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
-                JSONObject picture = doctor.getJSONObject("profile_pic");
-                doctorPicture = picture.getString("pic_name");
-            }
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
-        } else if (type.equals("POST")) {
-            content = feedItemContent.getString("content");
-            time = feedItemContent.getString("created_at");
-            likes = feedItemContent.getString("likes");
-            comments = feedItemContent.getString("comments");
-            shares = feedItemContent.getString("shares");
-            liked = !feedItemContent.isNull("liked");
-            JSONObject doctor = feedItemContent.getJSONObject("user");
-            doctorName = doctor.getString("name");
-            doctorUsername = doctor.getString("username");
-            doctorSpec = doctor.getString("speciality");
-            if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
-                JSONObject picture = doctor.getJSONObject("profile_pic");
-                doctorPicture = picture.getString("pic_name");
-            }
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
-        } else if (type.equals("QUERY")) {
-            title = feedItemContent.getString("question");
-            if (actionTypeTitle.equals("ANSWER")) {
-                JSONObject answerObject = feedItemContent.getJSONObject("answer");
-                content = answerObject.getString("content");
+        switch (type) {
+            case "BLOG": {
+                JSONObject header = feedItemContent.getJSONObject("blog_header");
+                title = header.getString("title");
+                content = feedItemContent.getString("content");
+                time = feedItemContent.getString("created_at");
+                likes = feedItemContent.getString("likes");
+                comments = feedItemContent.getString("comments");
+                shares = feedItemContent.getString("shares");
+                liked = !feedItemContent.isNull("liked");
                 JSONObject doctor = feedItemContent.getJSONObject("user");
                 doctorName = doctor.getString("name");
                 doctorUsername = doctor.getString("username");
@@ -231,19 +166,55 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
                 }
-            } else {
-                content = feedItemContent.getString("description");
+                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                break;
             }
-            time = feedItemContent.getString("created_at");
-            followings = feedItemContent.getString("followings");
-            comments = feedItemContent.getString("comments");
-            followed = !feedItemContent.isNull("followed");
-            feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+            case "POST": {
+                content = feedItemContent.getString("content");
+                time = feedItemContent.getString("created_at");
+                likes = feedItemContent.getString("likes");
+                comments = feedItemContent.getString("comments");
+                shares = feedItemContent.getString("shares");
+                liked = !feedItemContent.isNull("liked");
+                JSONObject doctor = feedItemContent.getJSONObject("user");
+                doctorName = doctor.getString("name");
+                doctorUsername = doctor.getString("username");
+                doctorSpec = doctor.getString("speciality");
+                if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
+                    JSONObject picture = doctor.getJSONObject("profile_pic");
+                    doctorPicture = picture.getString("pic_name");
+                }
+                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                break;
+            }
+            case "QUERY":
+                title = feedItemContent.getString("question");
+                if (actionTypeTitle.equals("ANSWER")) {
+                    JSONObject answerObject = feedItemContent.getJSONObject("answer");
+                    content = answerObject.getString("content");
+                    JSONObject doctor = feedItemContent.getJSONObject("user");
+                    doctorName = doctor.getString("name");
+                    doctorUsername = doctor.getString("username");
+                    doctorSpec = doctor.getString("speciality");
+                    if (doctor.has("profile_pic") && !doctor.isNull("profile_pic")) {
+                        JSONObject picture = doctor.getJSONObject("profile_pic");
+                        doctorPicture = picture.getString("pic_name");
+                    }
+                } else {
+                    content = feedItemContent.getString("description");
+                }
+                time = feedItemContent.getString("created_at");
+                followings = feedItemContent.getString("followings");
+                comments = feedItemContent.getString("comments");
+                followed = !feedItemContent.isNull("followed");
+                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                break;
         }
 
         return feed;
     }
 
+    // Fetches and Sets data from api call
     private class RequestData extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -291,6 +262,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    // Fetches and Sets more data from api call
     private class RequestMoreData extends AsyncTask<Void, Void, Void> {
 
         private int oldFeedItemCount = feedList.size();
@@ -298,6 +270,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            moreProgresbar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -336,11 +309,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-//            feedAdapter = new FeedAdapter(getContext(), feedList);
-//            recyclerView.setAdapter(feedAdapter);
-//            feedAdapter.notifyDataSetChanged();
+            moreProgresbar.setVisibility(View.GONE);
             feedAdapter.notifyItemInserted(oldFeedItemCount);
-
         }
     }
 }
