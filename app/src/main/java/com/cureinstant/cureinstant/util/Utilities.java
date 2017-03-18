@@ -49,6 +49,11 @@ public class Utilities {
         inputMethodManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 
+    // Method to manually check connection status
+    public static boolean checkConnection() {
+        return ConnectivityReceiver.isConnected();
+    }
+
     // Returns days, hours, minutes, seconds from a give date string
     public static long[] getDateDifference(String postDate) throws ParseException {
 

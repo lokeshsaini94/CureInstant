@@ -3,6 +3,7 @@ package com.cureinstant.cureinstant.fragment.read;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.FeedAdapter;
 import com.cureinstant.cureinstant.model.Feed;
+import com.cureinstant.cureinstant.util.ConnectivityReceiver;
+import com.cureinstant.cureinstant.util.MyApplication;
 import com.cureinstant.cureinstant.util.Utilities;
 
 import org.json.JSONArray;
@@ -37,7 +40,7 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener {
 
     boolean isFollowing = false;
 
@@ -48,6 +51,7 @@ public class FeedFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private View moreProgresbar;
+    private Snackbar snackbar;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -60,6 +64,14 @@ public class FeedFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Check Internet connection", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_refresh);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_list);
         moreProgresbar = rootView.findViewById(R.id.feed_more_progressbar);
@@ -71,15 +83,24 @@ public class FeedFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(feedAdapter);
 
-        RequestData requestData = new RequestData();
-        requestData.execute();
+        if (Utilities.checkConnection()) {
+            RequestData requestData = new RequestData();
+            requestData.execute();
+        } else {
+            snackbar.show();
+        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                RequestData requestData = new RequestData();
-                requestData.execute();
+                if (Utilities.checkConnection()) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    RequestData requestData = new RequestData();
+                    requestData.execute();
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    snackbar.show();
+                }
             }
         });
 
@@ -96,6 +117,7 @@ public class FeedFragment extends Fragment {
 
                     if (loading) {
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 2) {
+                            moreProgresbar.setVisibility(View.VISIBLE);
                             loading = false;
                             RequestMoreData requestMoreData = new RequestMoreData();
                             requestMoreData.execute();
@@ -214,6 +236,27 @@ public class FeedFragment extends Fragment {
         return feed;
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            snackbar.show();
+        } else {
+            if (feedList.isEmpty()) {
+                RequestData requestData = new RequestData();
+                requestData.execute();
+            }
+            snackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
     // Fetches and Sets data from api call
     private class RequestData extends AsyncTask<Void, Void, Void> {
 
@@ -309,8 +352,8 @@ public class FeedFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            moreProgresbar.setVisibility(View.GONE);
             feedAdapter.notifyItemInserted(oldFeedItemCount);
+            moreProgresbar.setVisibility(View.GONE);
         }
     }
 }

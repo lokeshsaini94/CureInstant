@@ -109,10 +109,21 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            if (Utilities.checkConnection()) {
+                // Show a progress spinner, and kick off a background task to
+                // perform the user login attempt.
+                mAuthTask = new UserLoginTask(username, password);
+                mAuthTask.execute((Void) null);
+            } else {
+                final Snackbar snackbar = Snackbar.make(this.findViewById(android.R.id.content), "Check Internet connection", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
+            }
         }
     }
 
