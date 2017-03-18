@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,12 @@ public class ReadFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_read, container, false);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            feedFragment = (FeedFragment) fragmentManager.findFragmentByTag(getString(R.string.feed));
+            trendingFragment = (TrendingFragment) fragmentManager.findFragmentByTag(getString(R.string.trending));
+        }
+
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);

@@ -27,7 +27,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -42,11 +41,9 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
  */
 public class FeedFragment extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener {
 
-    boolean isFollowing = false;
-
     boolean loading = true;
 
-    private List<Feed> feedList;
+    private ArrayList<Feed> feedList = new ArrayList<>();
     private FeedAdapter feedAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -57,12 +54,15 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
+
+        if (savedInstanceState != null) {
+            feedList = savedInstanceState.getParcelableArrayList("feedList");
+        }
 
         snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Check Internet connection", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Dismiss", new View.OnClickListener() {
@@ -75,7 +75,6 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_refresh);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_list);
         moreProgresbar = rootView.findViewById(R.id.feed_more_progressbar);
-        feedList = new ArrayList<>();
 
         feedAdapter = new FeedAdapter(getContext(), feedList);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -84,8 +83,10 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         recyclerView.setAdapter(feedAdapter);
 
         if (Utilities.checkConnection()) {
-            RequestData requestData = new RequestData();
-            requestData.execute();
+            if (feedList.isEmpty()) {
+                RequestData requestData = new RequestData();
+                requestData.execute();
+            }
         } else {
             snackbar.show();
         }
@@ -131,6 +132,32 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelableArrayList("feedList", feedList);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            snackbar.show();
+        } else {
+            if (feedList.isEmpty()) {
+                RequestData requestData = new RequestData();
+                requestData.execute();
+            }
+            snackbar.dismiss();
+        }
     }
 
     // Dummy data for feed
@@ -236,28 +263,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         return feed;
     }
 
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            snackbar.show();
-        } else {
-            if (feedList.isEmpty()) {
-                RequestData requestData = new RequestData();
-                requestData.execute();
-            }
-            snackbar.dismiss();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // register connection status listener
-        MyApplication.getInstance().setConnectivityListener(this);
-    }
-
-    // Fetches and Sets data from api call
+    // Fetches and Sets Feed data from api call
     private class RequestData extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -305,7 +311,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         }
     }
 
-    // Fetches and Sets more data from api call
+    // Fetches and Sets more Feed data from api call
     private class RequestMoreData extends AsyncTask<Void, Void, Void> {
 
         private int oldFeedItemCount = feedList.size();

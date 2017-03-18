@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.fragment.AppointmentFragment;
@@ -28,13 +28,36 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
-    private Fragment readFragment, appointmentFragment, recordFragment, moreFragment;
+    private ReadFragment readFragment;
+    private AppointmentFragment appointmentFragment;
+    private RecordsFragment recordFragment;
+    private MoreFragment moreFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Restore fragments if its instance already exists
+        if (savedInstanceState != null) {
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            if (fragmentManager != null) {
+                if (readFragment == null) {
+                    readFragment = (ReadFragment) fragmentManager.findFragmentByTag("readFragment");
+                }
+                if (appointmentFragment == null) {
+                    appointmentFragment = (AppointmentFragment) fragmentManager.findFragmentByTag("appointmentFragment");
+                }
+                if (recordFragment == null) {
+                    recordFragment = (RecordsFragment) fragmentManager.findFragmentByTag("recordFragment");
+                }
+                if (moreFragment == null) {
+                    moreFragment = (MoreFragment) fragmentManager.findFragmentByTag("moreFragment");
+                }
+            }
+        }
+
+        // Fetches accessToken from sharedPreference
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         accessTokenValue = preferences.getString(accessTokenKey, "");
         refreshTokenValue = preferences.getString(refreshTokenKey, "");
@@ -43,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         toolbar.setLogo(R.drawable.ic_logo);
         setSupportActionBar(toolbar);
+
+        setupFragments();
 
         setupNavigationView();
     }
@@ -112,6 +137,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Setup Fragments and attach them to their containers
+     */
+    private void setupFragments() {
+        if (readFragment == null) {
+            readFragment = new ReadFragment();
+        }
+        if (appointmentFragment == null) {
+            appointmentFragment = new AppointmentFragment();
+        }
+        if (recordFragment == null) {
+            recordFragment = new RecordsFragment();
+        }
+        if (moreFragment == null) {
+            moreFragment = new MoreFragment();
+        }
+
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager != null) {
+            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (ft != null) {
+                ft.replace(R.id.read_fragment_container, readFragment, "readFragment");
+                ft.replace(R.id.appointment_fragment_container, appointmentFragment, "appointmentFragment");
+                ft.replace(R.id.record_fragment_container, recordFragment, "recordFragment");
+                ft.replace(R.id.more_fragment_container, moreFragment, "moreFragment");
+                ft.commit();
+            }
+        }
+    }
+
+    /**
      * Perform action when any item is selected.
      *
      * @param item Item that is selected.
@@ -124,51 +179,71 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_read:
                 // Action to perform when Home Menu item is selected.
-                if (readFragment == null) {
-                    readFragment = new ReadFragment();
-                }
-                pushFragment(readFragment);
+                setFragmentsVisibility(1);
                 break;
             case R.id.action_appointments:
                 // Action to perform when Bag Menu item is selected.
-                if (appointmentFragment == null) {
-                    appointmentFragment = new AppointmentFragment();
-                }
-                pushFragment(appointmentFragment);
+                setFragmentsVisibility(2);
                 break;
             case R.id.action_records:
                 // Action to perform when Bag Menu item is selected.
-                if (recordFragment == null) {
-                    recordFragment = new RecordsFragment();
-                }
-                pushFragment(recordFragment);
+                setFragmentsVisibility(3);
                 break;
             case R.id.action_more:
                 // Action to perform when Account Menu item is selected.
-                if (moreFragment == null) {
-                    moreFragment = new MoreFragment();
-                }
-                pushFragment(moreFragment);
+                setFragmentsVisibility(4);
                 break;
         }
     }
 
-    /**
-     * Method to push any fragment into given id.
-     *
-     * @param fragment An instance of Fragment to show into the given id.
-     */
-    protected void pushFragment(android.support.v4.app.Fragment fragment) {
-        if (fragment == null)
-            return;
+    // Show and animate fragment that is selected and hide other fragments
+    private void setFragmentsVisibility(int i) {
+        View readFragmentContainer = findViewById(R.id.read_fragment_container);
+        View appointmentFragmentContainer = findViewById(R.id.appointment_fragment_container);
+        View recordFragmentContainer = findViewById(R.id.record_fragment_container);
+        View moreFragmentContainer = findViewById(R.id.more_fragment_container);
 
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-            if (ft != null) {
-                ft.replace(R.id.rootLayout, fragment);
-                ft.commit();
-            }
+        if (i == 0) {
+            readFragmentContainer.setVisibility(View.GONE);
+            appointmentFragmentContainer.setVisibility(View.GONE);
+            recordFragmentContainer.setVisibility(View.GONE);
+            moreFragmentContainer.setVisibility(View.GONE);
+        } else if (i == 1) {
+            readFragmentContainer.setVisibility(View.VISIBLE);
+            appointmentFragmentContainer.setVisibility(View.GONE);
+            recordFragmentContainer.setVisibility(View.GONE);
+            moreFragmentContainer.setVisibility(View.GONE);
+            readFragmentContainer
+                    .animate()
+                    .alpha(1.0f)
+                    .setDuration(300);
+        } else if (i == 2) {
+            readFragmentContainer.setVisibility(View.GONE);
+            appointmentFragmentContainer.setVisibility(View.VISIBLE);
+            recordFragmentContainer.setVisibility(View.GONE);
+            moreFragmentContainer.setVisibility(View.GONE);
+            appointmentFragmentContainer
+                    .animate()
+                    .alpha(1.0f)
+                    .setDuration(300);
+        } else if (i == 3) {
+            readFragmentContainer.setVisibility(View.GONE);
+            appointmentFragmentContainer.setVisibility(View.GONE);
+            recordFragmentContainer.setVisibility(View.VISIBLE);
+            moreFragmentContainer.setVisibility(View.GONE);
+            recordFragmentContainer
+                    .animate()
+                    .alpha(1.0f)
+                    .setDuration(300);
+        } else if (i == 4) {
+            readFragmentContainer.setVisibility(View.GONE);
+            appointmentFragmentContainer.setVisibility(View.GONE);
+            recordFragmentContainer.setVisibility(View.GONE);
+            moreFragmentContainer.setVisibility(View.VISIBLE);
+            moreFragmentContainer
+                    .animate()
+                    .alpha(1.0f)
+                    .setDuration(300);
         }
     }
 }
