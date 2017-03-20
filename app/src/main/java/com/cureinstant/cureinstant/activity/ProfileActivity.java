@@ -14,7 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.model.User;
+import com.cureinstant.cureinstant.util.Utilities;
 import com.philliphsu.bottomsheetpickers.date.BottomSheetDatePickerDialog;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
@@ -33,6 +36,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Intent i = getIntent();
+        User userInfo = i.getParcelableExtra("user_info");
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         bar.setTitle(R.string.doctor_name);
@@ -53,6 +59,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         dob.setOnClickListener(this);
         sex.setOnClickListener(this);
         email.setOnClickListener(this);
+
+        name.setText(userInfo.getName());
+        dob.setText(userInfo.getDob());
+        sex.setText(userInfo.getSex());
+        email.setText(userInfo.getEmail());
+        Glide.with(this).load(Utilities.profilePicSmallBaseUrl + userInfo.getPicture()).into(profilePicture);
     }
 
     @Override
@@ -145,13 +157,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         sexDialog.setPositiveButton("Male", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                sex.setText("Male");
+                sex.setText("MALE");
             }
         });
 
         sexDialog.setNegativeButton("Female", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                sex.setText("Female");
+                sex.setText("FEMALE");
             }
         });
 
