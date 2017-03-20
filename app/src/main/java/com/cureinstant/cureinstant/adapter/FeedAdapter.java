@@ -1,6 +1,7 @@
 package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,10 +13,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.FeedItemActivity;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -77,7 +78,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.content.setVisibility(View.VISIBLE);
             holder.content.setText(feed.getContent());
         }
-        // TODO: 16-03-2017 fix formating of time
         try {
             long[] time = Utilities.getDateDifference(feed.getTime());
             if (time[0] > 0) {
@@ -154,7 +154,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.post_title:
-                        Toast.makeText(context, "Title " + feed.getTitle(), Toast.LENGTH_SHORT).show();
+                    case R.id.post_desc:
+                    case R.id.feed_post_container:
+                        Intent feedIntent = new Intent(context, FeedItemActivity.class);
+                        feedIntent.putExtra("feed_item", feed);
+                        context.startActivity(feedIntent);
                         break;
                     case R.id.post_menu_overflow:
                         ImageButton menuButton = (ImageButton) v;
@@ -173,6 +177,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         };
 
         holder.title.setOnClickListener(onClickListener);
+        holder.content.setOnClickListener(onClickListener);
+        holder.feedContainer.setOnClickListener(onClickListener);
         holder.menuOverflow.setOnClickListener(onClickListener);
     }
 
@@ -187,7 +193,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         TextView title, content, time, doctorName, doctorSpeciality;
         TextView countFollow, countHelpful, countComment, countShare;
         ImageView doctorPicture;
-        View actionContainer, doctorContainer, menuOverflow;
+        View actionContainer, doctorContainer, feedContainer, menuOverflow;
         Button followButton, helpfulButton;
 
         public MyFeedViewHolder(View itemView) {
@@ -210,6 +216,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             followButton = (Button) itemView.findViewById(R.id.post_follow_button);
             helpfulButton = (Button) itemView.findViewById(R.id.post_helpful_button);
             menuOverflow = itemView.findViewById(R.id.post_menu_overflow);
+            feedContainer = itemView.findViewById(R.id.feed_post_container);
         }
     }
 }

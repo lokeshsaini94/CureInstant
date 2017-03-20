@@ -9,15 +9,16 @@ import android.os.Parcelable;
 
 public class Feed implements Parcelable {
 
-    private String type, actionName, actionType;
+    private String type, actionName, actionType, id;
     private String title, content, time, likes, followings, comments, shares;
     private boolean liked, followed;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String actionName, String actionType, String title, String content, String time, String likes, String followings, String comments, String shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, String likes, String followings, String comments, String shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
         this.actionName = actionName;
         this.actionType = actionType;
+        this.id = id;
         this.title = title;
         this.content = content;
         this.time = time;
@@ -55,6 +56,14 @@ public class Feed implements Parcelable {
 
     public void setActionType(String actionType) {
         this.actionType = actionType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -172,6 +181,7 @@ public class Feed implements Parcelable {
         dest.writeString(this.type);
         dest.writeString(this.actionName);
         dest.writeString(this.actionType);
+        dest.writeString(this.id);
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.time);
@@ -191,6 +201,7 @@ public class Feed implements Parcelable {
         this.type = in.readString();
         this.actionName = in.readString();
         this.actionType = in.readString();
+        this.id = in.readString();
         this.title = in.readString();
         this.content = in.readString();
         this.time = in.readString();

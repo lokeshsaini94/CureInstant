@@ -162,7 +162,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
     // Dummy data for feed
     private void prepareFeedData() {
-        Feed feed1 = new Feed("BLOG", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
+        Feed feed1 = new Feed("BLOG", "", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
         feedList.add(feed1);
         feedList.add(feed1);
         feedList.add(feed1);
@@ -173,7 +173,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
     // Returns Feed object from feedItem jsonObject
     private Feed fetchBlog(JSONObject feedItem) throws JSONException {
 
-        String title = "", actionName = "", actionType = "", content, time, likes = "0", followings = "0", comments = "0", shares = "0", doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
+        String title = "", actionName = "", actionType = "", id, content, time, likes = "0", followings = "0", comments = "0", shares = "0", doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
         boolean liked = false, followed = false;
         Feed feed = null;
 
@@ -201,6 +201,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             case "BLOG": {
                 JSONObject header = feedItemContent.getJSONObject("blog_header");
                 title = header.getString("title");
+                id = feedItemContent.getString("id");
                 content = feedItemContent.getString("content");
                 time = feedItemContent.getString("created_at");
                 likes = feedItemContent.getString("likes");
@@ -215,10 +216,11 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
                 }
-                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
             }
             case "POST": {
+                id = feedItemContent.getString("id");
                 content = feedItemContent.getString("content");
                 time = feedItemContent.getString("created_at");
                 likes = feedItemContent.getString("likes");
@@ -233,10 +235,11 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
                 }
-                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
             }
             case "QUERY":
+                id = feedItemContent.getString("id");
                 title = feedItemContent.getString("question");
                 if (actionTypeTitle.equals("ANSWER")) {
                     JSONObject answerObject = feedItemContent.getJSONObject("answer");
@@ -256,7 +259,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 followings = feedItemContent.getString("followings");
                 comments = feedItemContent.getString("comments");
                 followed = !feedItemContent.isNull("followed");
-                feed = new Feed(type, actionName, actionType, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
         }
 

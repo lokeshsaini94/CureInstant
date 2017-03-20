@@ -41,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         User userInfo = i.getParcelableExtra("user_info");
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        bar.setTitle(R.string.doctor_name);
+        bar.setTitle(userInfo.getName());
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
