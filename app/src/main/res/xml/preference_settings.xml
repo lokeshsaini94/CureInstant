@@ -7,23 +7,29 @@
         android:key="preference_username"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:summary="Enter your username"
+        android:summary="Change your username"
         android:text="lokeshsaini94"
         android:title="Username" />
     <EditTextPreference
-        android:inputType="textEmailAddress"
-        android:key="preference_email"
+        android:inputType="phone"
+        android:key="preference_number"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:summary="Enter your email"
-        android:text="lokeshsaini94@gmail.com"
-        android:title="Email" />
+        android:maxLength="10"
+        android:summary="Change your number"
+        android:text="987654321"
+        android:title="Number" />
     <EditTextPreference
         android:inputType="textPassword"
         android:key="preference_password"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:summary="Enter your password"
+        android:summary="Change your password"
         android:text="123456"
         android:title="Password" />
+
+    <Preference android:title="Logout"
+        android:key="preference_logout"
+        android:summary="Click here to logout"/>
+
 </PreferenceScreen>

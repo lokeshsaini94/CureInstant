@@ -27,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView name;
     private TextView dob;
     private TextView sex;
-    private TextView number;
+    private TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +47,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         name = (TextView) findViewById(R.id.user_name);
         dob = (TextView) findViewById(R.id.user_dob);
         sex = (TextView) findViewById(R.id.user_sex);
-        number = (TextView) findViewById(R.id.user_number);
+        email = (TextView) findViewById(R.id.user_email);
         profilePicture.setOnClickListener(this);
         name.setOnClickListener(this);
         dob.setOnClickListener(this);
         sex.setOnClickListener(this);
-        number.setOnClickListener(this);
+        email.setOnClickListener(this);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.user_sex:
                 sexDialog();
                 break;
-            case R.id.user_number:
-                numberDialog();
+            case R.id.user_email:
+                emailDialog();
                 break;
         }
     }
@@ -113,30 +113,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         nameDialog.show();
     }
 
-    private void numberDialog() {
+    private void emailDialog() {
         final EditText edittext = new EditText(getApplicationContext());
         edittext.setTextColor(getResources().getColor(R.color.colorPrimary));
-        edittext.setInputType(InputType.TYPE_CLASS_PHONE);
-        edittext.setText(number.getText().toString());
+        edittext.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        edittext.setText(email.getText().toString());
 
-        AlertDialog.Builder numberDialog = new AlertDialog.Builder(this);
-        numberDialog.setTitle("Enter Your Number");
-        numberDialog.setView(edittext);
+        AlertDialog.Builder emailDialog = new AlertDialog.Builder(this);
+        emailDialog.setTitle("Enter Your Email");
+        emailDialog.setView(edittext);
 
-        numberDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        emailDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String editTextValue = edittext.getText().toString();
-                number.setText(editTextValue);
+                email.setText(editTextValue);
             }
         });
 
-        numberDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        emailDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // what ever you want to do with No option.
             }
         });
 
-        numberDialog.show();
+        emailDialog.show();
     }
 
     private void sexDialog() {

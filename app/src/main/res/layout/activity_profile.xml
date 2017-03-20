@@ -76,7 +76,7 @@
                 android:layout_below="@id/user_name_title"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_toRightOf="@id/user_dob_title"
-                android:text="26/11/1994" />
+                android:text="26/11/1990" />
 
             <TextView
                 android:id="@+id/user_sex_title"
@@ -100,25 +100,25 @@
                 android:text="Male" />
 
             <TextView
-                android:id="@+id/user_number_title"
+                android:id="@+id/user_email_title"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_sex_title"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:text="Number"
+                android:text="Email"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/user_number"
+                android:id="@+id/user_email"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_sex_title"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_toRightOf="@id/user_number_title"
-                android:text="+91-9876543210" />
+                android:layout_toRightOf="@id/user_email_title"
+                android:text="mera@yahoo.com" />
 
         </RelativeLayout>
     </ScrollView>
