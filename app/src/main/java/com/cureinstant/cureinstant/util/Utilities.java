@@ -1,9 +1,15 @@
 package com.cureinstant.cureinstant.util;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.IntentCompat;
 import android.view.inputmethod.InputMethodManager;
+
+import com.cureinstant.cureinstant.activity.SplashScreenActivity;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,6 +48,27 @@ public class Utilities {
     // Returns boolean for logged in status
     public static Boolean isLoggedIn(Context context) {
         return context.getSharedPreferences(prefName, Context.MODE_PRIVATE).getBoolean(loginBoolKey, false);
+    }
+
+    // Logout use by clearing app data and SharedPreferences
+    public static void logout(Context context) {
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        editor = settings.edit();
+        editor.clear();
+        editor.commit();
+
+        MyApplication.getInstance().clearApplicationData();
+
+        Intent mStartActivity = new Intent(context, SplashScreenActivity.class);
+        ComponentName cn = mStartActivity.getComponent();
+        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        ProcessPhoenix.triggerRebirth(context, mainIntent);
+        System.exit(0);
     }
 
     public static void hideSoftKeyboard(Activity activity) {

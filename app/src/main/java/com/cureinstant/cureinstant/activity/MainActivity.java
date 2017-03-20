@@ -25,6 +25,7 @@ import static com.cureinstant.cureinstant.util.Utilities.refreshTokenKey;
 import static com.cureinstant.cureinstant.util.Utilities.refreshTokenValue;
 
 public class MainActivity extends AppCompatActivity {
+
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
