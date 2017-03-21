@@ -84,8 +84,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
         if (Utilities.checkConnection()) {
             if (feedList.isEmpty()) {
-                RequestData requestData = new RequestData();
-                requestData.execute();
+                refreshData();
             }
         } else {
             snackbar.show();
@@ -96,8 +95,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             public void onRefresh() {
                 if (Utilities.checkConnection()) {
                     swipeRefreshLayout.setRefreshing(true);
-                    RequestData requestData = new RequestData();
-                    requestData.execute();
+                    refreshData();
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
                     snackbar.show();
@@ -153,11 +151,15 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             snackbar.show();
         } else {
             if (feedList.isEmpty()) {
-                RequestData requestData = new RequestData();
-                requestData.execute();
+                refreshData();
             }
             snackbar.dismiss();
         }
+    }
+
+    public void refreshData() {
+        RequestData requestData = new RequestData();
+        requestData.execute();
     }
 
     // Dummy data for feed

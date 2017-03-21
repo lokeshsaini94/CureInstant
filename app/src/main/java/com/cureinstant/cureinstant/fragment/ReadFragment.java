@@ -20,11 +20,15 @@ import com.cureinstant.cureinstant.adapter.ViewPagerAdapter;
 import com.cureinstant.cureinstant.fragment.read.FeedFragment;
 import com.cureinstant.cureinstant.fragment.read.TrendingFragment;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ReadFragment extends Fragment {
+
+    private final int request_Code = 21;
 
     private FeedFragment feedFragment;
     private TrendingFragment trendingFragment;
@@ -77,7 +81,7 @@ public class ReadFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), NewQuestionActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, request_Code);
             }
         });
 
@@ -113,5 +117,18 @@ public class ReadFragment extends Fragment {
         tabTwoText.setText(getString(R.string.trending));
         tabTwoIcon.setImageResource(R.drawable.ic_trending);
         tabLayout.getTabAt(1).setCustomView(customTab2);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == request_Code) {
+            if (resultCode == RESULT_OK) {
+                boolean result = data.getBooleanExtra("newQuestionDone", false);
+                if (result) {
+                    feedFragment.refreshData();
+                }
+            }
+        }
     }
 }
