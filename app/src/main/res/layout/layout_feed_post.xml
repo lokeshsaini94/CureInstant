@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/feed_post_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:id="@+id/feed_post_container"
     android:background="@android:color/white"
+    android:elevation="1dp"
     android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:elevation="1dp"
     android:paddingTop="8dp">
 
     <RelativeLayout
@@ -24,7 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="utsav Gupta"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_action_type"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/post_action_name"
             android:text=" commented on this"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <View
             android:layout_width="match_parent"
@@ -187,11 +187,12 @@
             android:id="@+id/post_helpful_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:clickable="true"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="8dp"
             android:text="Helpful"
             android:textColor="@color/colorPrimary" />
 
@@ -199,11 +200,12 @@
             android:id="@+id/post_follow_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:clickable="true"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="8dp"
             android:text="Follow"
             android:textColor="@color/colorPrimary" />
 
@@ -211,10 +213,12 @@
             android:id="@+id/post_comment_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:clickable="true"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="8dp"
             android:text="Comment"
             android:textColor="@color/colorPrimary" />
 
@@ -222,10 +226,12 @@
             android:id="@+id/post_share_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:clickable="true"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="8dp"
             android:text="Share"
             android:textColor="@color/colorPrimary" />
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
@@ -26,6 +27,8 @@ import static com.cureinstant.cureinstant.R.id.post_menu_overflow;
 public class FeedItemActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Feed feed;
+    Button followButton;
+    Button helpfulButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +76,15 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView countFollow = (TextView) findViewById(R.id.post_follow_count);
         TextView countComment = (TextView) findViewById(R.id.post_comment_count);
         TextView countShare = (TextView) findViewById(R.id.post_share_count);
-        Button followButton = (Button) findViewById(R.id.post_follow_button);
-        Button helpfulButton = (Button) findViewById(R.id.post_helpful_button);
+        followButton = (Button) findViewById(R.id.post_follow_button);
+        helpfulButton = (Button) findViewById(R.id.post_helpful_button);
+        Button shareButton = (Button) findViewById(R.id.post_share_button);
         View menuOverflow = findViewById(post_menu_overflow);
         menuOverflow.setOnClickListener(this);
+        followButton.setOnClickListener(this);
+        helpfulButton.setOnClickListener(this);
+        followButton.setOnClickListener(this);
+        shareButton.setOnClickListener(this);
 
         switch (feed.getType()) {
             case "BLOG":
@@ -179,7 +187,43 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        Utilities.ActionFeed actionFeed;
         switch (v.getId()) {
+            case R.id.post_follow_button:
+                if (feed.isFollowed()) {
+                    actionFeed = new Utilities.ActionFeed(feed.getType(), "unfollow", feed.getId(), "");
+                    actionFeed.execute();
+                    followButton.setBackgroundColor(this.getResources().getColor(R.color.white));
+                    followButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
+                    feed.setFollowed(false);
+                } else {
+                    actionFeed = new Utilities.ActionFeed(feed.getType(), "follow", feed.getId(), "");
+                    actionFeed.execute();
+                    followButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
+                    followButton.setTextColor(this.getResources().getColor(R.color.white));
+                    feed.setFollowed(true);
+                }
+                break;
+            case R.id.post_helpful_button:
+                if (feed.isLiked()) {
+                    actionFeed = new Utilities.ActionFeed(feed.getType(), "unlike", feed.getId(), "");
+                    actionFeed.execute();
+                    helpfulButton.setBackgroundColor(this.getResources().getColor(R.color.white));
+                    helpfulButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
+                    feed.setLiked(false);
+                } else {
+                    actionFeed = new Utilities.ActionFeed(feed.getType(), "like", feed.getId(), "");
+                    actionFeed.execute();
+                    helpfulButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
+                    helpfulButton.setTextColor(this.getResources().getColor(R.color.white));
+                    feed.setLiked(true);
+                }
+                break;
+            case R.id.post_share_button:
+                actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
+                actionFeed.execute();
+                Toast.makeText(this, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.post_menu_overflow:
                 ImageButton menuButton = (ImageButton) v;
                 PopupMenu popupMenu = new PopupMenu(this, menuButton);

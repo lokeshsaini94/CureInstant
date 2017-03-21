@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
@@ -48,7 +49,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyFeedViewHolder holder, int position) {
+    public void onBindViewHolder(final MyFeedViewHolder holder, int position) {
         final Feed feed = feedList.get(position);
         if (feed.getType().equals("POST")) {
             holder.type.setText("Post");
@@ -123,6 +124,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.followButton.setVisibility(View.VISIBLE);
             holder.helpfulButton.setVisibility(View.GONE);
             holder.countShare.setVisibility(View.GONE);
+            holder.shareButton.setVisibility(View.GONE);
             holder.countFollow.setText(feed.getFollowings() + " Following");
             holder.countComment.setText(feed.getComments() + " Comments");
             if (feed.isFollowed()) {
@@ -137,6 +139,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             holder.countHelpful.setVisibility(View.VISIBLE);
             holder.followButton.setVisibility(View.GONE);
             holder.helpfulButton.setVisibility(View.VISIBLE);
+            holder.countShare.setVisibility(View.VISIBLE);
+            holder.shareButton.setVisibility(View.VISIBLE);
             holder.countHelpful.setText(feed.getLikes() + " Helpful");
             holder.countComment.setText(feed.getComments() + " Comments");
             holder.countShare.setText(feed.getShares() + " Shares");
@@ -152,6 +156,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utilities.ActionFeed actionFeed;
                 switch (v.getId()) {
                     case R.id.post_title:
                     case R.id.post_desc:
@@ -159,6 +164,41 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
                         Intent feedIntent = new Intent(context, FeedItemActivity.class);
                         feedIntent.putExtra("feed_item", feed);
                         context.startActivity(feedIntent);
+                        break;
+                    case R.id.post_follow_button:
+                        if (feed.isFollowed()) {
+                            actionFeed = new Utilities.ActionFeed(feed.getType(), "unfollow", feed.getId(), "");
+                            actionFeed.execute();
+                            holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                            holder.followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            feed.setFollowed(false);
+                        } else {
+                            actionFeed = new Utilities.ActionFeed(feed.getType(), "follow", feed.getId(), "");
+                            actionFeed.execute();
+                            holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
+                            feed.setFollowed(true);
+                        }
+                        break;
+                    case R.id.post_helpful_button:
+                        if (feed.isLiked()) {
+                            actionFeed = new Utilities.ActionFeed(feed.getType(), "unlike", feed.getId(), "");
+                            actionFeed.execute();
+                            holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                            holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            feed.setLiked(false);
+                        } else {
+                            actionFeed = new Utilities.ActionFeed(feed.getType(), "like", feed.getId(), "");
+                            actionFeed.execute();
+                            holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.white));
+                            feed.setLiked(true);
+                        }
+                        break;
+                    case R.id.post_share_button:
+                        actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
+                        actionFeed.execute();
+                        Toast.makeText(context, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.post_menu_overflow:
                         ImageButton menuButton = (ImageButton) v;
@@ -179,6 +219,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         holder.title.setOnClickListener(onClickListener);
         holder.content.setOnClickListener(onClickListener);
         holder.feedContainer.setOnClickListener(onClickListener);
+        holder.followButton.setOnClickListener(onClickListener);
+        holder.helpfulButton.setOnClickListener(onClickListener);
+        holder.shareButton.setOnClickListener(onClickListener);
         holder.menuOverflow.setOnClickListener(onClickListener);
     }
 
@@ -194,7 +237,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         TextView countFollow, countHelpful, countComment, countShare;
         ImageView doctorPicture;
         View actionContainer, doctorContainer, feedContainer, menuOverflow;
-        Button followButton, helpfulButton;
+        Button followButton, helpfulButton, shareButton;
 
         public MyFeedViewHolder(View itemView) {
             super(itemView);
@@ -215,6 +258,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             countShare = (TextView) itemView.findViewById(R.id.post_share_count);
             followButton = (Button) itemView.findViewById(R.id.post_follow_button);
             helpfulButton = (Button) itemView.findViewById(R.id.post_helpful_button);
+            shareButton = (Button) itemView.findViewById(R.id.post_share_button);
             menuOverflow = itemView.findViewById(R.id.post_menu_overflow);
             feedContainer = itemView.findViewById(R.id.feed_post_container);
         }

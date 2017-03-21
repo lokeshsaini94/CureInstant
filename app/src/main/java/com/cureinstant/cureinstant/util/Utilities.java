@@ -5,18 +5,29 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.content.IntentCompat;
 import android.view.inputmethod.InputMethodManager;
 
 import com.cureinstant.cureinstant.activity.SplashScreenActivity;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by lokeshsaini94 on 20-02-2017.
@@ -107,7 +118,7 @@ public class Utilities {
                 c.get(Calendar.HOUR) + ":" +
                 c.get(Calendar.MINUTE) + ":" +
                 c.get(Calendar.SECOND));
-        Date postdate = (Date)dateFormatter.parse(dt);
+        Date postdate = (Date) dateFormatter.parse(dt);
 
         // Gives difference b/w two dates in milliseconds
         long different = currentDate.getTime() - postdate.getTime();
@@ -120,4 +131,85 @@ public class Utilities {
 
         return new long[]{diffInDays, diffInHours, diffInMin, diffInSec};
     }
+
+
+    // performs action for like, follow, comment, share, etc
+    public static class ActionFeed extends AsyncTask<Void, Void, Void> {
+
+        String type, action, id, comment;
+
+        public ActionFeed(String type, String action, String id, String comment) {
+            this.type = type;
+            this.action = action;
+            this.id = id;
+            this.comment = comment;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body;
+
+            if (action.equals("comment")) {
+                body = new FormBody.Builder()
+                        .add("post", id)
+                        .add("comment", comment)
+                        .build();
+            } else {
+                body = new FormBody.Builder()
+                        .add("post", id)
+                        .build();
+            }
+            String url = "http://www.cureinstant.com/api";
+            switch (type) {
+                case "POST":
+                case "BLOG":
+                    url += "/post";
+                    break;
+                case "QUERY":
+                    url += "/query";
+                    break;
+            }
+
+            switch (action) {
+                case "like":
+                    url += "/like";
+                    break;
+                case "unlike":
+                    url += "/liked";
+                    break;
+                case "follow":
+                    url += "/follow";
+                    break;
+                case "unfollow":
+                    url += "/unfollow";
+                    break;
+                case "share":
+                    url += "/share";
+                    break;
+                case "comment":
+                    url += "/comment/submit";
+                    break;
+            }
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            Response response;
+            try {
+                response = client.newCall(request).execute();
+                String result = response.body().string();
+                JSONObject feedJson = new JSONObject(result);
+                String status = feedJson.getString("success");
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }

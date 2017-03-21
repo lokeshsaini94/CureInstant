@@ -190,6 +190,10 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 actionName = feedItem.getString("sec_name");
                 actionType = " answered this";
                 break;
+            case "LIKE":
+                actionName = feedItem.getString("sec_name");
+                actionType = " found this helpful";
+                break;
             case "SHARE":
                 actionName = feedItem.getString("sec_name");
                 actionType = " shared this";
