@@ -32,6 +32,7 @@ import static android.content.ContentValues.TAG;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHolder> {
 
+    private Utilities.ActionFeed actionFeed;
     private Context context;
     private List<Feed> feedList;
 
@@ -156,7 +157,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utilities.ActionFeed actionFeed;
                 switch (v.getId()) {
                     case R.id.post_title:
                     case R.id.post_desc:
@@ -200,6 +200,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
                         actionFeed.execute();
                         Toast.makeText(context, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.post_comment_button:
+                        Utilities.commentDialog(context, feed);
+                        break;
                     case R.id.post_menu_overflow:
                         ImageButton menuButton = (ImageButton) v;
                         PopupMenu popupMenu = new PopupMenu(context, menuButton);
@@ -221,6 +224,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         holder.feedContainer.setOnClickListener(onClickListener);
         holder.followButton.setOnClickListener(onClickListener);
         holder.helpfulButton.setOnClickListener(onClickListener);
+        holder.commentButton.setOnClickListener(onClickListener);
         holder.shareButton.setOnClickListener(onClickListener);
         holder.menuOverflow.setOnClickListener(onClickListener);
     }
@@ -237,7 +241,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
         TextView countFollow, countHelpful, countComment, countShare;
         ImageView doctorPicture;
         View actionContainer, doctorContainer, feedContainer, menuOverflow;
-        Button followButton, helpfulButton, shareButton;
+        Button followButton, helpfulButton, commentButton, shareButton;
 
         public MyFeedViewHolder(View itemView) {
             super(itemView);
@@ -258,6 +262,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             countShare = (TextView) itemView.findViewById(R.id.post_share_count);
             followButton = (Button) itemView.findViewById(R.id.post_follow_button);
             helpfulButton = (Button) itemView.findViewById(R.id.post_helpful_button);
+            commentButton = (Button) itemView.findViewById(R.id.post_comment_button);
             shareButton = (Button) itemView.findViewById(R.id.post_share_button);
             menuOverflow = itemView.findViewById(R.id.post_menu_overflow);
             feedContainer = itemView.findViewById(R.id.feed_post_container);

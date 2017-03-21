@@ -78,12 +78,14 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView countShare = (TextView) findViewById(R.id.post_share_count);
         followButton = (Button) findViewById(R.id.post_follow_button);
         helpfulButton = (Button) findViewById(R.id.post_helpful_button);
+        Button commentButton = (Button) findViewById(R.id.post_comment_button);
         Button shareButton = (Button) findViewById(R.id.post_share_button);
         View menuOverflow = findViewById(post_menu_overflow);
         menuOverflow.setOnClickListener(this);
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);
         followButton.setOnClickListener(this);
+        commentButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
 
         switch (feed.getType()) {
@@ -218,6 +220,9 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     helpfulButton.setTextColor(this.getResources().getColor(R.color.white));
                     feed.setLiked(true);
                 }
+                break;
+            case R.id.post_comment_button:
+                Utilities.commentDialog(this, feed);
                 break;
             case R.id.post_share_button:
                 actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");

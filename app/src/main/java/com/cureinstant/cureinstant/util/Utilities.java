@@ -3,13 +3,19 @@ package com.cureinstant.cureinstant.util;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.SplashScreenActivity;
+import com.cureinstant.cureinstant.model.Feed;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import org.json.JSONException;
@@ -210,6 +216,34 @@ public class Utilities {
             }
             return null;
         }
+    }
+
+    // Shows Dialog for comment and posts it.
+    public static void commentDialog(final Context context, final Feed feed) {
+        final EditText edittext = new EditText(context);
+        edittext.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+
+        final AlertDialog.Builder nameDialog = new AlertDialog.Builder(context);
+        nameDialog.setTitle("Enter your comment");
+        nameDialog.setView(edittext);
+
+        nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String editTextValue = edittext.getText().toString();
+                ActionFeed actionFeed = new ActionFeed(feed.getType(), "comment", feed.getId(), editTextValue);
+                actionFeed.execute();
+                Toast.makeText(context, "Comment posted", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // what ever you want to do with No option.
+            }
+        });
+
+        nameDialog.show();
     }
 
 }
