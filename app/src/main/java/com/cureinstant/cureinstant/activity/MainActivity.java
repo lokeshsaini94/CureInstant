@@ -26,6 +26,8 @@ import static com.cureinstant.cureinstant.util.Utilities.refreshTokenValue;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static int currentVisibleFrag = 1;
+
     private BottomNavigationView bottomNavigationView;
     private int bottomNavSelectedItem;
 
@@ -180,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_read:
                 // Action to perform when Home Menu item is selected.
+                if (currentVisibleFrag == 1) {
+                    readFragment.refreshFeedFrag();
+                }
                 setFragmentsVisibility(1);
                 break;
             case R.id.action_appointments:
@@ -218,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                     .animate()
                     .alpha(1.0f)
                     .setDuration(300);
+            currentVisibleFrag = 1;
         } else if (i == 2) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.VISIBLE);
@@ -227,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     .animate()
                     .alpha(1.0f)
                     .setDuration(300);
+            currentVisibleFrag = 2;
         } else if (i == 3) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.GONE);
@@ -236,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                     .animate()
                     .alpha(1.0f)
                     .setDuration(300);
+            currentVisibleFrag = 3;
         } else if (i == 4) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.GONE);
@@ -245,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     .animate()
                     .alpha(1.0f)
                     .setDuration(300);
+            currentVisibleFrag = 4;
         }
     }
 }

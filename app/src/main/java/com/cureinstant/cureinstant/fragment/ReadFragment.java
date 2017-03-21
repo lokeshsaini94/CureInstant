@@ -88,6 +88,12 @@ public class ReadFragment extends Fragment {
         return rootView;
     }
 
+    public void refreshFeedFrag() {
+        if (feedFragment != null) {
+            feedFragment.refreshData();
+        }
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         if (feedFragment == null) {
@@ -126,7 +132,7 @@ public class ReadFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 boolean result = data.getBooleanExtra("newQuestionDone", false);
                 if (result) {
-                    feedFragment.refreshData();
+                    refreshFeedFrag();
                 }
             }
         }
