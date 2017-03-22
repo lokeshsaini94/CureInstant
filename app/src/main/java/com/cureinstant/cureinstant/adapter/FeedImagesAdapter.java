@@ -32,7 +32,6 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
     private Context context;
     private String type;
     private ArrayList<String> images;
-    private String filePath = "/sdcard/CureInstant/Images/";
 
     public FeedImagesAdapter(Context context, String type, ArrayList<String> images) {
         this.context = context;
@@ -60,7 +59,7 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
             imageURL = Utilities.questionImageBaseUrl;
         }
         imageURL += images.get(position);
-        Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.imageView);
+        Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.doctor_placeholder).into(holder.imageView);
         final String finalImageURL = imageURL;
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +104,7 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
                         try {
                             out = new BufferedOutputStream(new FileOutputStream(image));
                             if (theBitmap != null) {
-                                theBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                                theBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                             }
                             out.flush();
                             out.close();
