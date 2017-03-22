@@ -107,18 +107,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
             String imageURL = Utilities.profilePicSmallBaseUrl + feed.getDoctorPicture();
             Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.doctorPicture);
         }
-        if (feed.getFollowings().equals("null")) {
-            feed.setFollowings("0");
-        }
-        if (feed.getLikes().equals("null")) {
-            feed.setLikes("0");
-        }
-        if (feed.getComments().equals("null")) {
-            feed.setComments("0");
-        }
-        if (feed.getShares().equals("null")) {
-            feed.setShares("0");
-        }
         if (feed.getType().equals("QUERY")) {
             holder.countFollow.setVisibility(View.VISIBLE);
             holder.countHelpful.setVisibility(View.GONE);
@@ -172,13 +160,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
                             holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                             holder.followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             feed.setFollowed(false);
+                            feed.setFollowings(feed.getFollowings() - 1);
                         } else {
                             actionFeed = new Utilities.ActionFeed(feed.getType(), "follow", feed.getId(), "");
                             actionFeed.execute();
                             holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
                             feed.setFollowed(true);
+                            feed.setFollowings(feed.getFollowings() + 1);
                         }
+                        holder.countFollow.setText(feed.getFollowings() + " Following");
                         break;
                     case R.id.post_helpful_button:
                         if (feed.isLiked()) {
@@ -187,21 +178,28 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyFeedViewHold
                             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             feed.setLiked(false);
+                            feed.setLikes(feed.getLikes() - 1);
                         } else {
                             actionFeed = new Utilities.ActionFeed(feed.getType(), "like", feed.getId(), "");
                             actionFeed.execute();
                             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.white));
                             feed.setLiked(true);
+                            feed.setLikes(feed.getLikes() + 1);
                         }
+                        holder.countHelpful.setText(feed.getLikes() + " Helpful");
                         break;
                     case R.id.post_share_button:
                         actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
                         actionFeed.execute();
                         Toast.makeText(context, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
+                        feed.setShares(feed.getShares() + 1);
+                        holder.countShare.setText(feed.getShares() + " Shares");
                         break;
                     case R.id.post_comment_button:
                         Utilities.commentDialog(context, feed);
+                        feed.setComments(feed.getComments() + 1);
+                        holder.countComment.setText(feed.getComments() + " Comments");
                         break;
                     case R.id.post_menu_overflow:
                         ImageButton menuButton = (ImageButton) v;

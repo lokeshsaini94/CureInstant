@@ -142,24 +142,13 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             String imageURL = Utilities.profilePicSmallBaseUrl + feed.getDoctorPicture();
             Glide.with(this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(doctorPicture);
         }
-        if (feed.getFollowings().equals("null")) {
-            feed.setFollowings("0");
-        }
-        if (feed.getLikes().equals("null")) {
-            feed.setLikes("0");
-        }
-        if (feed.getComments().equals("null")) {
-            feed.setComments("0");
-        }
-        if (feed.getShares().equals("null")) {
-            feed.setShares("0");
-        }
         if (feed.getType().equals("QUERY")) {
             countFollow.setVisibility(View.VISIBLE);
             countHelpful.setVisibility(View.GONE);
             followButton.setVisibility(View.VISIBLE);
             helpfulButton.setVisibility(View.GONE);
             countShare.setVisibility(View.GONE);
+            shareButton.setVisibility(View.GONE);
             countFollow.setText(feed.getFollowings() + " Following");
             countComment.setText(feed.getComments() + " Comments");
             if (feed.isFollowed()) {
@@ -174,6 +163,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             countHelpful.setVisibility(View.VISIBLE);
             followButton.setVisibility(View.GONE);
             helpfulButton.setVisibility(View.VISIBLE);
+            countShare.setVisibility(View.VISIBLE);
+            shareButton.setVisibility(View.VISIBLE);
             countHelpful.setText(feed.getLikes() + " Helpful");
             countComment.setText(feed.getComments() + " Comments");
             countShare.setText(feed.getShares() + " Shares");

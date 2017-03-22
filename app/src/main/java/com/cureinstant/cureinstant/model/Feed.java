@@ -10,11 +10,12 @@ import android.os.Parcelable;
 public class Feed implements Parcelable {
 
     private String type, actionName, actionType, id;
-    private String title, content, time, likes, followings, comments, shares;
+    private String title, content, time;
+    private int  likes, followings, comments, shares;
     private boolean liked, followed;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, String likes, String followings, String comments, String shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, int likes, int followings, int comments, int shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
         this.actionName = actionName;
         this.actionType = actionType;
@@ -90,35 +91,35 @@ public class Feed implements Parcelable {
         this.time = time;
     }
 
-    public String getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(String likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 
-    public String getFollowings() {
+    public int getFollowings() {
         return followings;
     }
 
-    public void setFollowings(String followings) {
+    public void setFollowings(int followings) {
         this.followings = followings;
     }
 
-    public String getComments() {
+    public int getComments() {
         return comments;
     }
 
-    public void setComments(String comments) {
+    public void setComments(int comments) {
         this.comments = comments;
     }
 
-    public String getShares() {
+    public int getShares() {
         return shares;
     }
 
-    public void setShares(String shares) {
+    public void setShares(int shares) {
         this.shares = shares;
     }
 
@@ -185,10 +186,10 @@ public class Feed implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.time);
-        dest.writeString(this.likes);
-        dest.writeString(this.followings);
-        dest.writeString(this.comments);
-        dest.writeString(this.shares);
+        dest.writeInt(this.likes);
+        dest.writeInt(this.followings);
+        dest.writeInt(this.comments);
+        dest.writeInt(this.shares);
         dest.writeByte(this.liked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.followed ? (byte) 1 : (byte) 0);
         dest.writeString(this.doctorName);
@@ -205,10 +206,10 @@ public class Feed implements Parcelable {
         this.title = in.readString();
         this.content = in.readString();
         this.time = in.readString();
-        this.likes = in.readString();
-        this.followings = in.readString();
-        this.comments = in.readString();
-        this.shares = in.readString();
+        this.likes = in.readInt();
+        this.followings = in.readInt();
+        this.comments = in.readInt();
+        this.shares = in.readInt();
         this.liked = in.readByte() != 0;
         this.followed = in.readByte() != 0;
         this.doctorName = in.readString();

@@ -164,7 +164,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
     // Dummy data for feed
     private void prepareFeedData() {
-        Feed feed1 = new Feed("BLOG", "", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", "", "", "", "", false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
+        Feed feed1 = new Feed("BLOG", "", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", 0, 0, 0, 0, false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
         feedList.add(feed1);
         feedList.add(feed1);
         feedList.add(feed1);
@@ -175,7 +175,8 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
     // Returns Feed object from feedItem jsonObject
     private Feed fetchBlog(JSONObject feedItem) throws JSONException {
 
-        String title = "", actionName = "", actionType = "", id, content, time, likes = "0", followings = "0", comments = "0", shares = "0", doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
+        String title = "", actionName = "", actionType = "", id, content, time, doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
+        int likes = 0, followings = 0, comments = 0, shares = 0;
         boolean liked = false, followed = false;
         Feed feed = null;
 
@@ -210,9 +211,9 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 id = feedItemContent.getString("id");
                 content = feedItemContent.getString("content");
                 time = feedItemContent.getString("created_at");
-                likes = feedItemContent.getString("likes");
-                comments = feedItemContent.getString("comments");
-                shares = feedItemContent.getString("shares");
+                likes = feedItemContent.optInt("likes", 0);
+                comments = feedItemContent.optInt("comments", 0);
+                shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
                 JSONObject doctor = feedItemContent.getJSONObject("user");
                 doctorName = doctor.getString("name");
@@ -229,9 +230,9 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 id = feedItemContent.getString("id");
                 content = feedItemContent.getString("content");
                 time = feedItemContent.getString("created_at");
-                likes = feedItemContent.getString("likes");
-                comments = feedItemContent.getString("comments");
-                shares = feedItemContent.getString("shares");
+                likes = feedItemContent.optInt("likes", 0);
+                comments = feedItemContent.optInt("comments", 0);
+                shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
                 JSONObject doctor = feedItemContent.getJSONObject("user");
                 doctorName = doctor.getString("name");
@@ -262,8 +263,8 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     content = feedItemContent.getString("description");
                 }
                 time = feedItemContent.getString("created_at");
-                followings = feedItemContent.getString("followings");
-                comments = feedItemContent.getString("comments");
+                followings = feedItemContent.optInt("followings", 0);
+                comments = feedItemContent.optInt("comments", 0);
                 followed = !feedItemContent.isNull("followed");
                 feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
