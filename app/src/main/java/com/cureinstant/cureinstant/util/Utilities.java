@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.SplashScreenActivity;
+import com.cureinstant.cureinstant.misc.ConnectivityReceiver;
+import com.cureinstant.cureinstant.misc.MyApplication;
 import com.cureinstant.cureinstant.model.Feed;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 

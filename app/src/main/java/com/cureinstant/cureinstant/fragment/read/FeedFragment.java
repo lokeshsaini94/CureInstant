@@ -16,9 +16,10 @@ import android.view.ViewGroup;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.FeedAdapter;
+import com.cureinstant.cureinstant.misc.ConnectivityReceiver;
+import com.cureinstant.cureinstant.misc.MyApplication;
+import com.cureinstant.cureinstant.misc.OnLoadMoreListener;
 import com.cureinstant.cureinstant.model.Feed;
-import com.cureinstant.cureinstant.util.ConnectivityReceiver;
-import com.cureinstant.cureinstant.util.MyApplication;
 import com.cureinstant.cureinstant.util.Utilities;
 
 import org.json.JSONArray;
@@ -34,6 +35,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.content.ContentValues.TAG;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 /**
@@ -41,13 +43,11 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
  */
 public class FeedFragment extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener {
 
-    boolean loading = true;
 
     private ArrayList<Feed> feedList = new ArrayList<>();
     private FeedAdapter feedAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private View moreProgresbar;
     private Snackbar snackbar;
 
     public FeedFragment() {
@@ -74,13 +74,21 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_refresh);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_list);
-        moreProgresbar = rootView.findViewById(R.id.feed_more_progressbar);
 
-        feedAdapter = new FeedAdapter(getContext(), feedList);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        feedAdapter = new FeedAdapter(getContext(), feedList, recyclerView);
         recyclerView.setAdapter(feedAdapter);
+        feedAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (Utilities.checkConnection()) {
+                    RequestMoreData requestMoreData = new RequestMoreData();
+                    requestMoreData.execute();
+                }
+            }
+        });
 
         if (Utilities.checkConnection()) {
             if (feedList.isEmpty()) {
@@ -99,32 +107,6 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
                     snackbar.show();
-                }
-            }
-        });
-
-        // Requests more data when recyclerView's last item becomes visible
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int pastVisibleItems, visibleItemCount, totalItemCount;
-                if (dy > 0) {
-                    visibleItemCount = mLayoutManager.getChildCount();
-                    totalItemCount = mLayoutManager.getItemCount();
-                    pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
-
-                    if (loading) {
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 2) {
-                            moreProgresbar.setVisibility(View.VISIBLE);
-                            loading = false;
-                            RequestMoreData requestMoreData = new RequestMoreData();
-                            requestMoreData.execute();
-                            feedAdapter.notifyDataSetChanged();
-                        }
-                    }
-                } else {
-                    loading = true;
                 }
             }
         });
@@ -338,14 +320,16 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
     }
 
     // Fetches and Sets more Feed data from api call
-    private class RequestMoreData extends AsyncTask<Void, Void, Void> {
+    private class RequestMoreData extends AsyncTask<Void, Void, Void > {
 
-        private int oldFeedItemCount = feedList.size();
+        private int oldFeedItemCount = feedList.size() - 1;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            moreProgresbar.setVisibility(View.VISIBLE);
+            //add null , so the adapter will check view_type and show progress bar at bottom
+            feedList.add(null);
+            feedAdapter.notifyItemInserted(feedList.size() - 1);
         }
 
         @Override
@@ -361,18 +345,24 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     .header("Authorization", "Bearer " + accessTokenValue)
                     .post(body)
                     .build();
+
             try {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
+
+                feedList.remove(feedList.size() - 1); // Remove progressView
+
+                Log.e(TAG, "doInBackground: s " + s );
                 JSONObject feedJson = new JSONObject(s);
                 JSONObject feedData = feedJson.getJSONObject("data");
                 Utilities.pageData = feedData.getJSONObject("pageData").toString();
                 JSONArray feeds = feedData.getJSONArray("feeds");
 
-                for (int i = 0; i < feeds.length(); i++) {
-                    JSONObject feedItem = feeds.getJSONObject(i);
-
-                    feedList.add(fetchBlog(feedItem));
+                if (feeds .length() > 0) {
+                    for (int i = 0; i < feeds.length(); i++) {
+                        JSONObject feedItem = feeds.getJSONObject(i);
+                        feedList.add(fetchBlog(feedItem));
+                    }
                 }
 
             } catch (IOException | JSONException e) {
@@ -384,8 +374,13 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            feedAdapter.notifyItemInserted(oldFeedItemCount);
-            moreProgresbar.setVisibility(View.GONE);
+
+            if (feedList.size() > oldFeedItemCount) {
+                feedAdapter.notifyDataSetChanged();
+                feedAdapter.setLoaded();
+            } else {
+                feedAdapter.notifyItemRemoved(feedList.size() - 1);
+            }
         }
     }
 }

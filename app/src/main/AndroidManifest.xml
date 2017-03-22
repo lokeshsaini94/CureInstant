@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".util.MyApplication"
+        android:name=".misc.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -56,7 +56,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
-            android:name=".util.ConnectivityReceiver"
+            android:name=".misc.ConnectivityReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

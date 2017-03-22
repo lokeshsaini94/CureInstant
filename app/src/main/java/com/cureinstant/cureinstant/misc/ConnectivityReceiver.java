@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.util;
+package com.cureinstant.cureinstant.misc;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
