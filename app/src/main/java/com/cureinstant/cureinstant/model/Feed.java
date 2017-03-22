@@ -3,6 +3,8 @@ package com.cureinstant.cureinstant.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by lokeshsaini94 on 15-03-2017.
  */
@@ -12,10 +14,11 @@ public class Feed implements Parcelable {
     private String type, actionName, actionType, id;
     private String title, content, time;
     private int  likes, followings, comments, shares;
+    private ArrayList<String> images;
     private boolean liked, followed;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, int likes, int followings, int comments, int shares, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, int likes, int followings, int comments, int shares, ArrayList<String> images, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
         this.actionName = actionName;
         this.actionType = actionType;
@@ -27,6 +30,7 @@ public class Feed implements Parcelable {
         this.followings = followings;
         this.comments = comments;
         this.shares = shares;
+        this.images = images;
         this.liked = liked;
         this.followed = followed;
         this.doctorName = doctorName;
@@ -123,6 +127,14 @@ public class Feed implements Parcelable {
         this.shares = shares;
     }
 
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
     public boolean isLiked() {
         return liked;
     }
@@ -190,6 +202,7 @@ public class Feed implements Parcelable {
         dest.writeInt(this.followings);
         dest.writeInt(this.comments);
         dest.writeInt(this.shares);
+        dest.writeStringList(this.images);
         dest.writeByte(this.liked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.followed ? (byte) 1 : (byte) 0);
         dest.writeString(this.doctorName);
@@ -210,6 +223,7 @@ public class Feed implements Parcelable {
         this.followings = in.readInt();
         this.comments = in.readInt();
         this.shares = in.readInt();
+        this.images = in.createStringArrayList();
         this.liked = in.readByte() != 0;
         this.followed = in.readByte() != 0;
         this.doctorName = in.readString();

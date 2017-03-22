@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/post_image"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:adjustViewBounds="true"
+    android:layout_marginRight="8dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/doctor_placeholder" />

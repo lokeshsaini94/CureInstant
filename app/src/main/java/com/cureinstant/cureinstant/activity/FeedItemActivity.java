@@ -3,7 +3,10 @@ package com.cureinstant.cureinstant.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.adapter.FeedImagesAdapter;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -81,6 +85,17 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         Button commentButton = (Button) findViewById(R.id.post_comment_button);
         Button shareButton = (Button) findViewById(R.id.post_share_button);
         View menuOverflow = findViewById(post_menu_overflow);
+
+        RecyclerView imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
+        if (feed.getImages().isEmpty()) {
+            imagesRecyclerView.setVisibility(View.GONE);
+        } else {
+            imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            FeedImagesAdapter mAdapter = new FeedImagesAdapter(this, feed.getType(), feed.getImages());
+            imagesRecyclerView.setAdapter(mAdapter);
+            imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
+
         menuOverflow.setOnClickListener(this);
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);

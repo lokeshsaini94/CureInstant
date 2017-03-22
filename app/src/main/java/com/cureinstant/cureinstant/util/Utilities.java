@@ -47,6 +47,9 @@ public class Utilities {
     public static final String refreshTokenKey = "refreshTokenKey";
     public static final String profilePicBaseUrl = "http://www.cureinstant.com/profile_pics/";
     public static final String profilePicSmallBaseUrl = "http://www.cureinstant.com/profile_pics_avatar/";
+    public static final String postImageBaseUrl = "http://www.cureinstant.com/posts/images/";
+    public static final String blogImageBaseUrl = "http://www.cureinstant.com/blog/images/";
+    public static final String questionImageBaseUrl = "http://www.cureinstant.com/query/images/";
     public static String accessTokenValue;
     public static String refreshTokenValue;
     public static String pageData = "";

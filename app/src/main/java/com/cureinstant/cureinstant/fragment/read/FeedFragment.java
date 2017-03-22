@@ -164,7 +164,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
     // Dummy data for feed
     private void prepareFeedData() {
-        Feed feed1 = new Feed("BLOG", "", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", 0, 0, 0, 0, false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
+        Feed feed1 = new Feed("BLOG", "", "", "", "igfja agfdsaf", "asdygb asgdk sdfas", "", 0, 0, 0, 0, null, false, false, "Lokesh", "lokeshsaini94", "adg", "1488976746_6.jpg");
         feedList.add(feed1);
         feedList.add(feed1);
         feedList.add(feed1);
@@ -177,6 +177,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
         String title = "", actionName = "", actionType = "", id, content, time, doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
         int likes = 0, followings = 0, comments = 0, shares = 0;
+        ArrayList<String> images = new ArrayList<>();
         boolean liked = false, followed = false;
         Feed feed = null;
 
@@ -215,6 +216,11 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 comments = feedItemContent.optInt("comments", 0);
                 shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
+                JSONArray imagesArray = feedItemContent.getJSONArray("images");
+                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                    JSONObject jsonObject = imagesArray.getJSONObject(i);
+                    images.add(jsonObject.getString("doc"));
+                }
                 JSONObject doctor = feedItemContent.getJSONObject("user");
                 doctorName = doctor.getString("name");
                 doctorUsername = doctor.getString("username");
@@ -223,7 +229,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
                 }
-                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, images, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
             }
             case "POST": {
@@ -234,6 +240,11 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 comments = feedItemContent.optInt("comments", 0);
                 shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
+                JSONArray imagesArray = feedItemContent.getJSONArray("images");
+                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                    JSONObject jsonObject = imagesArray.getJSONObject(i);
+                    images.add(jsonObject.getString("doc"));
+                }
                 JSONObject doctor = feedItemContent.getJSONObject("user");
                 doctorName = doctor.getString("name");
                 doctorUsername = doctor.getString("username");
@@ -242,7 +253,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     JSONObject picture = doctor.getJSONObject("profile_pic");
                     doctorPicture = picture.getString("pic_name");
                 }
-                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, images, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
             }
             case "QUERY":
@@ -263,10 +274,15 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     content = feedItemContent.getString("description");
                 }
                 time = feedItemContent.getString("created_at");
+                JSONArray imagesArray = feedItemContent.getJSONArray("images");
+                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                    JSONObject jsonObject = imagesArray.getJSONObject(i);
+                    images.add(jsonObject.getString("doc"));
+                }
                 followings = feedItemContent.optInt("followings", 0);
                 comments = feedItemContent.optInt("comments", 0);
                 followed = !feedItemContent.isNull("followed");
-                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
+                feed = new Feed(type, actionName, actionType, id, title, content, time, likes, followings, comments, shares, images, liked, followed, doctorName, doctorUsername, doctorSpec, doctorPicture);
                 break;
         }
 
