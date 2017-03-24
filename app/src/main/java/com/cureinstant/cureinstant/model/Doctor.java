@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class Doctor implements Parcelable {
 
+    public static final Parcelable.Creator<Doctor> CREATOR = new Parcelable.Creator<Doctor>() {
+        @Override
+        public Doctor createFromParcel(Parcel source) {
+            return new Doctor(source);
+        }
+
+        @Override
+        public Doctor[] newArray(int size) {
+            return new Doctor[size];
+        }
+    };
     private String name, username, sex, email, number, accountType, accountSubType, speciality, picture;
 
     public Doctor(String name, String username, String sex, String email, String number, String accountType, String accountSubType, String speciality, String picture) {
@@ -21,6 +32,18 @@ public class Doctor implements Parcelable {
         this.accountSubType = accountSubType;
         this.speciality = speciality;
         this.picture = picture;
+    }
+
+    protected Doctor(Parcel in) {
+        this.name = in.readString();
+        this.username = in.readString();
+        this.sex = in.readString();
+        this.email = in.readString();
+        this.number = in.readString();
+        this.accountType = in.readString();
+        this.accountSubType = in.readString();
+        this.speciality = in.readString();
+        this.picture = in.readString();
     }
 
     public String getName() {
@@ -95,7 +118,6 @@ public class Doctor implements Parcelable {
         this.picture = picture;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -113,28 +135,4 @@ public class Doctor implements Parcelable {
         dest.writeString(this.speciality);
         dest.writeString(this.picture);
     }
-
-    protected Doctor(Parcel in) {
-        this.name = in.readString();
-        this.username = in.readString();
-        this.sex = in.readString();
-        this.email = in.readString();
-        this.number = in.readString();
-        this.accountType = in.readString();
-        this.accountSubType = in.readString();
-        this.speciality = in.readString();
-        this.picture = in.readString();
-    }
-
-    public static final Parcelable.Creator<Doctor> CREATOR = new Parcelable.Creator<Doctor>() {
-        @Override
-        public Doctor createFromParcel(Parcel source) {
-            return new Doctor(source);
-        }
-
-        @Override
-        public Doctor[] newArray(int size) {
-            return new Doctor[size];
-        }
-    };
 }

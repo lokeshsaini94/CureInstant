@@ -54,11 +54,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
         recordList.remove(position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView title;
         private ImageView icon;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.record_title);
             icon = (ImageView) itemView.findViewById(R.id.record_icon);

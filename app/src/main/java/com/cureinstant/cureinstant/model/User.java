@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
     private String name, username, sex, email, number, dob, picture;
 
     public User(String name, String username, String sex, String email, String number, String dob, String picture) {
@@ -19,6 +30,16 @@ public class User implements Parcelable {
         this.number = number;
         this.dob = dob;
         this.picture = picture;
+    }
+
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.username = in.readString();
+        this.sex = in.readString();
+        this.email = in.readString();
+        this.number = in.readString();
+        this.dob = in.readString();
+        this.picture = in.readString();
     }
 
     public String getName() {
@@ -77,7 +98,6 @@ public class User implements Parcelable {
         this.picture = picture;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -93,26 +113,4 @@ public class User implements Parcelable {
         dest.writeString(this.dob);
         dest.writeString(this.picture);
     }
-
-    protected User(Parcel in) {
-        this.name = in.readString();
-        this.username = in.readString();
-        this.sex = in.readString();
-        this.email = in.readString();
-        this.number = in.readString();
-        this.dob = in.readString();
-        this.picture = in.readString();
-    }
-
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }

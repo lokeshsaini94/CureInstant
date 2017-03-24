@@ -34,7 +34,6 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
     private EditText questionDesc;
     private Switch questionDescSwitch;
     private Button questionButton;
-    private boolean isSwitchChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +57,13 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         questionButton.setOnClickListener(this);
 
         questionDescSwitch.setChecked(false);
-        isSwitchChecked = false;
         questionDescSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     questionDesc.setVisibility(View.VISIBLE);
-                    isSwitchChecked = true;
                 } else {
                     questionDesc.setVisibility(View.GONE);
-                    isSwitchChecked = false;
                 }
             }
         });

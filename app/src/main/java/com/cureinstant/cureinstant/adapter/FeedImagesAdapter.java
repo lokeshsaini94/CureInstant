@@ -49,16 +49,20 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, final int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, int position) {
         String imageURL = "";
-        if (type.equals("BLOG")) {
-            imageURL = Utilities.blogImageBaseUrl;
-        } else if (type.equals("POST")) {
-            imageURL = Utilities.postImageBaseUrl;
-        } else if (type.equals("QUERY")) {
-            imageURL = Utilities.questionImageBaseUrl;
+        switch (type) {
+            case "BLOG":
+                imageURL = Utilities.blogImageBaseUrl;
+                break;
+            case "POST":
+                imageURL = Utilities.postImageBaseUrl;
+                break;
+            case "QUERY":
+                imageURL = Utilities.questionImageBaseUrl;
+                break;
         }
-        imageURL += images.get(position);
+        imageURL += images.get(holder.getAdapterPosition());
         Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.doctor_placeholder).into(holder.imageView);
         final String finalImageURL = imageURL;
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +98,7 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
                         Uri fileUri;
 
                         // Generating file name
-                        String imageName = images.get(position);
+                        String imageName = images.get(holder.getAdapterPosition());
 
                         // Creating image here
                         File image = new File(context.getExternalCacheDir(), imageName);
@@ -139,10 +143,10 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
         notifyItemRemoved(position);
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.post_image);
         }

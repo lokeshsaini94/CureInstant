@@ -2,7 +2,6 @@ package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.util.Utilities;
@@ -17,13 +17,11 @@ import com.cureinstant.cureinstant.util.Utilities;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by lokeshsaini94 on 24-03-2017.
  */
 
-public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.ItemViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemViewHolder> {
 
     private Context context;
     private ArrayList<Comment> comments;
@@ -46,22 +44,21 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.ItemVie
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
 
         Comment comment = comments.get(position);
-        Log.e(TAG, "onBindViewHolder: comment.getComment() " + comment.getComment() );
 
         holder.comment.setText(comment.getComment());
 
         try {
-            long[] time = Utilities.getDateDifference(comment.getTime());
-            if (time[0] > 0) {
-                holder.time.setText(time[0] + " days ago");
+            long[] feedTime = Utilities.getDateDifference(comment.getTime());
+            if (feedTime[0] > 0) {
+                holder.time.setText(String.format(context.getString(R.string.time_days_count), feedTime[0]));
             } else {
-                if (time[1] > 0) {
-                    holder.time.setText(time[1] + " hours ago");
+                if (feedTime[1] > 0) {
+                    holder.time.setText(String.format(context.getString(R.string.time_hours_count), feedTime[1]));
                 } else {
-                    if (time[2] > 0) {
-                        holder.time.setText(time[2] + " minutes ago");
+                    if (feedTime[2] > 0) {
+                        holder.time.setText(String.format(context.getString(R.string.time_minutes_count), feedTime[2]));
                     } else {
-                        holder.time.setText("just now");
+                        holder.time.setText(R.string.time_just_now);
                     }
                 }
             }
@@ -69,8 +66,12 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.ItemVie
             e.printStackTrace();
         }
 
-        holder.countHelpful.setText(comment.getLikes() + " likes");
-        holder.countReplies.setText(comment.getReplyCount() + " replies");
+        holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), comment.getLikes()));
+        holder.countReplies.setText(String.format(context.getString(R.string.replies_count), comment.getReplyCount()));
+
+        holder.doctorName.setText(comment.getName());
+        String imageURL = Utilities.profilePicSmallBaseUrl + comment.getPicture();
+        Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.doctorPicture);
 
         // TODO: 24-03-2017 Handle user name and image here
     }
@@ -81,7 +82,7 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.ItemVie
     }
 
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
 
         TextView comment, time, doctorName;
         TextView countHelpful, countReplies;
@@ -89,7 +90,7 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.ItemVie
         View menuOverflow;
         Button helpfulButton, replyButton;
 
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             comment = (TextView) itemView.findViewById(R.id.comment_content);
             time = (TextView) itemView.findViewById(R.id.comment_time);

@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.cureinstant.cureinstant.activity.NewQuestionActivity">
 
-    <include layout="@layout/layout_toolbar"
-        android:id="@+id/question_toolbar"/>
+    <include
+        android:id="@+id/question_toolbar"
+        layout="@layout/layout_toolbar" />
 
     <TextView
         android:id="@+id/title_tw"

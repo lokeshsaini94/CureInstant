@@ -11,8 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="?attr/actionBarSize">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -379,11 +379,11 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/doctor_publication_item1_title"
                     android:layout_marginBottom="8dp"
-                    android:maxLines="3"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_below="@+id/doctor_publication_item1_title"
+                    android:maxLines="3"
                     android:text="@string/post_desc" />
 
                 <View
@@ -402,8 +402,8 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:layout_below="@id/doctor_publication_item1_divider"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:text="@string/post_title"
@@ -414,11 +414,11 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/doctor_publication_item2_title"
                     android:layout_marginBottom="8dp"
-                    android:maxLines="3"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_below="@+id/doctor_publication_item2_title"
+                    android:maxLines="3"
                     android:text="@string/post_desc" />
 
             </RelativeLayout>

@@ -19,6 +19,15 @@ public class ConnectivityReceiver
         super();
     }
 
+    public static boolean isConnected() {
+        ConnectivityManager
+                cm = (ConnectivityManager) MyApplication.getInstance().getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
+    }
+
     @Override
     public void onReceive(Context context, Intent arg1) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -30,15 +39,6 @@ public class ConnectivityReceiver
         if (connectivityReceiverListener != null) {
             connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
         }
-    }
-
-    public static boolean isConnected() {
-        ConnectivityManager
-                cm = (ConnectivityManager) MyApplication.getInstance().getApplicationContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null
-                && activeNetwork.isConnectedOrConnecting();
     }
 
 

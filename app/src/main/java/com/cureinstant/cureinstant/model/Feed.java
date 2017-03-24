@@ -11,9 +11,20 @@ import java.util.ArrayList;
 
 public class Feed implements Parcelable {
 
+    public static final Creator<Feed> CREATOR = new Creator<Feed>() {
+        @Override
+        public Feed createFromParcel(Parcel source) {
+            return new Feed(source);
+        }
+
+        @Override
+        public Feed[] newArray(int size) {
+            return new Feed[size];
+        }
+    };
     private String type, actionName, actionType, id;
     private String title, content, time;
-    private int  likes, followings, comments, shares;
+    private int likes, followings, comments, shares;
     private boolean liked, followed;
     private ArrayList<String> images;
     private ArrayList<String> links;
@@ -45,6 +56,31 @@ public class Feed implements Parcelable {
         this.doctorUsername = doctorUsername;
         this.doctorSpec = doctorSpec;
         this.doctorPicture = doctorPicture;
+    }
+
+    protected Feed(Parcel in) {
+        this.type = in.readString();
+        this.actionName = in.readString();
+        this.actionType = in.readString();
+        this.id = in.readString();
+        this.title = in.readString();
+        this.content = in.readString();
+        this.time = in.readString();
+        this.likes = in.readInt();
+        this.followings = in.readInt();
+        this.comments = in.readInt();
+        this.shares = in.readInt();
+        this.liked = in.readByte() != 0;
+        this.followed = in.readByte() != 0;
+        this.images = in.createStringArrayList();
+        this.links = in.createStringArrayList();
+        this.youtubeVideos = in.createStringArrayList();
+        this.commentsList = in.createTypedArrayList(Comment.CREATOR);
+        this.answer = in.readParcelable(Answer.class.getClassLoader());
+        this.doctorName = in.readString();
+        this.doctorUsername = in.readString();
+        this.doctorSpec = in.readString();
+        this.doctorPicture = in.readString();
     }
 
     public String getType() {
@@ -223,7 +259,6 @@ public class Feed implements Parcelable {
         this.doctorPicture = doctorPicture;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -254,41 +289,4 @@ public class Feed implements Parcelable {
         dest.writeString(this.doctorSpec);
         dest.writeString(this.doctorPicture);
     }
-
-    protected Feed(Parcel in) {
-        this.type = in.readString();
-        this.actionName = in.readString();
-        this.actionType = in.readString();
-        this.id = in.readString();
-        this.title = in.readString();
-        this.content = in.readString();
-        this.time = in.readString();
-        this.likes = in.readInt();
-        this.followings = in.readInt();
-        this.comments = in.readInt();
-        this.shares = in.readInt();
-        this.liked = in.readByte() != 0;
-        this.followed = in.readByte() != 0;
-        this.images = in.createStringArrayList();
-        this.links = in.createStringArrayList();
-        this.youtubeVideos = in.createStringArrayList();
-        this.commentsList = in.createTypedArrayList(Comment.CREATOR);
-        this.answer = in.readParcelable(Answer.class.getClassLoader());
-        this.doctorName = in.readString();
-        this.doctorUsername = in.readString();
-        this.doctorSpec = in.readString();
-        this.doctorPicture = in.readString();
-    }
-
-    public static final Creator<Feed> CREATOR = new Creator<Feed>() {
-        @Override
-        public Feed createFromParcel(Parcel source) {
-            return new Feed(source);
-        }
-
-        @Override
-        public Feed[] newArray(int size) {
-            return new Feed[size];
-        }
-    };
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +105,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                     .build();
             try {
                 Response response = client.newCall(request).execute();
-                Log.e("MoreFragment", "doInBackground: accessTokenValue " + accessTokenValue);
                 String s = response.body().string();
                 JSONObject profileJson = new JSONObject(s);
                 name = profileJson.getString("name");

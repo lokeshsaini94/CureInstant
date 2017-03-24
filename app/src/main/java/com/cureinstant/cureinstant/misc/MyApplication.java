@@ -12,15 +12,32 @@ public class MyApplication extends Application {
 
     private static MyApplication mInstance;
 
+    public static synchronized MyApplication getInstance() {
+        return mInstance;
+    }
+
+    // Deletes given file
+    public static boolean deleteFile(File file) {
+        boolean deletedAll = true;
+        if (file != null) {
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                for (int i = 0; i < children.length; i++) {
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                }
+            } else {
+                deletedAll = file.delete();
+            }
+        }
+
+        return deletedAll;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         mInstance = this;
-    }
-
-    public static synchronized MyApplication getInstance() {
-        return mInstance;
     }
 
     // Set Connectivity Listener
@@ -40,22 +57,5 @@ public class MyApplication extends Application {
                 }
             }
         }
-    }
-
-    // Deletes given file
-    public static boolean deleteFile(File file) {
-        boolean deletedAll = true;
-        if (file != null) {
-            if (file.isDirectory()) {
-                String[] children = file.list();
-                for (int i = 0; i < children.length; i++) {
-                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
-                }
-            } else {
-                deletedAll = file.delete();
-            }
-        }
-
-        return deletedAll;
     }
 }

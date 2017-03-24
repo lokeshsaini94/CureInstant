@@ -76,9 +76,8 @@ public class TrendingFragment extends Fragment {
     }
 
     private int marginInDP(int dp) {
-        int marginInDp = (int) TypedValue.applyDimension(
+        return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources()
                         .getDisplayMetrics());
-        return marginInDp;
     }
 }

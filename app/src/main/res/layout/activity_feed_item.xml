@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg">
+
     <include layout="@layout/layout_toolbar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -12,10 +13,10 @@
         android:layout_marginTop="?attr/actionBarSize">
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:id="@+id/rootLayout" >
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -234,11 +235,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/post_answer_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/post_answer_container"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -255,10 +256,10 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/post_comments_list_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:id="@+id/post_comments_list_text"
                     android:text="Comments" />
 
                 <android.support.v7.widget.RecyclerView

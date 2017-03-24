@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class Answer implements Parcelable {
+    public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
+        @Override
+        public Answer createFromParcel(Parcel source) {
+            return new Answer(source);
+        }
+
+        @Override
+        public Answer[] newArray(int size) {
+            return new Answer[size];
+        }
+    };
     private String comment, replyID, replyCount, likes, time;
     private User user;
 
@@ -18,6 +29,15 @@ public class Answer implements Parcelable {
         this.likes = likes;
         this.time = time;
         this.user = user;
+    }
+
+    protected Answer(Parcel in) {
+        this.comment = in.readString();
+        this.replyID = in.readString();
+        this.replyCount = in.readString();
+        this.likes = in.readString();
+        this.time = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
     }
 
     public String getComment() {
@@ -68,7 +88,6 @@ public class Answer implements Parcelable {
         this.user = user;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -83,25 +102,4 @@ public class Answer implements Parcelable {
         dest.writeString(this.time);
         dest.writeParcelable(this.user, flags);
     }
-
-    protected Answer(Parcel in) {
-        this.comment = in.readString();
-        this.replyID = in.readString();
-        this.replyCount = in.readString();
-        this.likes = in.readString();
-        this.time = in.readString();
-        this.user = in.readParcelable(User.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
-        @Override
-        public Answer createFromParcel(Parcel source) {
-            return new Answer(source);
-        }
-
-        @Override
-        public Answer[] newArray(int size) {
-            return new Answer[size];
-        }
-    };
 }

@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cureinstant.cureinstant.activity.AddRecordActivity;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.AddRecordActivity;
 import com.cureinstant.cureinstant.adapter.RecordAdapter;
 import com.cureinstant.cureinstant.model.Record;
 
@@ -28,9 +28,9 @@ import static android.app.Activity.RESULT_OK;
  */
 public class RecordsFragment extends Fragment {
 
+    private static final int ADD_RECORD = 99;
     private List<Record> recordList = new ArrayList<>();
     private RecordAdapter recordAdapter;
-    private static final int ADD_RECORD = 99;
 
 
     public RecordsFragment() {

@@ -70,13 +70,13 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    class CustomPagerAdapter extends PagerAdapter {
+    private class CustomPagerAdapter extends PagerAdapter {
 
         Context context;
         int[] mResources;
         LayoutInflater inflater;
 
-        public CustomPagerAdapter(Context context, int[] mResources) {
+        CustomPagerAdapter(Context context, int[] mResources) {
             this.context = context;
             this.mResources = mResources;
         }
@@ -106,7 +106,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             image.setImageResource(mResources[position]);
 
             // Add viewpager_item.xml to ViewPager
-            ((ViewPager) container).addView(itemView);
+            container.addView(itemView);
 
             return itemView;
         }
@@ -114,7 +114,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             // Remove viewpager_item.xml from ViewPager
-            ((ViewPager) container).removeView((ImageView) object);
+            container.removeView((ImageView) object);
 
         }
     }

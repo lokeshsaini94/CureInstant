@@ -157,13 +157,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         sexDialog.setPositiveButton("Male", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                sex.setText("MALE");
+                sex.setText(R.string.male_string);
             }
         });
 
         sexDialog.setNegativeButton("Female", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                sex.setText("FEMALE");
+                sex.setText(R.string.female_string);
             }
         });
 

@@ -9,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -204,7 +203,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
                 JSONArray imagesArray = feedItemContent.getJSONArray("images");
-                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                for (int i = 0, count = imagesArray.length(); i < count; i++) {
                     JSONObject jsonObject = imagesArray.getJSONObject(i);
                     images.add(jsonObject.getString("doc"));
                 }
@@ -228,7 +227,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 shares = feedItemContent.optInt("shares", 0);
                 liked = !feedItemContent.isNull("liked");
                 JSONArray imagesArray = feedItemContent.getJSONArray("images");
-                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                for (int i = 0, count = imagesArray.length(); i < count; i++) {
                     JSONObject jsonObject = imagesArray.getJSONObject(i);
                     images.add(jsonObject.getString("doc"));
                 }
@@ -262,7 +261,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                 }
                 time = feedItemContent.getString("created_at");
                 JSONArray imagesArray = feedItemContent.getJSONArray("images");
-                for (int i = 0, count = imagesArray.length(); i< count; i++) {
+                for (int i = 0, count = imagesArray.length(); i < count; i++) {
                     JSONObject jsonObject = imagesArray.getJSONObject(i);
                     images.add(jsonObject.getString("doc"));
                 }
@@ -295,7 +294,6 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
                     .build();
             try {
                 Response response = client.newCall(request).execute();
-                Log.e("FeedFragment", "doInBackground: accessTokenValue " + accessTokenValue);
                 String s = response.body().string();
                 JSONObject feedJson = new JSONObject(s);
                 JSONObject feedData = feedJson.getJSONObject("data");
@@ -325,7 +323,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
     }
 
     // Fetches and Sets more Feed data from api call
-    private class RequestMoreData extends AsyncTask<Void, Void, Void > {
+    private class RequestMoreData extends AsyncTask<Void, Void, Void> {
 
         private int oldFeedItemCount = feedList.size() - 1;
         private int addedFeedItemCount = 0;

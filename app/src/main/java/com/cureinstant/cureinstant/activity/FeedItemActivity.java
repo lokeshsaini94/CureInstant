@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +36,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.cureinstant.cureinstant.R.id.post_menu_overflow;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
@@ -47,24 +45,11 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private Button followButton;
     private Button helpfulButton;
 
-    private TextView type;
-    private TextView title;
-    private TextView content;
-    private TextView time;
-    private View doctorContainer;
-    private TextView doctorName;
-    private TextView doctorSpeciality;
-    private ImageView doctorPicture;
     private TextView countHelpful;
     private TextView countFollow;
-    private TextView countComment;
     private TextView countShare;
-    private Button commentButton;
-    private Button shareButton;
-    private View menuOverflow;
-    private RecyclerView imagesRecyclerView, commentsRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private View postAnswer, postAnswerContainer, rootView, commentsListText;
+    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +58,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
 
         Intent i = getIntent();
         feed = i.getParcelableExtra("feed_item");
-        Log.e(TAG, "onClick: feed.isLiked() " + feed.isLiked() );
-        Log.e(TAG, "onClick: feed.isFollowed() " + feed.isFollowed() );
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         switch (feed.getType()) {
@@ -98,37 +81,17 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        type = (TextView) findViewById(R.id.post_type);
-        title = (TextView) findViewById(R.id.post_title);
-        content = (TextView) findViewById(R.id.post_desc);
-        time = (TextView) findViewById(R.id.post_time);
-        doctorContainer = findViewById(R.id.doctor_info_container);
-        doctorName = (TextView) findViewById(R.id.doctor_name);
-        doctorSpeciality = (TextView) findViewById(R.id.doctor_speciality);
-        doctorPicture = (ImageView) findViewById(R.id.doctor_picture);
+        rootView = findViewById(R.id.rootLayout);
         countHelpful = (TextView) findViewById(R.id.post_helpful_count);
         countFollow = (TextView) findViewById(R.id.post_follow_count);
-        countComment = (TextView) findViewById(R.id.post_comment_count);
         countShare = (TextView) findViewById(R.id.post_share_count);
         followButton = (Button) findViewById(R.id.post_follow_button);
         helpfulButton = (Button) findViewById(R.id.post_helpful_button);
-        commentButton = (Button) findViewById(R.id.post_comment_button);
-        shareButton = (Button) findViewById(R.id.post_share_button);
-        menuOverflow = findViewById(post_menu_overflow);
-        imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
-        commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.feed_item_refresh);
-        postAnswer = findViewById(R.id.post_answer);
-        postAnswerContainer = findViewById(R.id.post_answer_container);
-        rootView = findViewById(R.id.rootLayout);
-        commentsListText = findViewById(R.id.post_comments_list_text);
 
-        menuOverflow.setOnClickListener(this);
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);
         followButton.setOnClickListener(this);
-        commentButton.setOnClickListener(this);
-        shareButton.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -141,6 +104,24 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setupFeed() {
+
+        TextView title = (TextView) findViewById(R.id.post_title);
+        TextView content = (TextView) findViewById(R.id.post_desc);
+        TextView time = (TextView) findViewById(R.id.post_time);
+        View doctorContainer = findViewById(R.id.doctor_info_container);
+        TextView doctorName = (TextView) findViewById(R.id.doctor_name);
+        TextView doctorSpeciality = (TextView) findViewById(R.id.doctor_speciality);
+        ImageView doctorPicture = (ImageView) findViewById(R.id.doctor_picture);
+        TextView countComment = (TextView) findViewById(R.id.post_comment_count);
+        Button commentButton = (Button) findViewById(R.id.post_comment_button);
+        Button shareButton = (Button) findViewById(R.id.post_share_button);
+        View menuOverflow = findViewById(post_menu_overflow);
+        RecyclerView imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
+        RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
+        View postAnswer = findViewById(R.id.post_answer);
+        View postAnswerContainer = findViewById(R.id.post_answer_container);
+        View commentsListText = findViewById(R.id.post_comments_list_text);
+
         if (feed.getImages().isEmpty()) {
             imagesRecyclerView.setVisibility(View.GONE);
         } else {
@@ -150,6 +131,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         }
 
+        TextView type = (TextView) findViewById(R.id.post_type);
         switch (feed.getType()) {
             case "BLOG":
                 type.setText("Article");
@@ -180,20 +162,20 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         try {
             long[] feedTime = Utilities.getDateDifference(feed.getTime());
             if (feedTime[0] > 0) {
-                time.setText(feedTime[0] + " days ago");
+                time.setText(String.format(getString(R.string.time_days_count), feedTime[0]));
             } else {
                 if (feedTime[1] > 0) {
-                    time.setText(feedTime[1] + " hours ago");
+                    time.setText(String.format(getString(R.string.time_hours_count), feedTime[1]));
                 } else {
                     if (feedTime[2] > 0) {
-                        time.setText(feedTime[2] + " minutes ago");
+                        time.setText(String.format(getString(R.string.time_minutes_count), feedTime[2]));
                     } else {
-                        time.setText("just now");
+                        time.setText(R.string.time_just_now);
                     }
                 }
             }
         } catch (ParseException e) {
-            Log.e(TAG, "onBindViewHolder: " + e);
+            e.printStackTrace();
         }
         if (feed.getType().equals("QUERY") && !feed.getActionType().equals(" answered this")) {
             doctorContainer.setVisibility(View.GONE);
@@ -204,8 +186,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             String imageURL = Utilities.profilePicSmallBaseUrl + feed.getDoctorPicture();
             Glide.with(this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(doctorPicture);
         }
-        Log.e(TAG, "onClick: feed.isLiked() " + feed.isLiked() );
-        Log.e(TAG, "onClick: feed.isFollowed() " + feed.isFollowed() );
         if (feed.getType().equals("QUERY")) {
             countFollow.setVisibility(View.VISIBLE);
             countHelpful.setVisibility(View.GONE);
@@ -213,8 +193,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             helpfulButton.setVisibility(View.GONE);
             countShare.setVisibility(View.GONE);
             shareButton.setVisibility(View.GONE);
-            countFollow.setText(feed.getFollowings() + " Following");
-            countComment.setText(feed.getComments() + " Comments");
+            countFollow.setText(String.format(getString(R.string.following_count), feed.getFollowings()));
+            countComment.setText(String.format(getString(R.string.comments_count), feed.getComments()));
             if (feed.isFollowed()) {
                 followButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                 followButton.setTextColor(this.getResources().getColor(R.color.white));
@@ -229,9 +209,9 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             helpfulButton.setVisibility(View.VISIBLE);
             countShare.setVisibility(View.VISIBLE);
             shareButton.setVisibility(View.VISIBLE);
-            countHelpful.setText(feed.getLikes() + " Helpful");
-            countComment.setText(feed.getComments() + " Comments");
-            countShare.setText(feed.getShares() + " Shares");
+            countHelpful.setText(String.format(getString(R.string.helpful_count), feed.getLikes()));
+            countComment.setText(String.format(getString(R.string.comments_count), feed.getComments()));
+            countShare.setText(String.format(getString(R.string.shares_count), feed.getShares()));
             if (feed.isLiked()) {
                 helpfulButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                 helpfulButton.setTextColor(this.getResources().getColor(R.color.white));
@@ -265,6 +245,10 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
             commentAdapter.notifyDataSetChanged();
         }
+
+        menuOverflow.setOnClickListener(this);
+        commentButton.setOnClickListener(this);
+        shareButton.setOnClickListener(this);
     }
 
     @Override
@@ -287,7 +271,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     feed.setFollowed(true);
                     feed.setFollowings(feed.getFollowings() + 1);
                 }
-                countFollow.setText(feed.getFollowings() + " Following");
+                countFollow.setText(String.format(getString(R.string.following_count), feed.getFollowings()));
                 break;
             case R.id.post_helpful_button:
                 if (feed.isLiked()) {
@@ -305,7 +289,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     feed.setLiked(true);
                     feed.setLikes(feed.getLikes() + 1);
                 }
-                countHelpful.setText(feed.getLikes() + " Helpful");
+                countHelpful.setText(String.format(getString(R.string.helpful_count), feed.getLikes()));
                 break;
             case R.id.post_comment_button:
                 Utilities.commentDialog(this, feed.getType(), feed.getId());
@@ -315,7 +299,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 actionFeed.execute();
                 Toast.makeText(this, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
                 feed.setShares(feed.getShares() + 1);
-                countShare.setText(feed.getShares() + " Shares");
+                countShare.setText(String.format(getString(R.string.shares_count), feed.getShares()));
                 break;
             case R.id.post_menu_overflow:
                 ImageButton menuButton = (ImageButton) v;

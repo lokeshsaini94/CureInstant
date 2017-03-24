@@ -42,4 +42,16 @@
     <string name="ask_question">Ask Question</string>
     <string name="feedback_dummy">Doctor Strange was a brilliant but egotistical surgeon. After a car accident destroys the nerves in his hands and hinders his ability to performsurgery, he searches the globe for a way to repair them encounters the Ancient One.</string>
 
+    <string name="following_count">%d Following</string>
+    <string name="helpful_count">%d Helpful</string>
+    <string name="comments_count">%d Comment</string>
+    <string name="shares_count">%d Share</string>
+    <string name="replies_count">%d reply</string>
+    <string name="time_days_count">%d day(s) ago</string>
+    <string name="time_hours_count">%d hour(s) ago</string>
+    <string name="time_minutes_count">%d minute(s) ago</string>
+    <string name="time_just_now">just now</string>
+    <string name="male_string">MALE</string>
+    <string name="female_string">FEMALE</string>
+
 </resources>
