@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
-    String name, username, sex, email, number, dob, picture;
+    private String name, username, sex, email, number, dob, picture;
 
     public User(String name, String username, String sex, String email, String number, String dob, String picture) {
         this.name = name;

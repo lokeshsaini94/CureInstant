@@ -216,7 +216,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
                                 actionFeed.execute();
                                 ((MyFeedViewHolder)holder).followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                                 ((MyFeedViewHolder)holder).followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                ((MyFeedViewHolder)holder).countFollow.setText(feed.getFollowings() - 1);
                                 feed.setFollowed(false);
                                 feed.setFollowings(feed.getFollowings() - 1);
                             } else {
@@ -227,7 +226,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                                 feed.setFollowed(true);
                                 feed.setFollowings(feed.getFollowings() + 1);
                             }
-                            ((MyFeedViewHolder)holder).countFollow.setText(feed.getLikes() + " Helpful");
+                            ((MyFeedViewHolder)holder).countFollow.setText(feed.getFollowings() + " Following");
                             break;
                         case R.id.post_helpful_button:
                             if (feed.isLiked()) {
@@ -259,7 +258,9 @@ public class FeedAdapter extends RecyclerView.Adapter {
                             ((MyFeedViewHolder)holder).countShare.setText(feed.getShares() + " Shares");
                             break;
                         case R.id.post_comment_button:
-                            Utilities.commentDialog(context, feed);
+                            Utilities.commentDialog(context, feed.getType(), feed.getId());
+                            feed.setComments(feed.getComments() + 1);
+                            ((MyFeedViewHolder)holder).countComment.setText(feed.getComments() + " Comments");
                             break;
                         case R.id.post_menu_overflow:
                             ImageButton menuButton = (ImageButton) v;

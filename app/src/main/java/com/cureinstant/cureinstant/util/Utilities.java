@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,15 +18,19 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.SplashScreenActivity;
 import com.cureinstant.cureinstant.misc.ConnectivityReceiver;
 import com.cureinstant.cureinstant.misc.MyApplication;
+import com.cureinstant.cureinstant.model.Answer;
+import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.model.Feed;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -36,6 +41,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by lokeshsaini94 on 20-02-2017.
@@ -224,7 +231,7 @@ public class Utilities {
     }
 
     // Shows Dialog for comment and posts it.
-    public static void commentDialog(final Context context, final Feed feed) {
+    public static void commentDialog(final Context context, final String type, final String id) {
         final EditText edittext = new EditText(context);
         edittext.setTextColor(context.getResources().getColor(R.color.colorPrimary));
 
@@ -235,7 +242,7 @@ public class Utilities {
         nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String editTextValue = edittext.getText().toString();
-                ActionFeed actionFeed = new ActionFeed(feed.getType(), "comment", feed.getId(), editTextValue);
+                ActionFeed actionFeed = new ActionFeed(type, "comment", id, editTextValue);
                 actionFeed.execute();
                 Toast.makeText(context, "Comment posted", Toast.LENGTH_SHORT).show();
 
@@ -249,6 +256,226 @@ public class Utilities {
         });
 
         nameDialog.show();
+    }
+
+    public static Feed getBlogData(Feed feed, JSONObject feedJson) {
+
+        Feed feedItem = feed;
+
+        JSONObject feedData = null;
+        try {
+            feedData = feedJson.getJSONObject("blog");
+
+            JSONObject titleData = feedData.getJSONObject("blog_header");
+            feedItem.setTitle(titleData.getString("title"));
+
+            feedItem.setContent(feedData.getString("content"));
+            feedItem.setTime(feedData.getString("created_at"));
+            feedItem.setLikes(feedData.getInt("likes"));
+            feedItem.setShares(feedData.getInt("shares"));
+            feedItem.setLiked(!feedData.isNull("liked"));
+
+            ArrayList<Comment> comments = new ArrayList<>();
+            JSONArray commentsArray = feedData.getJSONArray("comments");
+            feedItem.setComments(commentsArray.length());
+            for (int i = 0; i < commentsArray.length(); i++) {
+                JSONObject commentObject = commentsArray.getJSONObject(i);
+                String commentString = commentObject.getString("comment");
+                int replyID = 0, replyCount = 0, likes = 0;
+                String time = "";
+                if (!commentObject.isNull("reply_id")) {
+                    replyID = commentObject.getInt("reply_id");
+                }
+                if (!commentObject.isNull("reply_count")) {
+                    replyCount = commentObject.getInt("reply_count");
+                }
+                if (!commentObject.isNull("likes")) {
+                    likes = commentObject.getInt("likes");
+                }
+                time = commentObject.getString("created_at");
+                comments.add(new Comment(commentString, time, replyID, replyCount, likes));
+            }
+            feedItem.setCommentsList(comments);
+
+            ArrayList<String> images = new ArrayList<>();
+            JSONArray imagesArray = feedData.getJSONArray("images");
+            Log.e(TAG, "getBlogData: imagesArray " + imagesArray );
+            for (int i = 0; i < imagesArray.length(); i++) {
+                JSONObject imageObject = imagesArray.getJSONObject(i);
+                String image = imageObject.getString("doc");
+                images.add(image);
+                Log.e(TAG, "getBlogData: image " + image );
+            }
+            feedItem.setImages(images);
+
+            ArrayList<String> links = new ArrayList<>();
+            JSONArray linksArray = feedData.getJSONArray("links");
+            for (int i = 0; i < linksArray.length(); i++) {
+                JSONObject linkObject = linksArray.getJSONObject(i);
+                String link = linkObject.getString("link");
+                images.add(link);
+                // TODO: 23-03-2017 fix links json to get an Array or strings
+            }
+            feedItem.setLinks(links);
+
+            ArrayList<String> youtubeVideos = new ArrayList<>();
+            JSONArray youtubeVideosArray = feedData.getJSONArray("youtube_videos");
+            for (int i = 0; i < youtubeVideosArray.length(); i++) {
+                JSONObject youtubeVideoObject = youtubeVideosArray.getJSONObject(i);
+                String youtubeVideo = youtubeVideoObject.getString("youtube_video");
+                images.add(youtubeVideo);
+                // TODO: 23-03-2017 fix youtube_videos json to get an Array or strings
+            }
+            feedItem.setYoutubeVideos(youtubeVideos);
+
+            JSONObject userObject = feedData.getJSONObject("user");
+            feedItem.setDoctorName(userObject.getString("name"));
+            feedItem.setDoctorUsername(userObject.getString("username"));
+            feedItem.setDoctorSpec(userObject.getString("speciality"));
+            JSONObject pictureObject = userObject.getJSONObject("profile_pic");
+            feedItem.setDoctorPicture(pictureObject.getString("pic_name"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return feedItem;
+    }
+
+    public static Feed getPostData(Feed feed, JSONObject feedJson) {
+
+        Feed feedItem = feed;
+
+        JSONObject feedData = null;
+        try {
+            feedData = feedJson.getJSONObject("post");
+
+            feedItem.setContent(feedData.getString("content"));
+            feedItem.setTime(feedData.getString("created_at"));
+            feedItem.setLikes(feedData.getInt("likes"));
+            feedItem.setShares(feedData.getInt("shares"));
+            feedItem.setLiked(!feedData.isNull("liked"));
+
+            ArrayList<Comment> comments = new ArrayList<>();
+            JSONArray commentsArray = feedData.getJSONArray("comments");
+            feedItem.setComments(commentsArray.length());
+            for (int i = 0; i < commentsArray.length(); i++) {
+                JSONObject commentObject = commentsArray.getJSONObject(i);
+                String commentString = commentObject.getString("comment");
+                int replyID = 0, replyCount = 0, likes = 0;
+                String time = "";
+                if (!commentObject.isNull("reply_id")) {
+                    replyID = commentObject.getInt("reply_id");
+                }
+                if (!commentObject.isNull("reply_count")) {
+                    replyCount = commentObject.getInt("reply_count");
+                }
+                if (!commentObject.isNull("likes")) {
+                    likes = commentObject.getInt("likes");
+                }
+                time = commentObject.getString("created_at");
+                Comment comment = new Comment(commentString, time, replyID, replyCount, likes);
+                comments.add(comment);
+            }
+            feedItem.setCommentsList(comments);
+
+            ArrayList<String> images = new ArrayList<>();
+            JSONArray imagesArray = feedData.getJSONArray("images");
+            for (int i = 0; i < imagesArray.length(); i++) {
+                JSONObject imageObject = imagesArray.getJSONObject(i);
+                String image = imageObject.getString("doc");
+                images.add(image);
+            }
+            feedItem.setImages(images);
+
+            ArrayList<String> links = new ArrayList<>();
+            JSONArray linksArray = feedData.getJSONArray("links");
+            for (int i = 0; i < linksArray.length(); i++) {
+                JSONObject linkObject = linksArray.getJSONObject(i);
+                String link = linkObject.getString("link");
+                images.add(link);
+                // TODO: 23-03-2017 fix links json to get an Array or strings
+            }
+            feedItem.setLinks(links);
+
+            ArrayList<String> youtubeVideos = new ArrayList<>();
+            JSONArray youtubeVideosArray = feedData.getJSONArray("youtube_videos");
+            for (int i = 0; i < youtubeVideosArray.length(); i++) {
+                JSONObject youtubeVideoObject = youtubeVideosArray.getJSONObject(i);
+                String youtubeVideo = youtubeVideoObject.getString("youtube_video");
+                images.add(youtubeVideo);
+                // TODO: 23-03-2017 fix youtube_videos json to get an Array or strings
+            }
+            feedItem.setYoutubeVideos(youtubeVideos);
+
+            JSONObject userObject = feedData.getJSONObject("user");
+            feedItem.setDoctorName(userObject.getString("name"));
+            feedItem.setDoctorUsername(userObject.getString("username"));
+            feedItem.setDoctorSpec(userObject.getString("speciality"));
+            JSONObject pictureObject = userObject.getJSONObject("profile_pic");
+            feedItem.setDoctorPicture(pictureObject.getString("pic_name"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return feedItem;
+    }
+
+    public static Feed getQueryData(Feed feed, JSONObject feedJson) {
+
+        Feed feedItem = feed;
+
+        JSONObject feedData = null;
+        try {
+            feedData = feedJson.getJSONObject("query");
+
+            feedItem.setTitle(feedData.getString("question"));
+            feedItem.setContent(feedData.getString("description"));
+            feedItem.setTime(feedData.getString("created_at"));
+            feedItem.setFollowings(feedData.getInt("followings"));
+            feedItem.setFollowed(!feedData.isNull("followed"));
+
+            ArrayList<Comment> comments = new ArrayList<>();
+            JSONArray commentsArray = feedData.getJSONArray("comments");
+            feedItem.setComments(commentsArray.length());
+            for (int i = 0; i < commentsArray.length(); i++) {
+                JSONObject commentObject = commentsArray.getJSONObject(i);
+                String commentString = commentObject.getString("comment");
+                int replyID = 0, replyCount = 0, likes = 0;
+                String time = "";
+                if (!commentObject.isNull("reply_id")) {
+                    replyID = commentObject.getInt("reply_id");
+                }
+                if (!commentObject.isNull("reply_count")) {
+                    replyCount = commentObject.getInt("reply_count");
+                }
+                if (!commentObject.isNull("likes")) {
+                    likes = commentObject.getInt("likes");
+                }
+                time = commentObject.getString("created_at");
+                comments.add(new Comment(commentString, time, replyID, replyCount, likes));
+            }
+            feedItem.setCommentsList(comments);
+
+            // TODO: 23-03-2017  add code for answer JSON fetching
+            Answer answer = null;
+            feedItem.setAnswer(answer);
+
+            ArrayList<String> images = new ArrayList<>();
+            JSONArray imagesArray = feedData.getJSONArray("images");
+            for (int i = 0; i < imagesArray.length(); i++) {
+                JSONObject imageObject = imagesArray.getJSONObject(i);
+                String image = imageObject.getString("doc");
+                images.add(image);
+            }
+            feedItem.setImages(images);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return feedItem;
     }
 
 }

@@ -14,11 +14,15 @@ public class Feed implements Parcelable {
     private String type, actionName, actionType, id;
     private String title, content, time;
     private int  likes, followings, comments, shares;
-    private ArrayList<String> images;
     private boolean liked, followed;
+    private ArrayList<String> images;
+    private ArrayList<String> links;
+    private ArrayList<String> youtubeVideos;
+    private ArrayList<Comment> commentsList;
+    private Answer answer;
     private String doctorName, doctorUsername, doctorSpec, doctorPicture;
 
-    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, int likes, int followings, int comments, int shares, ArrayList<String> images, boolean liked, boolean followed, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
+    public Feed(String type, String actionName, String actionType, String id, String title, String content, String time, int likes, int followings, int comments, int shares, boolean liked, boolean followed, ArrayList<String> images, ArrayList<String> links, ArrayList<String> youtubeVideos, ArrayList<Comment> commentsList, Answer answer, String doctorName, String doctorUsername, String doctorSpec, String doctorPicture) {
         this.type = type;
         this.actionName = actionName;
         this.actionType = actionType;
@@ -30,9 +34,13 @@ public class Feed implements Parcelable {
         this.followings = followings;
         this.comments = comments;
         this.shares = shares;
-        this.images = images;
         this.liked = liked;
         this.followed = followed;
+        this.images = images;
+        this.links = links;
+        this.youtubeVideos = youtubeVideos;
+        this.commentsList = commentsList;
+        this.answer = answer;
         this.doctorName = doctorName;
         this.doctorUsername = doctorUsername;
         this.doctorSpec = doctorSpec;
@@ -127,14 +135,6 @@ public class Feed implements Parcelable {
         this.shares = shares;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
-    }
-
     public boolean isLiked() {
         return liked;
     }
@@ -149,6 +149,46 @@ public class Feed implements Parcelable {
 
     public void setFollowed(boolean followed) {
         this.followed = followed;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
+    public ArrayList<String> getLinks() {
+        return links;
+    }
+
+    public void setLinks(ArrayList<String> links) {
+        this.links = links;
+    }
+
+    public ArrayList<String> getYoutubeVideos() {
+        return youtubeVideos;
+    }
+
+    public void setYoutubeVideos(ArrayList<String> youtubeVideos) {
+        this.youtubeVideos = youtubeVideos;
+    }
+
+    public ArrayList<Comment> getCommentsList() {
+        return commentsList;
+    }
+
+    public void setCommentsList(ArrayList<Comment> commentsList) {
+        this.commentsList = commentsList;
+    }
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
     }
 
     public String getDoctorName() {
@@ -202,9 +242,13 @@ public class Feed implements Parcelable {
         dest.writeInt(this.followings);
         dest.writeInt(this.comments);
         dest.writeInt(this.shares);
-        dest.writeStringList(this.images);
         dest.writeByte(this.liked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.followed ? (byte) 1 : (byte) 0);
+        dest.writeStringList(this.images);
+        dest.writeStringList(this.links);
+        dest.writeStringList(this.youtubeVideos);
+        dest.writeTypedList(this.commentsList);
+        dest.writeParcelable(this.answer, flags);
         dest.writeString(this.doctorName);
         dest.writeString(this.doctorUsername);
         dest.writeString(this.doctorSpec);
@@ -223,9 +267,13 @@ public class Feed implements Parcelable {
         this.followings = in.readInt();
         this.comments = in.readInt();
         this.shares = in.readInt();
-        this.images = in.createStringArrayList();
         this.liked = in.readByte() != 0;
         this.followed = in.readByte() != 0;
+        this.images = in.createStringArrayList();
+        this.links = in.createStringArrayList();
+        this.youtubeVideos = in.createStringArrayList();
+        this.commentsList = in.createTypedArrayList(Comment.CREATOR);
+        this.answer = in.readParcelable(Answer.class.getClassLoader());
         this.doctorName = in.readString();
         this.doctorUsername = in.readString();
         this.doctorSpec = in.readString();
