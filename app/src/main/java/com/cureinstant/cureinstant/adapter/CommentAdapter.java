@@ -72,8 +72,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
         holder.doctorName.setText(comment.getName());
         String imageURL = Utilities.profilePicSmallBaseUrl + comment.getPicture();
         Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.doctorPicture);
-
-        // TODO: 24-03-2017 Handle user name and image here
     }
 
     @Override

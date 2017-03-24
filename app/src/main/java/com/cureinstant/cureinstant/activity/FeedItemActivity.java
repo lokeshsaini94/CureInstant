@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.CommentAdapter;
 import com.cureinstant.cureinstant.adapter.FeedImagesAdapter;
+import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -118,9 +119,15 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         View menuOverflow = findViewById(post_menu_overflow);
         RecyclerView imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
         RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
-        View postAnswer = findViewById(R.id.post_answer);
         View postAnswerContainer = findViewById(R.id.post_answer_container);
         View commentsListText = findViewById(R.id.post_comments_list_text);
+        TextView answerContent = (TextView) findViewById(R.id.answer_desc);
+        TextView answerHelpfulCount = (TextView) findViewById(R.id.answer_helpful_count);
+        TextView answerCommentCount = (TextView) findViewById(R.id.answer_comment_count);
+        TextView answerPostTime = (TextView) findViewById(R.id.answer_post_time);
+        TextView answerDoctorName = (TextView) findViewById(R.id.answer_doctor_name);
+        TextView answerDoctorSpeciality = (TextView) findViewById(R.id.answer_doctor_speciality);
+        ImageView answerDoctorPicture = (ImageView) findViewById(R.id.answer_doctor_picture);
 
         if (feed.getImages().isEmpty()) {
             imagesRecyclerView.setVisibility(View.GONE);
@@ -222,9 +229,37 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (feed.getType().equals("QUERY")) {
+            // TODO: 24-03-2017 Handle answer content here
             postAnswerContainer.setVisibility(View.VISIBLE);
-            if (feed.getAnswer() != null) {
-                // TODO: 24-03-2017 Handle answer content here
+            if (feed.getAnswer() == null) {
+                postAnswerContainer.setVisibility(View.GONE);
+            } else {
+                Answer answer = feed.getAnswer();
+                answerContent.setText(answer.getComment());
+                answerHelpfulCount.setText(String.format(getString(R.string.helpful_count), answer.getLikes()));
+                answerCommentCount.setText(String.format(getString(R.string.replies_count), answer.getReplyCount()));
+                try {
+                    long[] feedTime = Utilities.getDateDifference(answer.getTime());
+                    if (feedTime[0] > 0) {
+                        answerPostTime.setText(String.format(getString(R.string.time_days_count), feedTime[0]));
+                    } else {
+                        if (feedTime[1] > 0) {
+                            answerPostTime.setText(String.format(getString(R.string.time_hours_count), feedTime[1]));
+                        } else {
+                            if (feedTime[2] > 0) {
+                                answerPostTime.setText(String.format(getString(R.string.time_minutes_count), feedTime[2]));
+                            } else {
+                                answerPostTime.setText(R.string.time_just_now);
+                            }
+                        }
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                answerDoctorName.setText(answer.getName());
+                answerDoctorSpeciality.setText(answer.getSpeciality());
+                String imageURL = Utilities.profilePicSmallBaseUrl + answer.getPicture();
+                Glide.with(this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(answerDoctorPicture);
             }
         }
         if (feed.getCommentsList().isEmpty()) {

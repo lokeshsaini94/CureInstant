@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/feed_post_answer_container"
+    android:id="@+id/answer_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -13,13 +13,13 @@
     android:paddingTop="8dp">
 
     <RelativeLayout
-        android:id="@+id/doctor_info_container"
+        android:id="@+id/answer_doctor_info_container"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp">
 
         <ImageView
-            android:id="@+id/doctor_picture"
+            android:id="@+id/answer_doctor_picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -27,35 +27,35 @@
             android:src="@drawable/doctor_placeholder" />
 
         <TextView
-            android:id="@+id/doctor_name"
+            android:id="@+id/answer_doctor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/doctor_picture"
+            android:layout_toRightOf="@id/answer_doctor_picture"
             android:text="@string/doctor_name"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/doctor_speciality"
+            android:id="@+id/answer_doctor_speciality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/doctor_name"
+            android:layout_below="@id/answer_doctor_name"
             android:layout_marginBottom="4dp"
-            android:layout_toRightOf="@id/doctor_picture"
+            android:layout_toRightOf="@id/answer_doctor_picture"
             android:text="@string/doctor_speciality" />
 
         <TextView
-            android:id="@+id/post_time"
+            android:id="@+id/answer_post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/doctor_name"
+            android:layout_toRightOf="@id/answer_doctor_name"
             android:gravity="right|end"
             android:text="@string/post_time"
             android:textSize="12sp" />
@@ -63,7 +63,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/post_answer_desc"
+        android:id="@+id/answer_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -77,21 +77,17 @@
         android:layout_marginTop="8dp">
 
         <TextView
-            android:id="@+id/post_answer_helpful_count"
+            android:id="@+id/answer_helpful_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Helpful"
             android:textSize="10sp" />
 
         <TextView
-            android:id="@+id/post_answer_comment_count"
+            android:id="@+id/answer_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Comments"
             android:textSize="10sp" />
@@ -111,7 +107,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/post_answer_helpful_button"
+            android:id="@+id/answer_helpful_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +120,7 @@
             android:textColor="@color/colorPrimary" />
 
         <Button
-            android:id="@+id/post_answer_reply_button"
+            android:id="@+id/answer_reply_button"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,7 +138,7 @@
             android:layout_weight="1" />
 
         <ImageButton
-            android:id="@+id/post_answer_menu_overflow"
+            android:id="@+id/answer_menu_overflow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"

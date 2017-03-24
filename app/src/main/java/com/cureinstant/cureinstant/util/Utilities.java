@@ -384,9 +384,28 @@ public class Utilities {
             }
             feed.setCommentsList(comments);
 
-            // TODO: 23-03-2017  add code for answer JSON fetching
-            Answer answer = null;
-            feed.setAnswer(answer);
+            JSONObject answerObject = feedData.getJSONObject("answer");
+            String content = answerObject.getString("content");
+            int answerID = 0, replyCount = 0, likes = 0;
+            String time = "";
+            if (!answerObject.isNull("id")) {
+                answerID = answerObject.getInt("id");
+            }
+            if (!answerObject.isNull("comments")) {
+                replyCount = answerObject.getInt("comments");
+            }
+            if (!answerObject.isNull("likes")) {
+                likes = answerObject.getInt("likes");
+            }
+            time = answerObject.getString("created_at");
+
+            JSONObject userObject = answerObject.getJSONObject("user");
+            String name = userObject.getString("name");
+            String username = userObject.getString("username");
+            String speciality = userObject.getString("speciality");
+            JSONObject userPicObject = userObject.getJSONObject("profile_pic");
+            String picture = userPicObject.getString("pic_name");
+            feed.setAnswer(new Answer(content, time, answerID, replyCount, likes, name, username, speciality, picture));
 
             ArrayList<String> images = new ArrayList<>();
             JSONArray imagesArray = feedData.getJSONArray("images");

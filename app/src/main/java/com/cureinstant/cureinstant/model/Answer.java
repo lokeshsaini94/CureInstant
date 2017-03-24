@@ -8,7 +8,8 @@ import android.os.Parcelable;
  */
 
 public class Answer implements Parcelable {
-    public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
+
+    public static final Creator<Answer> CREATOR = new Creator<Answer>() {
         @Override
         public Answer createFromParcel(Parcel source) {
             return new Answer(source);
@@ -19,25 +20,32 @@ public class Answer implements Parcelable {
             return new Answer[size];
         }
     };
-    private String comment, replyID, replyCount, likes, time;
-    private User user;
+    private String comment, time;
+    private int replyID, replyCount, likes;
+    private String name, username, speciality, picture;
 
-    public Answer(String comment, String replyID, String replyCount, String likes, String time, User user) {
+    public Answer(String comment, String time, int replyID, int replyCount, int likes, String name, String username, String speciality, String picture) {
         this.comment = comment;
+        this.time = time;
         this.replyID = replyID;
         this.replyCount = replyCount;
         this.likes = likes;
-        this.time = time;
-        this.user = user;
+        this.name = name;
+        this.username = username;
+        this.speciality = speciality;
+        this.picture = picture;
     }
 
     protected Answer(Parcel in) {
         this.comment = in.readString();
-        this.replyID = in.readString();
-        this.replyCount = in.readString();
-        this.likes = in.readString();
         this.time = in.readString();
-        this.user = in.readParcelable(User.class.getClassLoader());
+        this.replyID = in.readInt();
+        this.replyCount = in.readInt();
+        this.likes = in.readInt();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.speciality = in.readString();
+        this.picture = in.readString();
     }
 
     public String getComment() {
@@ -48,30 +56,6 @@ public class Answer implements Parcelable {
         this.comment = comment;
     }
 
-    public String getReplyID() {
-        return replyID;
-    }
-
-    public void setReplyID(String replyID) {
-        this.replyID = replyID;
-    }
-
-    public String getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(String replyCount) {
-        this.replyCount = replyCount;
-    }
-
-    public String getLikes() {
-        return likes;
-    }
-
-    public void setLikes(String likes) {
-        this.likes = likes;
-    }
-
     public String getTime() {
         return time;
     }
@@ -80,12 +64,60 @@ public class Answer implements Parcelable {
         this.time = time;
     }
 
-    public User getUser() {
-        return user;
+    public int getReplyID() {
+        return replyID;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setReplyID(int replyID) {
+        this.replyID = replyID;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     @Override
@@ -96,10 +128,13 @@ public class Answer implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.comment);
-        dest.writeString(this.replyID);
-        dest.writeString(this.replyCount);
-        dest.writeString(this.likes);
         dest.writeString(this.time);
-        dest.writeParcelable(this.user, flags);
+        dest.writeInt(this.replyID);
+        dest.writeInt(this.replyCount);
+        dest.writeInt(this.likes);
+        dest.writeString(this.name);
+        dest.writeString(this.username);
+        dest.writeString(this.speciality);
+        dest.writeString(this.picture);
     }
 }
