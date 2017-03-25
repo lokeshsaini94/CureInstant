@@ -137,7 +137,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Following"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_helpful_count"
@@ -147,7 +147,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Helpful"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_comment_count"
@@ -157,7 +157,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Comments"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_share_count"
@@ -167,7 +167,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
             android:text="0 Share"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 

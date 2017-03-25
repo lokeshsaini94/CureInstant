@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:text="0 Helpful"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/answer_comment_count"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:text="0 Comments"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
