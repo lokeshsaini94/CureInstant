@@ -55,6 +55,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private FeedImagesAdapter feedImagesAdapter;
     private View rootView;
 
+    android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +108,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             }
         };
         commentsRecyclerView.setLayoutManager(mLayoutManager);
-        commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList()));
+        commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList(), fragmentManager));
         commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         followButton.setOnClickListener(this);
@@ -283,7 +285,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         } else {
             commentsRecyclerView.setVisibility(View.VISIBLE);
             commentsListText.setVisibility(View.VISIBLE);
-            commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList()));
+            commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList(), fragmentManager));
             commentsRecyclerView.invalidate();
         }
 

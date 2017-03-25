@@ -2,6 +2,7 @@ package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.fragment.RepliesBottomSheetFragment;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -29,10 +31,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
 
     private Context context;
     private ArrayList<Comment> comments;
+    private FragmentManager fragmentManager;
 
-    public CommentAdapter(Context context, ArrayList<Comment> comments) {
+    public CommentAdapter(Context context, ArrayList<Comment> comments, FragmentManager fragmentManager) {
         this.context = context;
         this.comments = comments;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -88,6 +92,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+                    case R.id.feed_comment_container:
+                        if (comment.getReplyCount() > 0) {
+                            RepliesBottomSheetFragment repliesBottomSheetFragment = RepliesBottomSheetFragment.getInstance();
+                            repliesBottomSheetFragment.show(fragmentManager, "Replies");
+                        }
+                        break;
                     case R.id.comment_helpful_button:
                         if (comment.isLiked()) {
                             Utilities.ActionComment actionComment = new Utilities.ActionComment("liked", comment.getId(), null);
@@ -140,6 +150,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
 
         holder.helpfulButton.setOnClickListener(onClickListener);
         holder.replyButton.setOnClickListener(onClickListener);
+        holder.rootView.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -153,7 +164,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
         TextView comment, time, doctorName;
         TextView countHelpful, countReplies;
         ImageView doctorPicture;
-        View menuOverflow;
+        View menuOverflow, rootView;
         Button helpfulButton, replyButton;
 
         ItemViewHolder(View itemView) {
@@ -167,6 +178,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             menuOverflow = itemView.findViewById(R.id.comment_menu_overflow);
             helpfulButton = (Button) itemView.findViewById(R.id.comment_helpful_button);
             replyButton = (Button) itemView.findViewById(R.id.comment_reply_button);
+            rootView = itemView.findViewById(R.id.feed_comment_container);
         }
     }
 }
