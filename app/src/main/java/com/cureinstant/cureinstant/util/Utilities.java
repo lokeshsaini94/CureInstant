@@ -130,7 +130,7 @@ public class Utilities {
         Date currentDate = dateFormatter.parse(c.get(Calendar.YEAR) + "-" +
                 month + "-" +
                 c.get(Calendar.DAY_OF_MONTH) + " " +
-                c.get(Calendar.HOUR) + ":" +
+                c.get(Calendar.HOUR_OF_DAY) + ":" +
                 c.get(Calendar.MINUTE) + ":" +
                 c.get(Calendar.SECOND));
         Date postdate = (Date) dateFormatter.parse(dt);
@@ -143,6 +143,11 @@ public class Utilities {
         long diffInHours = TimeUnit.MILLISECONDS.toHours(different);
         long diffInMin = TimeUnit.MILLISECONDS.toMinutes(different);
         long diffInSec = TimeUnit.MILLISECONDS.toSeconds(different);
+
+        if (diffInHours >= 12) {
+            diffInHours -= 12;
+            diffInMin -= 720;
+        }
 
         return new long[]{diffInDays, diffInHours, diffInMin, diffInSec};
     }
