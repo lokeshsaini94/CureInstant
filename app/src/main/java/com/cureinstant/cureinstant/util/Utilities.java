@@ -196,16 +196,20 @@ public class Utilities {
             for (int i = 0; i < commentsArray.length(); i++) {
                 JSONObject commentObject = commentsArray.getJSONObject(i);
                 String commentString = commentObject.getString("comment");
-                int replyID = 0, replyCount = 0, likes = 0;
+                int id = 0, replyCount = 0, likes = 0;
+                boolean liked = false;
                 String time = "";
-                if (!commentObject.isNull("reply_id")) {
-                    replyID = commentObject.getInt("reply_id");
+                if (!commentObject.isNull("id")) {
+                    id = commentObject.getInt("id");
                 }
                 if (!commentObject.isNull("reply_count")) {
                     replyCount = commentObject.getInt("reply_count");
                 }
                 if (!commentObject.isNull("likes")) {
                     likes = commentObject.getInt("likes");
+                }
+                if (!commentObject.isNull("liked")) {
+                    liked = true;
                 }
                 time = commentObject.getString("created_at");
 
@@ -214,7 +218,7 @@ public class Utilities {
                 String username = userObject.getString("username");
                 JSONObject userPicObject = userObject.getJSONObject("profile_pic");
                 String picture = userPicObject.getString("pic_name");
-                comments.add(new Comment(commentString, time, replyID, replyCount, likes, name, username, picture));
+                comments.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
             }
             feed.setCommentsList(comments);
 
@@ -279,16 +283,20 @@ public class Utilities {
             for (int i = 0; i < commentsArray.length(); i++) {
                 JSONObject commentObject = commentsArray.getJSONObject(i);
                 String commentString = commentObject.getString("comment");
-                int replyID = 0, replyCount = 0, likes = 0;
+                int id = 0, replyCount = 0, likes = 0;
+                boolean liked = false;
                 String time = "";
-                if (!commentObject.isNull("reply_id")) {
-                    replyID = commentObject.getInt("reply_id");
+                if (!commentObject.isNull("id")) {
+                    id = commentObject.getInt("id");
                 }
                 if (!commentObject.isNull("reply_count")) {
                     replyCount = commentObject.getInt("reply_count");
                 }
                 if (!commentObject.isNull("likes")) {
                     likes = commentObject.getInt("likes");
+                }
+                if (!commentObject.isNull("liked")) {
+                    liked = true;
                 }
                 time = commentObject.getString("created_at");
 
@@ -297,7 +305,7 @@ public class Utilities {
                 String username = userObject.getString("username");
                 JSONObject userPicObject = userObject.getJSONObject("profile_pic");
                 String picture = userPicObject.getString("pic_name");
-                comments.add(new Comment(commentString, time, replyID, replyCount, likes, name, username, picture));
+                comments.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
             }
             feed.setCommentsList(comments);
 
@@ -362,16 +370,20 @@ public class Utilities {
             for (int i = 0; i < commentsArray.length(); i++) {
                 JSONObject commentObject = commentsArray.getJSONObject(i);
                 String commentString = commentObject.getString("comment");
-                int replyID = 0, replyCount = 0, likes = 0;
+                int id = 0, replyCount = 0, likes = 0;
+                boolean liked = false;
                 String time = "";
-                if (!commentObject.isNull("reply_id")) {
-                    replyID = commentObject.getInt("reply_id");
+                if (!commentObject.isNull("id")) {
+                    id = commentObject.getInt("id");
                 }
                 if (!commentObject.isNull("reply_count")) {
                     replyCount = commentObject.getInt("reply_count");
                 }
                 if (!commentObject.isNull("likes")) {
                     likes = commentObject.getInt("likes");
+                }
+                if (!commentObject.isNull("liked")) {
+                    liked = true;
                 }
                 time = commentObject.getString("created_at");
 
@@ -380,7 +392,7 @@ public class Utilities {
                 String username = userObject.getString("username");
                 JSONObject userPicObject = userObject.getJSONObject("profile_pic");
                 String picture = userPicObject.getString("pic_name");
-                comments.add(new Comment(commentString, time, replyID, replyCount, likes, name, username, picture));
+                comments.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
             }
             feed.setCommentsList(comments);
 
@@ -495,6 +507,66 @@ public class Utilities {
                 JSONObject feedJson = new JSONObject(result);
                 String status = feedJson.getString("success");
 
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    // performs action for like, reply, etc on comment
+    public static class ActionComment extends AsyncTask<Void, Void, Void> {
+
+        String action, comment;
+        int id;
+
+        public ActionComment(String action, int id, String comment) {
+            this.action = action;
+            this.id = id;
+            this.comment = comment;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body;
+
+            if (action.equals("reply")) {
+                body = new FormBody.Builder()
+                        .add("id", String.valueOf(id))
+                        .add("comment", comment)
+                        .build();
+            } else {
+                body = new FormBody.Builder()
+                        .add("comment", String.valueOf(id))
+                        .build();
+            }
+            String url = "http://www.cureinstant.com/api/post";
+
+            switch (action) {
+                case "like":
+                    url += "/comment/like";
+                    break;
+                case "liked":
+                    url += "/comment/liked";
+                    break;
+                case "reply":
+                    url += "/comment/reply/submit";
+                    break;
+            }
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            Response response;
+            try {
+                response = client.newCall(request).execute();
+                String result = response.body().string();
+                JSONObject feedJson = new JSONObject(result);
+                String status = feedJson.getString("success");
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }

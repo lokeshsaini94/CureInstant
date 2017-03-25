@@ -50,6 +50,9 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private TextView countFollow;
     private TextView countShare;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView imagesRecyclerView;
+    private RecyclerView commentsRecyclerView;
+    private FeedImagesAdapter feedImagesAdapter;
     private View rootView;
 
     @Override
@@ -89,6 +92,22 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         followButton = (Button) findViewById(R.id.post_follow_button);
         helpfulButton = (Button) findViewById(R.id.post_helpful_button);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.feed_item_refresh);
+        imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
+        commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
+
+        imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        feedImagesAdapter = new FeedImagesAdapter(this, feed.getType(), feed.getImages());
+        imagesRecyclerView.setAdapter(feedImagesAdapter);
+        imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        commentsRecyclerView.setLayoutManager(mLayoutManager);
+        commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList()));
+        commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);
@@ -117,8 +136,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         Button commentButton = (Button) findViewById(R.id.post_comment_button);
         Button shareButton = (Button) findViewById(R.id.post_share_button);
         View menuOverflow = findViewById(post_menu_overflow);
-        RecyclerView imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
-        RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
         View postAnswerContainer = findViewById(R.id.post_answer_container);
         View commentsListText = findViewById(R.id.post_comments_list_text);
         TextView answerContent = (TextView) findViewById(R.id.answer_desc);
@@ -132,10 +149,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         if (feed.getImages().isEmpty()) {
             imagesRecyclerView.setVisibility(View.GONE);
         } else {
-            imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            FeedImagesAdapter mAdapter = new FeedImagesAdapter(this, feed.getType(), feed.getImages());
-            imagesRecyclerView.setAdapter(mAdapter);
-            imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            imagesRecyclerView.setVisibility(View.VISIBLE);
+            feedImagesAdapter.notifyDataSetChanged();
         }
 
         TextView type = (TextView) findViewById(R.id.post_type);
@@ -268,17 +283,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         } else {
             commentsRecyclerView.setVisibility(View.VISIBLE);
             commentsListText.setVisibility(View.VISIBLE);
-            final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            commentsRecyclerView.setLayoutManager(mLayoutManager);
-            CommentAdapter commentAdapter = new CommentAdapter(this, feed.getCommentsList());
-            commentsRecyclerView.setAdapter(commentAdapter);
-            commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            commentAdapter.notifyDataSetChanged();
+            commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList()));
+            commentsRecyclerView.invalidate();
         }
 
         menuOverflow.setOnClickListener(this);
