@@ -194,8 +194,12 @@ public class Utilities {
 
             feed.setContent(feedData.getString("content"));
             feed.setTime(feedData.getString("created_at"));
-            feed.setLikes(feedData.getInt("likes"));
-            feed.setShares(feedData.getInt("shares"));
+            if (!feedData.isNull("likes")) {
+                feed.setLikes(feedData.getInt("likes"));
+            }
+            if (!feedData.isNull("shares")) {
+                feed.setLikes(feedData.getInt("shares"));
+            }
             feed.setLiked(!feedData.isNull("liked"));
 
             ArrayList<Comment> comments = new ArrayList<>();
@@ -281,8 +285,12 @@ public class Utilities {
 
             feed.setContent(feedData.getString("content"));
             feed.setTime(feedData.getString("created_at"));
-            feed.setLikes(feedData.getInt("likes"));
-            feed.setShares(feedData.getInt("shares"));
+            if (!feedData.isNull("likes")) {
+                feed.setLikes(feedData.getInt("likes"));
+            }
+            if (!feedData.isNull("shares")) {
+                feed.setLikes(feedData.getInt("shares"));
+            }
             feed.setLiked(!feedData.isNull("liked"));
 
             ArrayList<Comment> comments = new ArrayList<>();
@@ -369,7 +377,9 @@ public class Utilities {
             feed.setTitle(feedData.getString("question"));
             feed.setContent(feedData.getString("description"));
             feed.setTime(feedData.getString("created_at"));
-            feed.setFollowings(feedData.getInt("followings"));
+            if (!feedData.isNull("followings")) {
+                feed.setFollowings(feedData.getInt("followings"));
+            }
             feed.setFollowed(!feedData.isNull("followed"));
 
             ArrayList<Comment> comments = new ArrayList<>();
