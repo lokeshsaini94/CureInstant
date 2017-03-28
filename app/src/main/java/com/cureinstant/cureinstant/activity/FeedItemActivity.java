@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.CommentAdapter;
 import com.cureinstant.cureinstant.adapter.FeedImagesAdapter;
+import com.cureinstant.cureinstant.adapter.FeedYoutubeAdapter;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -56,8 +57,10 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private TextView answerReplyCount;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView imagesRecyclerView;
+    private RecyclerView youtubeRecyclerView;
     private RecyclerView commentsRecyclerView;
     private FeedImagesAdapter feedImagesAdapter;
+    private FeedYoutubeAdapter feedYoutubeAdapter;
     private View rootView;
 
     android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -102,12 +105,19 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         answerReplyButton = (Button) findViewById(R.id.answer_reply_button);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.feed_item_refresh);
         imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
+        youtubeRecyclerView = (RecyclerView) findViewById(R.id.post_youtube_list);
         commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
 
         imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         feedImagesAdapter = new FeedImagesAdapter(this, feed.getType(), feed.getImages());
         imagesRecyclerView.setAdapter(feedImagesAdapter);
         imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        youtubeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        feedYoutubeAdapter = new FeedYoutubeAdapter(this, feed.getYoutubeVideos());
+        youtubeRecyclerView.setAdapter(feedYoutubeAdapter);
+        youtubeRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
@@ -162,6 +172,14 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         } else {
             imagesRecyclerView.setVisibility(View.VISIBLE);
             feedImagesAdapter.notifyDataSetChanged();
+        }
+
+
+        if (feed.getYoutubeVideos().isEmpty()) {
+            youtubeRecyclerView.setVisibility(View.GONE);
+        } else {
+            youtubeRecyclerView.setVisibility(View.VISIBLE);
+            feedYoutubeAdapter.notifyDataSetChanged();
         }
 
         TextView type = (TextView) findViewById(R.id.post_type);
