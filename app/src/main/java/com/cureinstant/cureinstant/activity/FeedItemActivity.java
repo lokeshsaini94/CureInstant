@@ -309,6 +309,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         shareButton.setOnClickListener(this);
         answerHelpfulButton.setOnClickListener(this);
         answerReplyButton.setOnClickListener(this);
+        postAnswerContainer.setOnClickListener(this);
     }
 
     @Override
@@ -419,6 +420,12 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 nameDialog.show();
                 feed.getAnswer().setReplyCount(feed.getAnswer().getReplyCount() + 1);
                 answerReplyCount.setText(String.format(this.getString(R.string.replies_count), feed.getAnswer().getReplyCount()));
+                break;
+            case R.id.post_answer_container:
+                if (feed.getAnswer().getReplyCount() > 0) {
+                    Utilities.GetComments getComments = new Utilities.GetComments(feed.getAnswer().getId(), fragmentManager);
+                    getComments.execute();
+                }
                 break;
         }
     }
