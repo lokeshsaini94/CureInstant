@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.SplashScreenActivity;
+import com.cureinstant.cureinstant.fragment.RepliesBottomSheetFragment;
 import com.cureinstant.cureinstant.misc.ConnectivityReceiver;
 import com.cureinstant.cureinstant.misc.MyApplication;
 import com.cureinstant.cureinstant.model.Answer;
@@ -404,6 +407,7 @@ public class Utilities {
             JSONObject answerObject = feedData.getJSONObject("answer");
             String content = answerObject.getString("content");
             int answerID = 0, replyCount = 0, likes = 0;
+            boolean liked = false;
             String time = "";
             if (!answerObject.isNull("id")) {
                 answerID = answerObject.getInt("id");
@@ -414,6 +418,9 @@ public class Utilities {
             if (!answerObject.isNull("likes")) {
                 likes = answerObject.getInt("likes");
             }
+            if (!answerObject.isNull("liked")) {
+                liked = true;
+            }
             time = answerObject.getString("created_at");
 
             JSONObject userObject = answerObject.getJSONObject("user");
@@ -422,7 +429,7 @@ public class Utilities {
             String speciality = userObject.getString("speciality");
             JSONObject userPicObject = userObject.getJSONObject("profile_pic");
             String picture = userPicObject.getString("pic_name");
-            feed.setAnswer(new Answer(content, time, answerID, replyCount, likes, name, username, speciality, picture));
+            feed.setAnswer(new Answer(content, time, answerID, replyCount, likes, liked, name, username, speciality, picture));
 
             ArrayList<String> images = new ArrayList<>();
             JSONArray imagesArray = feedData.getJSONArray("images");
@@ -456,18 +463,8 @@ public class Utilities {
         protected Void doInBackground(Void... params) {
             OkHttpClient client = new OkHttpClient();
 
-            RequestBody body;
+            String idTag = "post";
 
-            if (action.equals("comment")) {
-                body = new FormBody.Builder()
-                        .add("post", id)
-                        .add("comment", comment)
-                        .build();
-            } else {
-                body = new FormBody.Builder()
-                        .add("post", id)
-                        .build();
-            }
             String url = "http://www.cureinstant.com/api";
             switch (type) {
                 case "POST":
@@ -476,6 +473,10 @@ public class Utilities {
                     break;
                 case "QUERY":
                     url += "/query";
+                    break;
+                case "ANSWER":
+                    url += "/answer";
+                    idTag = "answer";
                     break;
             }
 
@@ -498,6 +499,18 @@ public class Utilities {
                 case "comment":
                     url += "/comment/submit";
                     break;
+            }
+
+            RequestBody body;
+            if (action.equals("comment")) {
+                body = new FormBody.Builder()
+                        .add(idTag, id)
+                        .add("comment", comment)
+                        .build();
+            } else {
+                body = new FormBody.Builder()
+                        .add(idTag, id)
+                        .build();
             }
 
             Request request = new Request.Builder()
@@ -576,6 +589,86 @@ public class Utilities {
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    // Fetch and display replies to the comment
+    public static class GetComments extends AsyncTask<Void, Void, ArrayList<Comment>> {
+
+        private int id;
+        private FragmentManager fragmentManager;
+
+        public GetComments(int id, FragmentManager fragmentManager) {
+            this.id = id;
+            this.fragmentManager = fragmentManager;
+        }
+
+        @Override
+        protected ArrayList<Comment> doInBackground(Void... params) {
+
+            ArrayList<Comment> replies = new ArrayList<>();
+
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                        .add("id", String.valueOf(id))
+                        .build();
+
+            String url = "http://www.cureinstant.com/api/post/comment/reply";
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            Response response;
+            try {
+                response = client.newCall(request).execute();
+                String result = response.body().string();
+                JSONObject feedJson = new JSONObject(result);
+                JSONArray repliesArray = feedJson.getJSONArray("replies");
+                for (int i=0; i<repliesArray.length(); i++) {
+                    JSONObject replyObject = repliesArray.getJSONObject(i);
+                    String commentString = replyObject.getString("comment");
+                    int id = 0, replyCount = 0, likes = 0;
+                    boolean liked = false;
+                    String time = "";
+                    if (!replyObject.isNull("id")) {
+                        id = replyObject.getInt("id");
+                    }
+                    if (!replyObject.isNull("reply_count")) {
+                        replyCount = replyObject.getInt("reply_count");
+                    }
+                    if (!replyObject.isNull("likes")) {
+                        likes = replyObject.getInt("likes");
+                    }
+                    if (!replyObject.isNull("liked")) {
+                        liked = true;
+                    }
+                    time = replyObject.getString("created_at");
+
+                    JSONObject userObject = replyObject.getJSONObject("user");
+                    String name = userObject.getString("name");
+                    String username = userObject.getString("username");
+                    JSONObject userPicObject = userObject.getJSONObject("profile_pic");
+                    String picture = userPicObject.getString("pic_name");
+                    replies.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
+                }
+                String status = feedJson.getString("success");
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return replies;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Comment> comments) {
+            super.onPostExecute(comments);
+            RepliesBottomSheetFragment repliesBottomSheetFragment = RepliesBottomSheetFragment.getInstance();
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("replies", comments);
+            repliesBottomSheetFragment.setArguments(bundle);
+            repliesBottomSheetFragment.show(fragmentManager, "Replies");
         }
     }
 

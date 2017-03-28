@@ -1,19 +1,13 @@
 package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
@@ -23,22 +17,18 @@ import com.cureinstant.cureinstant.util.Utilities;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 /**
- * Created by lokeshsaini94 on 24-03-2017.
+ * Created by lokeshsaini94 on 28-03-2017.
  */
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemViewHolder> {
+public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ItemViewHolder> {
 
     private Context context;
-    private ArrayList<Comment> comments;
-    private FragmentManager fragmentManager;
+    private ArrayList<Comment> replies;
 
-    public CommentAdapter(Context context, ArrayList<Comment> comments, FragmentManager fragmentManager) {
+    public RepliesAdapter(Context context, ArrayList<Comment> replies) {
         this.context = context;
-        this.comments = comments;
-        this.fragmentManager = fragmentManager;
+        this.replies = replies;
     }
 
     @Override
@@ -53,12 +43,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
 
-        final Comment comment = comments.get(position);
+        final Comment reply = replies.get(position);
 
-        holder.comment.setText(comment.getComment());
+        holder.comment.setText(reply.getComment());
 
         try {
-            long[] feedTime = Utilities.getDateDifference(comment.getTime());
+            long[] feedTime = Utilities.getDateDifference(reply.getTime());
             if (feedTime[0] > 0) {
                 holder.time.setText(String.format(context.getString(R.string.time_days_count), feedTime[0]));
             } else {
@@ -76,88 +66,53 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             e.printStackTrace();
         }
 
-        holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), comment.getLikes()));
-        holder.countReplies.setText(String.format(context.getString(R.string.replies_count), comment.getReplyCount()));
-        if (comment.isLiked()) {
+        holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), reply.getLikes()));
+        holder.countReplies.setVisibility(View.GONE);
+        if (reply.isLiked()) {
             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.white));
         } else {
             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
+        holder.replyButton.setVisibility(View.GONE);
 
-        holder.doctorName.setText(comment.getName());
-        String imageURL = Utilities.profilePicSmallBaseUrl + comment.getPicture();
+        holder.doctorName.setText(reply.getName());
+        String imageURL = Utilities.profilePicSmallBaseUrl + reply.getPicture();
         Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.doctorPicture);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.feed_comment_container:
-                        if (comment.getReplyCount() > 0) {
-                            Utilities.GetComments getComments = new Utilities.GetComments(comment.getId(), fragmentManager);
-                            getComments.execute();
-                        }
-                        break;
                     case R.id.comment_helpful_button:
-                        if (comment.isLiked()) {
-                            Utilities.ActionComment actionComment = new Utilities.ActionComment("liked", comment.getId(), null);
+                        if (reply.isLiked()) {
+                            Utilities.ActionComment actionComment = new Utilities.ActionComment("liked", reply.getId(), null);
                             actionComment.execute();
                             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                            comment.setLiked(false);
-                            comment.setLikes(comment.getLikes() - 1);
+                            reply.setLiked(false);
+                            reply.setLikes(reply.getLikes() - 1);
                         } else {
-                            Utilities.ActionComment actionComment = new Utilities.ActionComment("like", comment.getId(), null);
+                            Utilities.ActionComment actionComment = new Utilities.ActionComment("like", reply.getId(), null);
                             actionComment.execute();
                             holder.helpfulButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.helpfulButton.setTextColor(context.getResources().getColor(R.color.white));
-                            comment.setLiked(true);
-                            comment.setLikes(comment.getLikes() + 1);
+                            reply.setLiked(true);
+                            reply.setLikes(reply.getLikes() + 1);
                         }
-                        holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), comment.getLikes()));
-                        break;
-                    case R.id.comment_reply_button:
-                        final EditText edittext = new EditText(context);
-                        edittext.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-
-                        final AlertDialog.Builder nameDialog = new AlertDialog.Builder(context);
-                        nameDialog.setTitle("Enter your reply");
-                        nameDialog.setView(edittext);
-
-                        nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                String editTextValue = edittext.getText().toString();
-                                Utilities.ActionComment actionComment = new Utilities.ActionComment("reply", comment.getId(), editTextValue);
-                                actionComment.execute();
-                                Toast.makeText(context, "Reply posted", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-
-                        nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                            }
-                        });
-
-                        nameDialog.show();
-                        comment.setReplyCount(comment.getReplyCount() + 1);
-                        holder.countReplies.setText(String.format(context.getString(R.string.replies_count), comment.getReplyCount()));
+                        holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), reply.getLikes()));
                         break;
                 }
             }
         };
 
         holder.helpfulButton.setOnClickListener(onClickListener);
-        holder.replyButton.setOnClickListener(onClickListener);
-        holder.rootView.setOnClickListener(onClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return replies.size();
     }
 
 
@@ -166,7 +121,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
         TextView comment, time, doctorName;
         TextView countHelpful, countReplies;
         ImageView doctorPicture;
-        View menuOverflow, rootView;
+        View menuOverflow;
         Button helpfulButton, replyButton;
 
         ItemViewHolder(View itemView) {
@@ -180,7 +135,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             menuOverflow = itemView.findViewById(R.id.comment_menu_overflow);
             helpfulButton = (Button) itemView.findViewById(R.id.comment_helpful_button);
             replyButton = (Button) itemView.findViewById(R.id.comment_reply_button);
-            rootView = itemView.findViewById(R.id.feed_comment_container);
         }
     }
 }

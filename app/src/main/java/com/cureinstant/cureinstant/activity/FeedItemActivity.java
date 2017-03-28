@@ -1,9 +1,11 @@
 package com.cureinstant.cureinstant.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.CommentAdapter;
 import com.cureinstant.cureinstant.adapter.FeedImagesAdapter;
-import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -37,7 +39,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.cureinstant.cureinstant.R.id.post_menu_overflow;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 public class FeedItemActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,10 +46,14 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private Feed feed;
     private Button followButton;
     private Button helpfulButton;
+    private Button answerHelpfulButton;
+    private Button answerReplyButton;
 
     private TextView countHelpful;
     private TextView countFollow;
     private TextView countShare;
+    private TextView answerHelpfulCount;
+    private TextView answerReplyCount;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView imagesRecyclerView;
     private RecyclerView commentsRecyclerView;
@@ -93,6 +98,8 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         countShare = (TextView) findViewById(R.id.post_share_count);
         followButton = (Button) findViewById(R.id.post_follow_button);
         helpfulButton = (Button) findViewById(R.id.post_helpful_button);
+        answerHelpfulButton = (Button) findViewById(R.id.answer_helpful_button);
+        answerReplyButton = (Button) findViewById(R.id.answer_reply_button);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.feed_item_refresh);
         imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
         commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
@@ -137,16 +144,18 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView countComment = (TextView) findViewById(R.id.post_comment_count);
         Button commentButton = (Button) findViewById(R.id.post_comment_button);
         Button shareButton = (Button) findViewById(R.id.post_share_button);
-        View menuOverflow = findViewById(post_menu_overflow);
+        View menuOverflow = findViewById(R.id.post_menu_overflow);
         View postAnswerContainer = findViewById(R.id.post_answer_container);
         View commentsListText = findViewById(R.id.post_comments_list_text);
         TextView answerContent = (TextView) findViewById(R.id.answer_desc);
-        TextView answerHelpfulCount = (TextView) findViewById(R.id.answer_helpful_count);
-        TextView answerCommentCount = (TextView) findViewById(R.id.answer_comment_count);
+        answerHelpfulCount = (TextView) findViewById(R.id.answer_helpful_count);
+        answerReplyCount = (TextView) findViewById(R.id.answer_comment_count);
         TextView answerPostTime = (TextView) findViewById(R.id.answer_post_time);
         TextView answerDoctorName = (TextView) findViewById(R.id.answer_doctor_name);
         TextView answerDoctorSpeciality = (TextView) findViewById(R.id.answer_doctor_speciality);
         ImageView answerDoctorPicture = (ImageView) findViewById(R.id.answer_doctor_picture);
+        View answerMenuOverflow = findViewById(R.id.answer_menu_overflow);
+
 
         if (feed.getImages().isEmpty()) {
             imagesRecyclerView.setVisibility(View.GONE);
@@ -251,12 +260,18 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             if (feed.getAnswer() == null) {
                 postAnswerContainer.setVisibility(View.GONE);
             } else {
-                Answer answer = feed.getAnswer();
-                answerContent.setText(answer.getComment());
-                answerHelpfulCount.setText(String.format(getString(R.string.helpful_count), answer.getLikes()));
-                answerCommentCount.setText(String.format(getString(R.string.replies_count), answer.getReplyCount()));
+                answerContent.setText(feed.getAnswer().getContent());
+                answerHelpfulCount.setText(String.format(getString(R.string.helpful_count), feed.getAnswer().getLikes()));
+                answerReplyCount.setText(String.format(getString(R.string.replies_count), feed.getAnswer().getReplyCount()));
+                if (feed.getAnswer().isLiked()) {
+                    answerHelpfulButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
+                    answerHelpfulButton.setTextColor(this.getResources().getColor(R.color.white));
+                } else {
+                    answerHelpfulButton.setBackgroundColor(this.getResources().getColor(R.color.white));
+                    answerHelpfulButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
+                }
                 try {
-                    long[] feedTime = Utilities.getDateDifference(answer.getTime());
+                    long[] feedTime = Utilities.getDateDifference(feed.getAnswer().getTime());
                     if (feedTime[0] > 0) {
                         answerPostTime.setText(String.format(getString(R.string.time_days_count), feedTime[0]));
                     } else {
@@ -273,9 +288,9 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                answerDoctorName.setText(answer.getName());
-                answerDoctorSpeciality.setText(answer.getSpeciality());
-                String imageURL = Utilities.profilePicSmallBaseUrl + answer.getPicture();
+                answerDoctorName.setText(feed.getAnswer().getName());
+                answerDoctorSpeciality.setText(feed.getAnswer().getSpeciality());
+                String imageURL = Utilities.profilePicSmallBaseUrl + feed.getAnswer().getPicture();
                 Glide.with(this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(answerDoctorPicture);
             }
         }
@@ -292,23 +307,25 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         menuOverflow.setOnClickListener(this);
         commentButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
+        answerHelpfulButton.setOnClickListener(this);
+        answerReplyButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Utilities.ActionFeed actionFeed;
+        final Utilities.ActionFeed[] actionFeed = new Utilities.ActionFeed[1];
         switch (v.getId()) {
             case R.id.post_follow_button:
                 if (feed.isFollowed()) {
-                    actionFeed = new Utilities.ActionFeed(feed.getType(), "unfollow", feed.getId(), "");
-                    actionFeed.execute();
+                    actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "unfollow", feed.getId(), "");
+                    actionFeed[0].execute();
                     followButton.setBackgroundColor(this.getResources().getColor(R.color.white));
                     followButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
                     feed.setFollowed(false);
                     feed.setFollowings(feed.getFollowings() - 1);
                 } else {
-                    actionFeed = new Utilities.ActionFeed(feed.getType(), "follow", feed.getId(), "");
-                    actionFeed.execute();
+                    actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "follow", feed.getId(), "");
+                    actionFeed[0].execute();
                     followButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                     followButton.setTextColor(this.getResources().getColor(R.color.white));
                     feed.setFollowed(true);
@@ -318,15 +335,15 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.post_helpful_button:
                 if (feed.isLiked()) {
-                    actionFeed = new Utilities.ActionFeed(feed.getType(), "unlike", feed.getId(), "");
-                    actionFeed.execute();
+                    actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "unlike", feed.getId(), "");
+                    actionFeed[0].execute();
                     helpfulButton.setBackgroundColor(this.getResources().getColor(R.color.white));
                     helpfulButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
                     feed.setLiked(false);
                     feed.setLikes(feed.getLikes() - 1);
                 } else {
-                    actionFeed = new Utilities.ActionFeed(feed.getType(), "like", feed.getId(), "");
-                    actionFeed.execute();
+                    actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "like", feed.getId(), "");
+                    actionFeed[0].execute();
                     helpfulButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                     helpfulButton.setTextColor(this.getResources().getColor(R.color.white));
                     feed.setLiked(true);
@@ -338,13 +355,14 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 Utilities.commentDialog(this, feed.getType(), feed.getId());
                 break;
             case R.id.post_share_button:
-                actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
-                actionFeed.execute();
+                actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
+                actionFeed[0].execute();
                 Toast.makeText(this, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
                 feed.setShares(feed.getShares() + 1);
                 countShare.setText(String.format(getString(R.string.shares_count), feed.getShares()));
                 break;
             case R.id.post_menu_overflow:
+            case R.id.answer_menu_overflow:
                 ImageButton menuButton = (ImageButton) v;
                 PopupMenu popupMenu = new PopupMenu(this, menuButton);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
@@ -355,6 +373,52 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
                 popupMenu.show();
+                break;
+            case R.id.answer_helpful_button:
+                if (feed.getAnswer().isLiked()) {
+                    actionFeed[0] = new Utilities.ActionFeed("ANSWER", "unlike", "" + feed.getAnswer().getId(), null);
+                    actionFeed[0].execute();
+                    answerHelpfulButton.setBackgroundColor(this.getResources().getColor(R.color.white));
+                    answerHelpfulButton.setTextColor(this.getResources().getColor(R.color.colorPrimary));
+                    feed.getAnswer().setLiked(false);
+                    feed.getAnswer().setLikes(feed.getAnswer().getLikes() - 1);
+                } else {
+                    actionFeed[0] = new Utilities.ActionFeed("ANSWER", "like", "" + feed.getAnswer().getId(), null);
+                    actionFeed[0].execute();
+                    answerHelpfulButton.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
+                    answerHelpfulButton.setTextColor(this.getResources().getColor(R.color.white));
+                    feed.getAnswer().setLiked(true);
+                    feed.getAnswer().setLikes(feed.getAnswer().getLikes() + 1);
+                }
+                answerHelpfulCount.setText(String.format(getString(R.string.helpful_count), feed.getAnswer().getLikes()));
+                break;
+            case R.id.answer_reply_button:
+                final EditText edittext = new EditText(this);
+                edittext.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                final AlertDialog.Builder nameDialog = new AlertDialog.Builder(this);
+                nameDialog.setTitle("Enter your reply");
+                nameDialog.setView(edittext);
+
+                nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String editTextValue = edittext.getText().toString();
+                        actionFeed[0] = new Utilities.ActionFeed("ANSWER", "comment", "" + feed.getAnswer().getId(), editTextValue);
+                        actionFeed[0].execute();
+                        Toast.makeText(getApplicationContext(), "Reply posted", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // what ever you want to do with No option.
+                    }
+                });
+
+                nameDialog.show();
+                feed.getAnswer().setReplyCount(feed.getAnswer().getReplyCount() + 1);
+                answerReplyCount.setText(String.format(this.getString(R.string.replies_count), feed.getAnswer().getReplyCount()));
                 break;
         }
     }
