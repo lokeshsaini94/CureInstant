@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:text="Replies"
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:textColor="@color/white"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:elevation="2dp"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:text="Replies"
+        android:textColor="@color/white" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/replies_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/replies_list"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -9,11 +9,21 @@ import android.os.Parcelable;
 
 public class Answer implements Parcelable {
 
+    public static final Creator<Answer> CREATOR = new Creator<Answer>() {
+        @Override
+        public Answer createFromParcel(Parcel source) {
+            return new Answer(source);
+        }
+
+        @Override
+        public Answer[] newArray(int size) {
+            return new Answer[size];
+        }
+    };
     private String content, time;
     private int id, replyCount, likes;
     private boolean liked;
     private String name, username, speciality, picture;
-
 
     public Answer(String content, String time, int id, int replyCount, int likes, boolean liked, String name, String username, String speciality, String picture) {
         this.content = content;
@@ -26,6 +36,19 @@ public class Answer implements Parcelable {
         this.username = username;
         this.speciality = speciality;
         this.picture = picture;
+    }
+
+    protected Answer(Parcel in) {
+        this.content = in.readString();
+        this.time = in.readString();
+        this.id = in.readInt();
+        this.replyCount = in.readInt();
+        this.likes = in.readInt();
+        this.liked = in.readByte() != 0;
+        this.name = in.readString();
+        this.username = in.readString();
+        this.speciality = in.readString();
+        this.picture = in.readString();
     }
 
     public String getContent() {
@@ -108,7 +131,6 @@ public class Answer implements Parcelable {
         this.picture = picture;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -127,29 +149,4 @@ public class Answer implements Parcelable {
         dest.writeString(this.speciality);
         dest.writeString(this.picture);
     }
-
-    protected Answer(Parcel in) {
-        this.content = in.readString();
-        this.time = in.readString();
-        this.id = in.readInt();
-        this.replyCount = in.readInt();
-        this.likes = in.readInt();
-        this.liked = in.readByte() != 0;
-        this.name = in.readString();
-        this.username = in.readString();
-        this.speciality = in.readString();
-        this.picture = in.readString();
-    }
-
-    public static final Creator<Answer> CREATOR = new Creator<Answer>() {
-        @Override
-        public Answer createFromParcel(Parcel source) {
-            return new Answer(source);
-        }
-
-        @Override
-        public Answer[] newArray(int size) {
-            return new Answer[size];
-        }
-    };
 }

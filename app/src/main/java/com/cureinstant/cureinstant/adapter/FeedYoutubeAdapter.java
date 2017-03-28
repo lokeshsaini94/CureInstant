@@ -46,7 +46,7 @@ public class FeedYoutubeAdapter extends RecyclerView.Adapter<FeedYoutubeAdapter.
         String imageURL = "http://img.youtube.com/vi/";
         imageURL += youtubeVideos.get(position);
         imageURL += "/0.jpg";
-        Log.e(TAG, "onBindViewHolder: imageURL " + imageURL );
+        Log.e(TAG, "onBindViewHolder: imageURL " + imageURL);
         Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.doctor_placeholder).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

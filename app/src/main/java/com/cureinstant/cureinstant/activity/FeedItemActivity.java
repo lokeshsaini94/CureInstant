@@ -44,12 +44,12 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 public class FeedItemActivity extends AppCompatActivity implements View.OnClickListener {
 
+    android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     private Feed feed;
     private Button followButton;
     private Button helpfulButton;
     private Button answerHelpfulButton;
     private Button answerReplyButton;
-
     private TextView countHelpful;
     private TextView countFollow;
     private TextView countShare;
@@ -62,8 +62,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private FeedImagesAdapter feedImagesAdapter;
     private FeedYoutubeAdapter feedYoutubeAdapter;
     private View rootView;
-
-    android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,7 +271,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (feed.getType().equals("QUERY")) {
-            // TODO: 24-03-2017 Handle answer content here
             postAnswerContainer.setVisibility(View.VISIBLE);
             if (feed.getAnswer() == null) {
                 postAnswerContainer.setVisibility(View.GONE);

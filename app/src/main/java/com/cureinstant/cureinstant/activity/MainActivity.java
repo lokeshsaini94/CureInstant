@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         accessTokenValue = preferences.getString(accessTokenKey, "");
         refreshTokenValue = preferences.getString(refreshTokenKey, "");
-        Log.e("MainActivity", "onCreate: accessTokenValue " + accessTokenValue );
+        Log.e("MainActivity", "onCreate: accessTokenValue " + accessTokenValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");

@@ -621,8 +621,8 @@ public class Utilities {
             OkHttpClient client = new OkHttpClient();
 
             RequestBody body = new FormBody.Builder()
-                        .add("id", String.valueOf(id))
-                        .build();
+                    .add("id", String.valueOf(id))
+                    .build();
 
             String url = "http://www.cureinstant.com/api/post/comment/reply";
 
@@ -637,7 +637,7 @@ public class Utilities {
                 String result = response.body().string();
                 JSONObject feedJson = new JSONObject(result);
                 JSONArray repliesArray = feedJson.getJSONArray("replies");
-                for (int i=0; i<repliesArray.length(); i++) {
+                for (int i = 0; i < repliesArray.length(); i++) {
                     JSONObject replyObject = repliesArray.getJSONObject(i);
                     String commentString = replyObject.getString("comment");
                     int id = 0, replyCount = 0, likes = 0;
