@@ -3,9 +3,7 @@
     android:id="@+id/feed_comment_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:background="@android:color/white"
-    android:elevation="1dp"
     android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -15,8 +13,7 @@
     <RelativeLayout
         android:id="@+id/user_info_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/user_picture"

@@ -26,6 +26,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.CommentAdapter;
 import com.cureinstant.cureinstant.adapter.FeedImagesAdapter;
 import com.cureinstant.cureinstant.adapter.FeedYoutubeAdapter;
+import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -122,6 +123,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         commentsRecyclerView.setLayoutManager(mLayoutManager);
         commentsRecyclerView.setAdapter(new CommentAdapter(this, feed.getCommentsList(), fragmentManager));
         commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        commentsRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);

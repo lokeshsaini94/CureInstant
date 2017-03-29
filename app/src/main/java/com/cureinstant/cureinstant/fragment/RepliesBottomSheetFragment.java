@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.RepliesAdapter;
+import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.Comment;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class RepliesBottomSheetFragment extends BottomSheetDialogFragment {
         repliesList.setLayoutManager(mLayoutManager);
         repliesList.setAdapter(new RepliesAdapter(getContext(), replies));
         repliesList.setItemAnimator(new DefaultItemAnimator());
+        repliesList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
         return rootView;
     }
