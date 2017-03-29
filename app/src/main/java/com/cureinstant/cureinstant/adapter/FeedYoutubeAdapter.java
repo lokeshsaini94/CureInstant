@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by lokeshsaini94 on 28-03-2017.
@@ -46,7 +43,6 @@ public class FeedYoutubeAdapter extends RecyclerView.Adapter<FeedYoutubeAdapter.
         String imageURL = "http://img.youtube.com/vi/";
         imageURL += youtubeVideos.get(position);
         imageURL += "/0.jpg";
-        Log.e(TAG, "onBindViewHolder: imageURL " + imageURL);
         Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.doctor_placeholder).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

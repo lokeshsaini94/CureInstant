@@ -246,20 +246,16 @@ public class Utilities {
             ArrayList<String> links = new ArrayList<>();
             JSONArray linksArray = feedData.getJSONArray("links");
             for (int i = 0; i < linksArray.length(); i++) {
-                JSONObject linkObject = linksArray.getJSONObject(i);
-                String link = linkObject.getString("link");
+                String link = linksArray.getString(i);
                 images.add(link);
-                // TODO: 23-03-2017 fix links json to get an Array or strings
             }
             feed.setLinks(links);
 
             ArrayList<String> youtubeVideos = new ArrayList<>();
             JSONArray youtubeVideosArray = feedData.getJSONArray("youtube_videos");
             for (int i = 0; i < youtubeVideosArray.length(); i++) {
-                JSONObject youtubeVideoObject = youtubeVideosArray.getJSONObject(i);
-                String youtubeVideo = youtubeVideoObject.getString("youtube_video");
+                String youtubeVideo = youtubeVideosArray.getString(i);
                 images.add(youtubeVideo);
-                // TODO: 23-03-2017 fix youtube_videos json to get an Array or strings
             }
             feed.setYoutubeVideos(youtubeVideos);
 
@@ -334,25 +330,21 @@ public class Utilities {
             }
             feed.setImages(images);
 
-            ArrayList<String> links = new ArrayList<>();
-            JSONArray linksArray = feedData.getJSONArray("links");
-            for (int i = 0; i < linksArray.length(); i++) {
-                JSONObject linkObject = linksArray.getJSONObject(i);
-                String link = linkObject.getString("link");
-                images.add(link);
-                // TODO: 23-03-2017 fix links json to get an Array or strings
-            }
-            feed.setLinks(links);
-
             ArrayList<String> youtubeVideos = new ArrayList<>();
             JSONArray youtubeVideosArray = feedData.getJSONArray("youtube_videos");
             for (int i = 0; i < youtubeVideosArray.length(); i++) {
-                JSONObject youtubeVideoObject = youtubeVideosArray.getJSONObject(i);
-                String youtubeVideo = youtubeVideoObject.getString("youtube_video");
-                images.add(youtubeVideo);
-                // TODO: 23-03-2017 fix youtube_videos json to get an Array or strings
+                String youtubeVideo = youtubeVideosArray.getString(i);
+                youtubeVideos.add(youtubeVideo);
             }
             feed.setYoutubeVideos(youtubeVideos);
+
+            ArrayList<String> links = new ArrayList<>();
+            JSONArray linksArray = feedData.getJSONArray("links");
+            for (int i = 0; i < linksArray.length(); i++) {
+                String link = linksArray.getString(i);
+                links.add(link);
+            }
+            feed.setLinks(links);
 
             JSONObject userObject = feedData.getJSONObject("user");
             feed.setDoctorName(userObject.getString("name"));

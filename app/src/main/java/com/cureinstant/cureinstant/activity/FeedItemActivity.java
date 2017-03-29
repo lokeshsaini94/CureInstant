@@ -60,7 +60,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView youtubeRecyclerView;
     private RecyclerView commentsRecyclerView;
     private FeedImagesAdapter feedImagesAdapter;
-    private FeedYoutubeAdapter feedYoutubeAdapter;
     private View rootView;
 
     @Override
@@ -112,8 +111,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         imagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         youtubeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        feedYoutubeAdapter = new FeedYoutubeAdapter(this, feed.getYoutubeVideos());
-        youtubeRecyclerView.setAdapter(feedYoutubeAdapter);
         youtubeRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this) {
@@ -177,7 +174,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             youtubeRecyclerView.setVisibility(View.GONE);
         } else {
             youtubeRecyclerView.setVisibility(View.VISIBLE);
-            feedYoutubeAdapter.notifyDataSetChanged();
+            youtubeRecyclerView.setAdapter(new FeedYoutubeAdapter(this, feed.getYoutubeVideos()));
         }
 
         TextView type = (TextView) findViewById(R.id.post_type);

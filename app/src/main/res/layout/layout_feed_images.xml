@@ -6,5 +6,4 @@
     android:layout_marginRight="8dp"
     android:adjustViewBounds="true"
     android:clickable="true"
-    android:scaleType="centerCrop"
     android:src="@drawable/doctor_placeholder" />
