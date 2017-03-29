@@ -76,11 +76,10 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
                 String title = questionTitle.getText().toString();
                 String desc = questionDesc.getText().toString();
                 ArrayList<String> images = new ArrayList<>();
-
                 if (title.isEmpty()) {
                     questionTitle.setError(getString(R.string.error_field_required));
                 } else {
-                    PostQuestion postQuestion = new PostQuestion(title, desc, null);
+                    PostQuestion postQuestion = new PostQuestion(title, desc, images);
                     postQuestion.execute();
                 }
                 break;
@@ -110,10 +109,17 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         protected Boolean doInBackground(Void... params) {
             OkHttpClient client = new OkHttpClient();
 
-            RequestBody body = new FormBody.Builder()
+            FormBody.Builder formBuilder = new FormBody.Builder()
                     .add("question", title)
-                    .add("question_description", desc)
-                    .build();
+                    .add("question_description", desc);
+
+            if (!images.isEmpty()) {
+                for (int i=0; i<images.size(); i++) {
+                    formBuilder.add("image[" + (i) +  "]", images.get(i));
+                }
+            }
+
+            RequestBody body = formBuilder.build();
 
             Request request = new Request.Builder()
                     .url("http://www.cureinstant.com/api/question/submit")
