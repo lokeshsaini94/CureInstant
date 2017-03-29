@@ -160,6 +160,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView answerDoctorSpeciality = (TextView) findViewById(R.id.answer_doctor_speciality);
         ImageView answerDoctorPicture = (ImageView) findViewById(R.id.answer_doctor_picture);
         View answerMenuOverflow = findViewById(R.id.answer_menu_overflow);
+        TextView linksTextView = (TextView) findViewById(R.id.post_links);
 
 
         if (feed.getImages().isEmpty()) {
@@ -306,6 +307,19 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 Glide.with(this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(answerDoctorPicture);
             }
         }
+
+        if (feed.getLinks().isEmpty()) {
+            linksTextView.setVisibility(View.GONE);
+        } else {
+            linksTextView.setVisibility(View.VISIBLE);
+            String s = "";
+            for (int i=0; i<feed.getLinks().size(); i++) {
+                s += feed.getLinks().get(i);
+                s += " | ";
+            }
+            linksTextView.setText(s);
+        }
+
         if (feed.getCommentsList().isEmpty()) {
             commentsRecyclerView.setVisibility(View.GONE);
             commentsListText.setVisibility(View.GONE);

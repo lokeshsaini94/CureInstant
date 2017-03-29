@@ -108,6 +108,16 @@
                         android:layout_marginTop="8dp"
                         android:text="@string/post_desc" />
 
+                    <TextView
+                        android:id="@+id/post_links"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:textSize="18sp"
+                        android:lineSpacingExtra="5dp"
+                        android:linksClickable="true"
+                        android:layout_marginTop="8dp" />
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/post_images_list"
                         android:layout_width="match_parent"
