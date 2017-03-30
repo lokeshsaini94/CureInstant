@@ -24,6 +24,7 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenKey;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 import static com.cureinstant.cureinstant.util.Utilities.refreshTokenKey;
 import static com.cureinstant.cureinstant.util.Utilities.refreshTokenValue;
+import static com.cureinstant.cureinstant.util.Utilities.trimCache;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,6 +76,17 @@ public class MainActivity extends AppCompatActivity {
         setupFragments();
 
         setupNavigationView();
+    }
+
+    //Fires after the OnStop() state
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            trimCache(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

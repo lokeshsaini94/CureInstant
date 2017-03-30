@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,7 @@ public class Utilities {
         editor.commit();
 
         MyApplication.getInstance().clearApplicationData();
+        trimCache(context);
 
         Intent mStartActivity = new Intent(context, SplashScreenActivity.class);
         ComponentName cn = mStartActivity.getComponent();
@@ -98,6 +100,36 @@ public class Utilities {
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         ProcessPhoenix.triggerRebirth(context, mainIntent);
         System.exit(0);
+    }
+
+    public static void trimCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+            }
+            File externalDir = context.getExternalCacheDir();
+            if (externalDir != null && externalDir.isDirectory()) {
+                deleteDir(externalDir);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
     }
 
     public static void hideSoftKeyboard(Activity activity) {
