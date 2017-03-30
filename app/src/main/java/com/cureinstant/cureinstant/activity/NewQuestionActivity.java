@@ -143,6 +143,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    // TODO: 30-03-2017 Handle WRITE_EXTERNAL_STORAGE and CAMERA permissions
     // Displays ImagePicker Bottom Sheet
     private void showSheetView() {
         ImagePickerSheetView sheetView = new ImagePickerSheetView.Builder(this)
