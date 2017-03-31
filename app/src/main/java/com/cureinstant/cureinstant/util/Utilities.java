@@ -137,6 +137,11 @@ public class Utilities {
         inputMethodManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 
+    // Converts pixels to DP
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
+
     // Method to manually check connection status
     public static boolean checkConnection() {
         return ConnectivityReceiver.isConnected();

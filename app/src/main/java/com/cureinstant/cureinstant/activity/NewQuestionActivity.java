@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.ImagePickerSheetView;
 
@@ -97,6 +98,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
 
         bottomSheetLayout = (BottomSheetLayout) findViewById(R.id.bottomsheet);
         bottomSheetLayout.setPeekOnDismiss(true);
+        bottomSheetLayout.setPeekSheetTranslation(Utilities.pxFromDp(getApplicationContext(), 275));
         questionTitle = (EditText) findViewById(R.id.question_title);
         questionDesc = (EditText) findViewById(R.id.question_desc);
         questionDescSwitch = (Switch) findViewById(R.id.question_desc_switch);
