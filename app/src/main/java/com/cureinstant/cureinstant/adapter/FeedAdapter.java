@@ -2,6 +2,7 @@ package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.DoctorProfileActivity;
 import com.cureinstant.cureinstant.activity.FeedItemActivity;
 import com.cureinstant.cureinstant.misc.OnLoadMoreListener;
 import com.cureinstant.cureinstant.model.Feed;
@@ -271,6 +273,13 @@ public class FeedAdapter extends RecyclerView.Adapter {
                             });
                             popupMenu.show();
                             break;
+                        case R.id.doctor_info_container:
+                            Intent intent = new Intent(context, DoctorProfileActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("username", feed.getDoctorUsername());
+                            intent.putExtras(b);
+                            context.startActivity(intent);
+                            break;
                     }
                 }
 
@@ -279,6 +288,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
             ((MyFeedViewHolder) holder).title.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).content.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).feedContainer.setOnClickListener(onClickListener);
+            ((MyFeedViewHolder) holder).doctorContainer.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).followButton.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).helpfulButton.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).commentButton.setOnClickListener(onClickListener);
