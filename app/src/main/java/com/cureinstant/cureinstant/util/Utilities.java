@@ -260,8 +260,11 @@ public class Utilities {
                 JSONObject userObject = commentObject.getJSONObject("user");
                 String name = userObject.getString("name");
                 String username = userObject.getString("username");
-                JSONObject userPicObject = userObject.getJSONObject("profile_pic");
-                String picture = userPicObject.getString("pic_name");
+                String picture = "";
+                if (!userObject.isNull("profile_pic")) {
+                    JSONObject userPicObject = userObject.getJSONObject("profile_pic");
+                    picture = userPicObject.getString("pic_name");
+                }
                 comments.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
             }
             feed.setCommentsList(comments);
@@ -347,8 +350,11 @@ public class Utilities {
                 JSONObject userObject = commentObject.getJSONObject("user");
                 String name = userObject.getString("name");
                 String username = userObject.getString("username");
-                JSONObject userPicObject = userObject.getJSONObject("profile_pic");
-                String picture = userPicObject.getString("pic_name");
+                String picture = "";
+                if (!userObject.isNull("profile_pic")) {
+                    JSONObject userPicObject = userObject.getJSONObject("profile_pic");
+                    picture = userPicObject.getString("pic_name");
+                }
                 comments.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
             }
             feed.setCommentsList(comments);
