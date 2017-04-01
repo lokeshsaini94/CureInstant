@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/doctor_practices_at"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/dot_shape"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:text="Ramanuj Clinic" />
+
+    <TextView
+        android:id="@+id/doctor_practices_at_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="BN-14, Kaushambi, Ghaziabad" />
+
+</LinearLayout>
