@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class DoctorEduDetail implements Parcelable {
 
+    public static final Parcelable.Creator<DoctorEduDetail> CREATOR = new Parcelable.Creator<DoctorEduDetail>() {
+        @Override
+        public DoctorEduDetail createFromParcel(Parcel source) {
+            return new DoctorEduDetail(source);
+        }
+
+        @Override
+        public DoctorEduDetail[] newArray(int size) {
+            return new DoctorEduDetail[size];
+        }
+    };
     private String courseName, instituteName, startDate, endDate;
     private int courseID, instituteID;
 
@@ -19,6 +30,15 @@ public class DoctorEduDetail implements Parcelable {
         this.endDate = endDate;
         this.courseID = courseID;
         this.instituteID = instituteID;
+    }
+
+    protected DoctorEduDetail(Parcel in) {
+        this.courseName = in.readString();
+        this.instituteName = in.readString();
+        this.startDate = in.readString();
+        this.endDate = in.readString();
+        this.courseID = in.readInt();
+        this.instituteID = in.readInt();
     }
 
     public String getCourseName() {
@@ -69,7 +89,6 @@ public class DoctorEduDetail implements Parcelable {
         this.instituteID = instituteID;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -84,25 +103,4 @@ public class DoctorEduDetail implements Parcelable {
         dest.writeInt(this.courseID);
         dest.writeInt(this.instituteID);
     }
-
-    protected DoctorEduDetail(Parcel in) {
-        this.courseName = in.readString();
-        this.instituteName = in.readString();
-        this.startDate = in.readString();
-        this.endDate = in.readString();
-        this.courseID = in.readInt();
-        this.instituteID = in.readInt();
-    }
-
-    public static final Parcelable.Creator<DoctorEduDetail> CREATOR = new Parcelable.Creator<DoctorEduDetail>() {
-        @Override
-        public DoctorEduDetail createFromParcel(Parcel source) {
-            return new DoctorEduDetail(source);
-        }
-
-        @Override
-        public DoctorEduDetail[] newArray(int size) {
-            return new DoctorEduDetail[size];
-        }
-    };
 }

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,11 +8,27 @@ import android.os.Parcelable;
  */
 
 public class DoctorPublication implements Parcelable {
+    public static final Parcelable.Creator<DoctorPublication> CREATOR = new Parcelable.Creator<DoctorPublication>() {
+        @Override
+        public DoctorPublication createFromParcel(Parcel source) {
+            return new DoctorPublication(source);
+        }
+
+        @Override
+        public DoctorPublication[] newArray(int size) {
+            return new DoctorPublication[size];
+        }
+    };
     private String title, content;
 
     public DoctorPublication(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    protected DoctorPublication(Parcel in) {
+        this.title = in.readString();
+        this.content = in.readString();
     }
 
     public String getTitle() {
@@ -31,7 +47,6 @@ public class DoctorPublication implements Parcelable {
         this.content = content;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -42,21 +57,4 @@ public class DoctorPublication implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.content);
     }
-
-    protected DoctorPublication(Parcel in) {
-        this.title = in.readString();
-        this.content = in.readString();
-    }
-
-    public static final Parcelable.Creator<DoctorPublication> CREATOR = new Parcelable.Creator<DoctorPublication>() {
-        @Override
-        public DoctorPublication createFromParcel(Parcel source) {
-            return new DoctorPublication(source);
-        }
-
-        @Override
-        public DoctorPublication[] newArray(int size) {
-            return new DoctorPublication[size];
-        }
-    };
 }

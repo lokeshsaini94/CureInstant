@@ -99,7 +99,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_below="@id/doctor_personal_details"
-            android:layout_marginTop="@dimen/activity_vertical_margin" />
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/doctor_timings_title"

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,11 +8,27 @@ import android.os.Parcelable;
  */
 
 public class DoctorSkill implements Parcelable {
+    public static final Parcelable.Creator<DoctorSkill> CREATOR = new Parcelable.Creator<DoctorSkill>() {
+        @Override
+        public DoctorSkill createFromParcel(Parcel source) {
+            return new DoctorSkill(source);
+        }
+
+        @Override
+        public DoctorSkill[] newArray(int size) {
+            return new DoctorSkill[size];
+        }
+    };
     private String skill, description;
 
     public DoctorSkill(String skill, String description) {
         this.skill = skill;
         this.description = description;
+    }
+
+    protected DoctorSkill(Parcel in) {
+        this.skill = in.readString();
+        this.description = in.readString();
     }
 
     public String getSkill() {
@@ -31,7 +47,6 @@ public class DoctorSkill implements Parcelable {
         this.description = description;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -42,21 +57,4 @@ public class DoctorSkill implements Parcelable {
         dest.writeString(this.skill);
         dest.writeString(this.description);
     }
-
-    protected DoctorSkill(Parcel in) {
-        this.skill = in.readString();
-        this.description = in.readString();
-    }
-
-    public static final Parcelable.Creator<DoctorSkill> CREATOR = new Parcelable.Creator<DoctorSkill>() {
-        @Override
-        public DoctorSkill createFromParcel(Parcel source) {
-            return new DoctorSkill(source);
-        }
-
-        @Override
-        public DoctorSkill[] newArray(int size) {
-            return new DoctorSkill[size];
-        }
-    };
 }

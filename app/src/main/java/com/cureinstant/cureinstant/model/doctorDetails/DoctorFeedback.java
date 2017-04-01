@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class DoctorFeedback implements Parcelable {
+    public static final Parcelable.Creator<DoctorFeedback> CREATOR = new Parcelable.Creator<DoctorFeedback>() {
+        @Override
+        public DoctorFeedback createFromParcel(Parcel source) {
+            return new DoctorFeedback(source);
+        }
+
+        @Override
+        public DoctorFeedback[] newArray(int size) {
+            return new DoctorFeedback[size];
+        }
+    };
     private String feedback, name, username, picture;
 
     public DoctorFeedback(String feedback, String name, String username, String picture) {
@@ -15,6 +26,13 @@ public class DoctorFeedback implements Parcelable {
         this.name = name;
         this.username = username;
         this.picture = picture;
+    }
+
+    protected DoctorFeedback(Parcel in) {
+        this.feedback = in.readString();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.picture = in.readString();
     }
 
     public String getFeedback() {
@@ -49,7 +67,6 @@ public class DoctorFeedback implements Parcelable {
         this.picture = picture;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -62,23 +79,4 @@ public class DoctorFeedback implements Parcelable {
         dest.writeString(this.username);
         dest.writeString(this.picture);
     }
-
-    protected DoctorFeedback(Parcel in) {
-        this.feedback = in.readString();
-        this.name = in.readString();
-        this.username = in.readString();
-        this.picture = in.readString();
-    }
-
-    public static final Parcelable.Creator<DoctorFeedback> CREATOR = new Parcelable.Creator<DoctorFeedback>() {
-        @Override
-        public DoctorFeedback createFromParcel(Parcel source) {
-            return new DoctorFeedback(source);
-        }
-
-        @Override
-        public DoctorFeedback[] newArray(int size) {
-            return new DoctorFeedback[size];
-        }
-    };
 }

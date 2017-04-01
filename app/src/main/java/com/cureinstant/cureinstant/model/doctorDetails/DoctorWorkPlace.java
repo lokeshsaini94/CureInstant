@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class DoctorWorkPlace implements Parcelable {
+    public static final Parcelable.Creator<DoctorWorkPlace> CREATOR = new Parcelable.Creator<DoctorWorkPlace>() {
+        @Override
+        public DoctorWorkPlace createFromParcel(Parcel source) {
+            return new DoctorWorkPlace(source);
+        }
+
+        @Override
+        public DoctorWorkPlace[] newArray(int size) {
+            return new DoctorWorkPlace[size];
+        }
+    };
     private String name, longitude, latitude, locality, sublocality, city, country, postalCode;
 
     public DoctorWorkPlace(String name, String longitude, String latitude, String locality, String sublocality, String city, String country, String postalCode) {
@@ -19,6 +30,17 @@ public class DoctorWorkPlace implements Parcelable {
         this.city = city;
         this.country = country;
         this.postalCode = postalCode;
+    }
+
+    protected DoctorWorkPlace(Parcel in) {
+        this.name = in.readString();
+        this.longitude = in.readString();
+        this.latitude = in.readString();
+        this.locality = in.readString();
+        this.sublocality = in.readString();
+        this.city = in.readString();
+        this.country = in.readString();
+        this.postalCode = in.readString();
     }
 
     public String getName() {
@@ -85,7 +107,6 @@ public class DoctorWorkPlace implements Parcelable {
         this.postalCode = postalCode;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -102,27 +123,4 @@ public class DoctorWorkPlace implements Parcelable {
         dest.writeString(this.country);
         dest.writeString(this.postalCode);
     }
-
-    protected DoctorWorkPlace(Parcel in) {
-        this.name = in.readString();
-        this.longitude = in.readString();
-        this.latitude = in.readString();
-        this.locality = in.readString();
-        this.sublocality = in.readString();
-        this.city = in.readString();
-        this.country = in.readString();
-        this.postalCode = in.readString();
-    }
-
-    public static final Parcelable.Creator<DoctorWorkPlace> CREATOR = new Parcelable.Creator<DoctorWorkPlace>() {
-        @Override
-        public DoctorWorkPlace createFromParcel(Parcel source) {
-            return new DoctorWorkPlace(source);
-        }
-
-        @Override
-        public DoctorWorkPlace[] newArray(int size) {
-            return new DoctorWorkPlace[size];
-        }
-    };
 }

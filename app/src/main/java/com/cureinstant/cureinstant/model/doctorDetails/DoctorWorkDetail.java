@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class DoctorWorkDetail implements Parcelable {
 
+    public static final Parcelable.Creator<DoctorWorkDetail> CREATOR = new Parcelable.Creator<DoctorWorkDetail>() {
+        @Override
+        public DoctorWorkDetail createFromParcel(Parcel source) {
+            return new DoctorWorkDetail(source);
+        }
+
+        @Override
+        public DoctorWorkDetail[] newArray(int size) {
+            return new DoctorWorkDetail[size];
+        }
+    };
     private int workID;
     private String specialty, position, fee, startDate, endDate;
     private DoctorWorkPlace doctorWorkPlace;
@@ -21,6 +32,16 @@ public class DoctorWorkDetail implements Parcelable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.doctorWorkPlace = doctorWorkPlace;
+    }
+
+    protected DoctorWorkDetail(Parcel in) {
+        this.workID = in.readInt();
+        this.specialty = in.readString();
+        this.position = in.readString();
+        this.fee = in.readString();
+        this.startDate = in.readString();
+        this.endDate = in.readString();
+        this.doctorWorkPlace = in.readParcelable(DoctorWorkPlace.class.getClassLoader());
     }
 
     public int getWorkID() {
@@ -79,7 +100,6 @@ public class DoctorWorkDetail implements Parcelable {
         this.doctorWorkPlace = doctorWorkPlace;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -95,26 +115,4 @@ public class DoctorWorkDetail implements Parcelable {
         dest.writeString(this.endDate);
         dest.writeParcelable(this.doctorWorkPlace, flags);
     }
-
-    protected DoctorWorkDetail(Parcel in) {
-        this.workID = in.readInt();
-        this.specialty = in.readString();
-        this.position = in.readString();
-        this.fee = in.readString();
-        this.startDate = in.readString();
-        this.endDate = in.readString();
-        this.doctorWorkPlace = in.readParcelable(DoctorWorkPlace.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<DoctorWorkDetail> CREATOR = new Parcelable.Creator<DoctorWorkDetail>() {
-        @Override
-        public DoctorWorkDetail createFromParcel(Parcel source) {
-            return new DoctorWorkDetail(source);
-        }
-
-        @Override
-        public DoctorWorkDetail[] newArray(int size) {
-            return new DoctorWorkDetail[size];
-        }
-    };
 }

@@ -1,4 +1,4 @@
-package com.cureinstant.cureinstant.model;
+package com.cureinstant.cureinstant.model.doctorDetails;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class DoctorAchievement implements Parcelable {
+    public static final Parcelable.Creator<DoctorAchievement> CREATOR = new Parcelable.Creator<DoctorAchievement>() {
+        @Override
+        public DoctorAchievement createFromParcel(Parcel source) {
+            return new DoctorAchievement(source);
+        }
+
+        @Override
+        public DoctorAchievement[] newArray(int size) {
+            return new DoctorAchievement[size];
+        }
+    };
     private String title, desc, link, image;
 
     public DoctorAchievement(String title, String desc, String link, String image) {
@@ -15,6 +26,13 @@ public class DoctorAchievement implements Parcelable {
         this.desc = desc;
         this.link = link;
         this.image = image;
+    }
+
+    protected DoctorAchievement(Parcel in) {
+        this.title = in.readString();
+        this.desc = in.readString();
+        this.link = in.readString();
+        this.image = in.readString();
     }
 
     public String getTitle() {
@@ -49,7 +67,6 @@ public class DoctorAchievement implements Parcelable {
         this.image = image;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -62,23 +79,4 @@ public class DoctorAchievement implements Parcelable {
         dest.writeString(this.link);
         dest.writeString(this.image);
     }
-
-    protected DoctorAchievement(Parcel in) {
-        this.title = in.readString();
-        this.desc = in.readString();
-        this.link = in.readString();
-        this.image = in.readString();
-    }
-
-    public static final Parcelable.Creator<DoctorAchievement> CREATOR = new Parcelable.Creator<DoctorAchievement>() {
-        @Override
-        public DoctorAchievement createFromParcel(Parcel source) {
-            return new DoctorAchievement(source);
-        }
-
-        @Override
-        public DoctorAchievement[] newArray(int size) {
-            return new DoctorAchievement[size];
-        }
-    };
 }
