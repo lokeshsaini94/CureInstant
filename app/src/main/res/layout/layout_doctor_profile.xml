@@ -6,7 +6,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
@@ -65,12 +64,32 @@
                     android:text="Male" />
 
                 <TextView
-                    android:id="@+id/doctor_number_title"
+                    android:id="@+id/doctor_location_title"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_sex_title"
+                    android:layout_marginBottom="8dp"
                     android:text="Location"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/doctor_location"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_sex_title"
+                    android:layout_toRightOf="@id/doctor_location_title"
+                    android:text="Delhi, IN" />
+
+                <TextView
+                    android:id="@+id/doctor_number_title"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_location_title"
+                    android:layout_marginBottom="8dp"
+                    android:text="Number"
                     android:textStyle="bold" />
 
                 <TextView
@@ -78,9 +97,53 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/doctor_sex_title"
+                    android:layout_below="@id/doctor_location_title"
                     android:layout_toRightOf="@id/doctor_number_title"
-                    android:text="Delhi, IN" />
+                    android:text="9876543210" />
+
+                <TextView
+                    android:id="@+id/doctor_email_title"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_number_title"
+                    android:layout_marginBottom="8dp"
+                    android:text="Email"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/doctor_email"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_number_title"
+                    android:layout_toRightOf="@id/doctor_email_title"
+                    android:text="xyz@gmail.com" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_email_title"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/doctor_followings"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="0 Followings" />
+
+                    <TextView
+                        android:id="@+id/doctor_followers"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="0 Followers" />
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -103,51 +166,28 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/doctor_timings_title"
+            android:id="@+id/doctor_summary_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_images_list"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Timings" />
+            android:text="Summary" />
 
         <android.support.v7.widget.CardView
-            android:id="@+id/doctor_timings"
+            android:id="@+id/doctor_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/doctor_timings_title"
+            android:layout_below="@id/doctor_summary_title"
             android:layout_marginTop="8dp">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/doctor_summary_tv"
+                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
-
-                <TextView
-                    android:id="@+id/doctor_timings_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:gravity="center_horizontal"
-                    android:text="09:00 AM - 11:00 AM | 05:00 PM - 06:30 PM"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/doctor_timings_days"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/doctor_timings_time"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:gravity="center_horizontal"
-                    android:text="MON | TUE | WED | THU | FRI"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="Time and Space traveling adventures of a Gallifreyan Time Lord only known as the Doctor and his companions, traveling through time and space." />
 
         </android.support.v7.widget.CardView>
 
@@ -155,7 +195,7 @@
             android:id="@+id/doctor_practices_at_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/doctor_timings"
+            android:layout_below="@id/doctor_summary"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="Practices At" />
@@ -180,12 +220,9 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
-                    android:text="Ramanuj Clinic"
-                    android:textColor="@color/bsp_text_color_primary_light" />
+                    android:text="Ramanuj Clinic" />
 
                 <TextView
                     android:id="@+id/doctor_practices_at1_address"
@@ -193,7 +230,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_practices_at1"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="BN-14, Kaushambi, Ghaziabad" />
 
                 <TextView
@@ -204,11 +240,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/doctor_practices_at1_address"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
-                    android:text="Ramanuj Clinic"
-                    android:textColor="@color/bsp_text_color_primary_light" />
+                    android:text="Ramanuj Clinic" />
 
                 <TextView
                     android:id="@+id/doctor_practices_at2_address"
@@ -216,7 +250,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_practices_at2"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="BN-14, Kaushambi, Ghaziabad" />
 
                 <TextView
@@ -225,12 +258,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_practices_at2_address"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
-                    android:text="Ramanuj Clinic"
-                    android:textColor="@color/bsp_text_color_primary_light" />
+                    android:text="Ramanuj Clinic" />
 
                 <TextView
                     android:id="@+id/doctor_practices_at3_address"
@@ -238,7 +268,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_practices_at3"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="BN-14, Kaushambi, Ghaziabad" />
 
             </RelativeLayout>
@@ -275,7 +304,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:text="Dermatologist" />
@@ -287,7 +315,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_specialisation_item1"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:text="General practitioner" />
@@ -298,7 +325,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_specialisation_item2"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:drawableLeft="@drawable/dot_shape"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:text="Cosmetologist" />
@@ -308,10 +334,117 @@
         </android.support.v7.widget.CardView>
 
         <TextView
+            android:id="@+id/doctor_edu_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctor_specialisation"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Education" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/doctor_edu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctor_edu_title"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/doctor_edu1"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:drawableLeft="@drawable/dot_shape"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"
+                    android:text="Ramanuj Clinic" />
+
+                <TextView
+                    android:id="@+id/doctor_edu1_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu1"
+                    android:text="Nov 2013 - Dec 2016" />
+
+                <TextView
+                    android:id="@+id/doctor_edu1_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu1_time"
+                    android:layout_marginBottom="8dp"
+                    android:text="BN-14, Kaushambi, Ghaziabad" />
+
+                <TextView
+                    android:id="@+id/doctor_edu2"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/doctor_edu1_address"
+                    android:layout_marginBottom="4dp"
+                    android:drawableLeft="@drawable/dot_shape"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"
+                    android:text="Ramanuj Clinic" />
+
+                <TextView
+                    android:id="@+id/doctor_edu2_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu2"
+                    android:text="Nov 2013 - Dec 2016" />
+
+                <TextView
+                    android:id="@+id/doctor_edu2_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu2_time"
+                    android:layout_marginBottom="8dp"
+                    android:text="BN-14, Kaushambi, Ghaziabad" />
+
+                <TextView
+                    android:id="@+id/doctor_edu3"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu2_address"
+                    android:layout_marginBottom="4dp"
+                    android:drawableLeft="@drawable/dot_shape"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"
+                    android:text="Ramanuj Clinic" />
+
+                <TextView
+                    android:id="@+id/doctor_edu3_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu3"
+                    android:text="Nov 2013 - Dec 2016" />
+
+                <TextView
+                    android:id="@+id/doctor_edu3_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_edu3_time"
+                    android:layout_marginBottom="8dp"
+                    android:text="BN-14, Kaushambi, Ghaziabad" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
             android:id="@+id/doctor_feedback_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/doctor_feedback_title"
+            android:layout_below="@id/doctor_edu"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="Feedback" />
@@ -320,7 +453,7 @@
             android:id="@+id/doctor_feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/doctor_specialisation_title"
+            android:layout_below="@id/doctor_feedback_title"
             android:layout_marginTop="8dp">
 
             <RelativeLayout
@@ -337,8 +470,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:text="@string/feedback_dummy" />
 
                 <View
@@ -347,8 +478,6 @@
                     android:layout_height="1dp"
                     android:layout_below="@id/doctor_feedback_item1"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="8dp"
                     android:background="@color/divider" />
 
@@ -359,8 +488,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_feedback_item1_divider"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:text="@string/feedback_dummy" />
 
             </RelativeLayout>
@@ -381,6 +508,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_publication_title"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
 
             <RelativeLayout
@@ -397,20 +525,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/post_title"
-                    android:textColor="@color/bsp_text_color_primary_light" />
+                    android:text="@string/post_title" />
 
                 <TextView
                     android:id="@+id/doctor_publication_item1"
-                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/doctor_publication_item1_title"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:maxLines="3"
                     android:text="@string/post_desc" />
 
@@ -420,8 +542,6 @@
                     android:layout_height="1dp"
                     android:layout_below="@id/doctor_publication_item1"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="8dp"
                     android:background="@color/divider" />
 
@@ -432,20 +552,85 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_publication_item1_divider"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/post_title"
-                    android:textColor="@color/bsp_text_color_primary_light" />
+                    android:text="@string/post_title" />
 
                 <TextView
                     android:id="@+id/doctor_publication_item2"
-                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/doctor_publication_item2_title"
+                    android:maxLines="3"
+                    android:text="@string/post_desc" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/doctor_achievements_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctor_publication"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Achievements" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/doctor_achievements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctor_achievements_title"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/doctor_achievement_item1_title"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/post_title" />
+
+                <TextView
+                    android:id="@+id/doctor_achievement_item1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/doctor_achievement_item1_title"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:maxLines="3"
+                    android:text="@string/post_desc" />
+
+                <View
+                    android:id="@+id/doctor_achievement_item1_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/doctor_achievement_item1"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/doctor_achievement_item2_title"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctor_achievement_item1_divider"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/post_title" />
+
+                <TextView
+                    android:id="@+id/doctor_achievement_item2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/doctor_achievement_item2_title"
+                    android:layout_marginBottom="8dp"
                     android:maxLines="3"
                     android:text="@string/post_desc" />
 
