@@ -61,6 +61,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView youtubeRecyclerView;
     private RecyclerView commentsRecyclerView;
     private FeedImagesAdapter feedImagesAdapter;
+    private View doctorInfoContainer;
     private View rootView;
 
     @Override
@@ -105,6 +106,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         imagesRecyclerView = (RecyclerView) findViewById(R.id.post_images_list);
         youtubeRecyclerView = (RecyclerView) findViewById(R.id.post_youtube_list);
         commentsRecyclerView = (RecyclerView) findViewById(R.id.post_comments_list);
+        doctorInfoContainer = findViewById(R.id.doctor_info_container);
 
         imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         feedImagesAdapter = new FeedImagesAdapter(this, feed.getType(), feed.getImages());
@@ -128,6 +130,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         followButton.setOnClickListener(this);
         helpfulButton.setOnClickListener(this);
         followButton.setOnClickListener(this);
+        doctorInfoContainer.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -454,6 +457,14 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     Utilities.GetComments getComments = new Utilities.GetComments(feed.getAnswer().getId(), fragmentManager);
                     getComments.execute();
                 }
+                break;
+            case R.id.doctor_info_container:
+                Intent intent = new Intent(this, DoctorProfileActivity.class);
+                Bundle b = new Bundle();
+                b.putString("name", feed.getDoctorName());
+                b.putString("username", feed.getDoctorUsername());
+                intent.putExtras(b);
+                startActivity(intent);
                 break;
         }
     }
