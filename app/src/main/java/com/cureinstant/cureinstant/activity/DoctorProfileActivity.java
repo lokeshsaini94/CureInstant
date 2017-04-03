@@ -1,14 +1,28 @@
 package com.cureinstant.cureinstant.activity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorAchievementsAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorAlbumAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorEduAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorFeedbackAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorPublicationAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorSkillsAdapter;
+import com.cureinstant.cureinstant.adapter.doctorDetails.DoctorWorkDetailsAdapter;
+import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.Doctor;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorAchievement;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorEduDetail;
@@ -17,6 +31,7 @@ import com.cureinstant.cureinstant.model.doctorDetails.DoctorPublication;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorSkill;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkDetail;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkPlace;
+import com.cureinstant.cureinstant.util.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,25 +50,120 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 public class DoctorProfileActivity extends AppCompatActivity {
 
+    View rootView;
+    ProgressDialog progressDialog;
+    RecyclerView doctorAlbumList;
+    DoctorAlbumAdapter doctorAlbumAdapter;
+    RecyclerView doctorWorkDetailsList;
+    DoctorWorkDetailsAdapter workDetailsAdapter;
+    RecyclerView doctorSkillsList;
+    DoctorSkillsAdapter doctorSkillsAdapter;
+    RecyclerView doctorEduList;
+    DoctorEduAdapter doctorEduAdapter;
+    RecyclerView doctorFeedbackList;
+    DoctorFeedbackAdapter doctorFeedbackAdapter;
+    RecyclerView doctorPublicationList;
+    DoctorPublicationAdapter doctorPublicationAdapter;
+    RecyclerView doctorAchievementList;
+    DoctorAchievementsAdapter doctorAchievementsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle b = getIntent().getExtras();
+        String name = null;
         String username = null;
-        if (b != null)
+        if (b != null) {
+            name = b.getString("name");
             username = b.getString("username");
+        }
 
         setContentView(R.layout.activity_doctor_profile);
+        rootView = findViewById(R.id.doctor_profile_root_view);
+        rootView.setVisibility(View.GONE);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("loading...");
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        bar.setTitle(R.string.doctor_name);
+        bar.setTitle(name);
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        doctorWorkDetailsList = (RecyclerView) findViewById(R.id.doctor_work_details_item);
+        doctorWorkDetailsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorWorkDetailsList.setAdapter(workDetailsAdapter);
+        doctorWorkDetailsList.setItemAnimator(new DefaultItemAnimator());
+        doctorWorkDetailsList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        doctorSkillsList = (RecyclerView) findViewById(R.id.doctor_specialisation_item);
+        doctorSkillsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorSkillsList.setAdapter(doctorSkillsAdapter);
+        doctorSkillsList.setItemAnimator(new DefaultItemAnimator());
+
+        doctorEduList = (RecyclerView) findViewById(R.id.doctor_edu_item);
+        doctorEduList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorEduList.setAdapter(doctorEduAdapter);
+        doctorEduList.setItemAnimator(new DefaultItemAnimator());
+        doctorEduList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        doctorFeedbackList = (RecyclerView) findViewById(R.id.doctor_feedback_item);
+        doctorFeedbackList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorFeedbackList.setAdapter(doctorFeedbackAdapter);
+        doctorFeedbackList.setItemAnimator(new DefaultItemAnimator());
+        doctorFeedbackList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        doctorPublicationList = (RecyclerView) findViewById(R.id.doctor_publication_item);
+        doctorPublicationList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorPublicationList.setAdapter(doctorPublicationAdapter);
+        doctorPublicationList.setItemAnimator(new DefaultItemAnimator());
+        doctorPublicationList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        doctorAchievementList = (RecyclerView) findViewById(R.id.doctor_achievement_item);
+        doctorAchievementList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        doctorAchievementList.setAdapter(doctorAchievementsAdapter);
+        doctorAchievementList.setItemAnimator(new DefaultItemAnimator());
+        doctorAchievementList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        doctorAlbumList = (RecyclerView) findViewById(R.id.doctor_images_list);
+        doctorAlbumList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        doctorAlbumList.setItemAnimator(new DefaultItemAnimator());
+
 
         if (username != null) {
             RequestUserData requestUserData = new RequestUserData(username);
@@ -65,11 +175,12 @@ public class DoctorProfileActivity extends AppCompatActivity {
     }
 
     private Doctor getDoctorDetails(String s) throws JSONException {
+        String name = "", username = "", profilePicture = "", accountType = "";
         JSONObject feedJson = new JSONObject(s);
-        String accountType = feedJson.getString("account_type");
-        String name = feedJson.getString("name");
-        String username = feedJson.getString("username");
-        String profilePicture = feedJson.getString("profile_pic");
+        accountType = feedJson.getString("account_type");
+        name = feedJson.getString("name");
+        username = feedJson.getString("username");
+        profilePicture = feedJson.getString("profile_pic");
 
         String sex = "", email = "", number = "", address = "", summary = "", speciality = "";
         int followers = 0, followings = 0;
@@ -114,6 +225,9 @@ public class DoctorProfileActivity extends AppCompatActivity {
                 instituteName = eduObject.getString("institute_name");
                 startDate = eduObject.getString("started");
                 endDate = eduObject.getString("ended");
+                if (endDate.equals("null")) {
+                    endDate = "Present";
+                }
                 courseID = eduObject.getInt("course_id");
                 instituteID = eduObject.getInt("institution_id");
                 doctorEduDetails.add(new DoctorEduDetail(courseName, instituteName, startDate, endDate, courseID, instituteID));
@@ -198,6 +312,8 @@ public class DoctorProfileActivity extends AppCompatActivity {
             }
         }
 
+        String imageURL = Utilities.profilePicSmallBaseUrl + profilePicture;
+
         return new Doctor(accountType, name, username, sex, email, number, address, summary,
                 speciality, profilePicture, followers, followings, album, doctorEduDetails,
                 doctorSkills, doctorWorkDetails, doctorAchievements, doctorPublications, doctorFeedbacks);
@@ -209,6 +325,13 @@ public class DoctorProfileActivity extends AppCompatActivity {
 
         public RequestUserData(String username) {
             this.username = username;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+            rootView.setVisibility(View.GONE);
         }
 
         @Override
@@ -231,7 +354,6 @@ public class DoctorProfileActivity extends AppCompatActivity {
             try {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
-                Log.e("TAG", "doInBackground: s " + s);
                 return getDoctorDetails(s);
 
             } catch (IOException | JSONException e) {
@@ -243,7 +365,99 @@ public class DoctorProfileActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Doctor doctor) {
             super.onPostExecute(doctor);
+            progressDialog.dismiss();
+            rootView.setVisibility(View.VISIBLE);
             // TODO: 01-04-2017 Process doctor details and display them
+
+            TextView name = (TextView) findViewById(R.id.doctor_name);
+            name.setText(doctor.getName());
+            TextView sex = (TextView) findViewById(R.id.doctor_sex);
+            if (!doctor.getSex().isEmpty()) {
+                sex.setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_sex_title).setVisibility(View.VISIBLE);
+                sex.setText(doctor.getSex());
+            }
+            TextView location = (TextView) findViewById(R.id.doctor_location);
+            if (!doctor.getAddress().isEmpty() && !doctor.getAddress().equals("null")) {
+                location.setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_location_title).setVisibility(View.VISIBLE);
+                location.setText(doctor.getAddress());
+            }
+            TextView number = (TextView) findViewById(R.id.doctor_number);
+            if (!doctor.getNumber().isEmpty() && !doctor.getNumber().equals("null")) {
+                number.setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_number_title).setVisibility(View.VISIBLE);
+                number.setText(doctor.getNumber());
+            }
+            TextView email = (TextView) findViewById(R.id.doctor_email);
+            if (!doctor.getEmail().isEmpty()) {
+                email.setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_email_title).setVisibility(View.VISIBLE);
+                email.setText(doctor.getEmail());
+            }
+            TextView followings = (TextView) findViewById(R.id.doctor_followings);
+            followings.setText(String.format(getString(R.string.following_count), doctor.getFollowings()));
+            TextView followers = (TextView) findViewById(R.id.doctor_followers);
+            followers.setText(String.format(getString(R.string.followers_count), doctor.getFollowers()));
+
+            if (!doctor.getAlbum().isEmpty()) {
+                doctorAlbumList.setVisibility(View.VISIBLE);
+                doctorAlbumAdapter = new DoctorAlbumAdapter(getApplicationContext(), doctor.getAlbum());
+                doctorAlbumList.setAdapter(doctorAlbumAdapter);
+            }
+
+            TextView summary = (TextView) findViewById(R.id.doctor_summary_tv);
+            if (!doctor.getSummary().isEmpty() && !doctor.getSummary().equals("null")) {
+                findViewById(R.id.doctor_summary).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_summary_title).setVisibility(View.VISIBLE);
+                summary.setText(doctor.getSummary());
+            }
+
+            ImageView userPicture = (ImageView) findViewById(R.id.user_picture);
+            String imageURL = Utilities.profilePicSmallBaseUrl + doctor.getProfilePicture();
+            Glide.with(getApplicationContext()).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(userPicture);
+
+            if (!doctor.getDoctorWorkDetails().isEmpty()) {
+                findViewById(R.id.doctor_work_details).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_work_details_title).setVisibility(View.VISIBLE);
+                workDetailsAdapter = new DoctorWorkDetailsAdapter(getApplicationContext(), doctor.getDoctorWorkDetails());
+                doctorWorkDetailsList.setAdapter(workDetailsAdapter);
+            }
+
+            if (!doctor.getDoctorSkills().isEmpty()) {
+                findViewById(R.id.doctor_specialisation).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_specialisation_title).setVisibility(View.VISIBLE);
+                doctorSkillsAdapter = new DoctorSkillsAdapter(getApplicationContext(), doctor.getDoctorSkills());
+                doctorSkillsList.setAdapter(doctorSkillsAdapter);
+            }
+
+            if (!doctor.getDoctorEduDetails().isEmpty()) {
+                findViewById(R.id.doctor_edu).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_edu_title).setVisibility(View.VISIBLE);
+                doctorEduAdapter = new DoctorEduAdapter(getApplicationContext(), doctor.getDoctorEduDetails());
+                doctorEduList.setAdapter(doctorEduAdapter);
+            }
+
+            if (!doctor.getDoctorFeedbacks().isEmpty()) {
+                findViewById(R.id.doctor_feedback).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_feedback_title).setVisibility(View.VISIBLE);
+                doctorFeedbackAdapter = new DoctorFeedbackAdapter(getApplicationContext(), doctor.getDoctorFeedbacks());
+                doctorFeedbackList.setAdapter(doctorFeedbackAdapter);
+            }
+
+            if (!doctor.getDoctorPublications().isEmpty()) {
+                findViewById(R.id.doctor_publication).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_publication_title).setVisibility(View.VISIBLE);
+                doctorPublicationAdapter = new DoctorPublicationAdapter(getApplicationContext(), doctor.getDoctorPublications());
+                doctorPublicationList.setAdapter(doctorPublicationAdapter);
+            }
+
+            if (!doctor.getDoctorAchievements().isEmpty()) {
+                findViewById(R.id.doctor_achievements).setVisibility(View.VISIBLE);
+                findViewById(R.id.doctor_achievements_title).setVisibility(View.VISIBLE);
+                doctorAchievementsAdapter = new DoctorAchievementsAdapter(getApplicationContext(), doctor.getDoctorAchievements());
+                doctorAchievementList.setAdapter(doctorAchievementsAdapter);
+            }
         }
     }
 }

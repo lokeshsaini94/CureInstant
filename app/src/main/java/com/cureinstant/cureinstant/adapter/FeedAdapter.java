@@ -276,6 +276,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                         case R.id.doctor_info_container:
                             Intent intent = new Intent(context, DoctorProfileActivity.class);
                             Bundle b = new Bundle();
+                            b.putString("name", feed.getDoctorName());
                             b.putString("username", feed.getDoctorUsername());
                             intent.putExtras(b);
                             context.startActivity(intent);

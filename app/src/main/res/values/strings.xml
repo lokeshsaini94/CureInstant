@@ -43,6 +43,7 @@
     <string name="feedback_dummy">Doctor Strange was a brilliant but egotistical surgeon. After a car accident destroys the nerves in his hands and hinders his ability to performsurgery, he searches the globe for a way to repair them encounters the Ancient One.</string>
 
     <string name="following_count">%d Following</string>
+    <string name="followers_count">%d Followers</string>
     <string name="helpful_count">%d Helpful</string>
     <string name="comments_count">%d Comment</string>
     <string name="shares_count">%d Share</string>

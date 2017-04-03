@@ -107,6 +107,10 @@ public class DoctorWorkPlace implements Parcelable {
         this.postalCode = postalCode;
     }
 
+    public String getAddress() {
+        return locality + ", " + sublocality + ", " + city + ", " + country + ", " + postalCode;
+    }
+
     @Override
     public int describeContents() {
         return 0;

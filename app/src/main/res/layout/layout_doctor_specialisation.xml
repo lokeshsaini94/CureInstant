@@ -4,7 +4,10 @@
     style="@style/TextAppearance.AppCompat.Medium"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="8dp"
     android:drawableLeft="@drawable/dot_shape"
     android:drawablePadding="@dimen/activity_horizontal_margin"
-    android:text="Dermatologist" />
+    android:text="Dermatologist"
+    android:textColor="@android:color/primary_text_light" />

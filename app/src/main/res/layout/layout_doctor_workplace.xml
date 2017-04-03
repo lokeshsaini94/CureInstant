@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/doctor_practices_at"
+        android:id="@+id/doctor_workplace_name"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/dot_shape"
         android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:text="Ramanuj Clinic" />
+        android:text="Ramanuj Clinic"
+        android:textColor="@android:color/primary_text_light" />
 
     <TextView
-        android:id="@+id/doctor_practices_at_address"
+        android:id="@+id/doctor_workplace_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="BN-14, Kaushambi, Ghaziabad" />
+        android:layout_marginLeft="32dp"
+        android:text="BN-14, Kaushambi, Ghaziabad"
+        android:textColor="@android:color/secondary_text_light" />
 
 </LinearLayout>

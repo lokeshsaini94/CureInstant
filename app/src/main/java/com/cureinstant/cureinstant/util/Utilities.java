@@ -60,6 +60,8 @@ public class Utilities {
     public static final String postImageBaseUrl = "http://www.cureinstant.com/posts/images/";
     public static final String blogImageBaseUrl = "http://www.cureinstant.com/blog/images/";
     public static final String questionImageBaseUrl = "http://www.cureinstant.com/query/images/";
+    public static final String doctorAlbumBaseUrl = "http://www.cureinstant.com/album/images/";
+    public static final String doctorAchievementBaseUrl = "http://www.cureinstant.com/achievements_docs/images/";
     public static String accessTokenValue;
     public static String refreshTokenValue;
     public static String pageData = "";

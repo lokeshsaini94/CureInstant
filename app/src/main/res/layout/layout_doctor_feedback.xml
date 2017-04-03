@@ -4,5 +4,8 @@
     style="@style/TextAppearance.AppCompat.Medium"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:text="@string/feedback_dummy" />
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="8dp"
+    android:text="@string/feedback_dummy"
+    android:textColor="@android:color/primary_text_light" />

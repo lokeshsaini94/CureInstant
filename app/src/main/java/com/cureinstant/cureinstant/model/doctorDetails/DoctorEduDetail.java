@@ -89,6 +89,10 @@ public class DoctorEduDetail implements Parcelable {
         this.instituteID = instituteID;
     }
 
+    public String getEduTime() {
+        return startDate + " - " + endDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
