@@ -164,6 +164,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView answerDoctorName = (TextView) findViewById(R.id.answer_doctor_name);
         TextView answerDoctorSpeciality = (TextView) findViewById(R.id.answer_doctor_speciality);
         ImageView answerDoctorPicture = (ImageView) findViewById(R.id.answer_doctor_picture);
+        View answerDoctorProfileContainer = findViewById(R.id.answer_doctor_info_container);
         View answerMenuOverflow = findViewById(R.id.answer_menu_overflow);
         TextView linksTextView = (TextView) findViewById(R.id.post_links);
 
@@ -341,6 +342,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         answerHelpfulButton.setOnClickListener(this);
         answerReplyButton.setOnClickListener(this);
         postAnswerContainer.setOnClickListener(this);
+        answerDoctorProfileContainer.setOnClickListener(this);
     }
 
     @Override
@@ -458,12 +460,20 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     getComments.execute();
                 }
                 break;
+            case R.id.answer_doctor_info_container:
+                Intent intentAnswer = new Intent(this, DoctorProfileActivity.class);
+                Bundle b = new Bundle();
+                b.putString("name", feed.getAnswer().getName());
+                b.putString("username", feed.getAnswer().getUsername());
+                intentAnswer.putExtras(b);
+                startActivity(intentAnswer);
+                break;
             case R.id.doctor_info_container:
                 Intent intent = new Intent(this, DoctorProfileActivity.class);
-                Bundle b = new Bundle();
-                b.putString("name", feed.getDoctorName());
-                b.putString("username", feed.getDoctorUsername());
-                intent.putExtras(b);
+                Bundle b2 = new Bundle();
+                b2.putString("name", feed.getDoctorName());
+                b2.putString("username", feed.getDoctorUsername());
+                intent.putExtras(b2);
                 startActivity(intent);
                 break;
         }

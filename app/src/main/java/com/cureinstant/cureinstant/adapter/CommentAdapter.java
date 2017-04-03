@@ -2,6 +2,8 @@ package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.DoctorProfileActivity;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -143,6 +146,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
                         comment.setReplyCount(comment.getReplyCount() + 1);
                         holder.countReplies.setText(String.format(context.getString(R.string.replies_count), comment.getReplyCount()));
                         break;
+                    case R.id.user_name:
+                    case R.id.user_picture:
+                        Intent intent = new Intent(context, DoctorProfileActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("name", comment.getName());
+                        b.putString("username", comment.getUsername());
+                        intent.putExtras(b);
+                        context.startActivity(intent);
+                        break;
                 }
             }
         };
@@ -150,6 +162,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
         holder.helpfulButton.setOnClickListener(onClickListener);
         holder.replyButton.setOnClickListener(onClickListener);
         holder.rootView.setOnClickListener(onClickListener);
+        holder.doctorName.setOnClickListener(onClickListener);
+        holder.doctorPicture.setOnClickListener(onClickListener);
     }
 
     @Override
