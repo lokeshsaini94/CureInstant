@@ -96,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
                 switch (v.getId()) {
                     case R.id.feed_comment_container:
                         if (comment.getReplyCount() > 0) {
-                            Utilities.GetComments getComments = new Utilities.GetComments(comment.getId(), fragmentManager);
+                            Utilities.GetComments getComments = new Utilities.GetComments(context, comment.getId(), fragmentManager);
                             getComments.execute();
                         }
                         break;

@@ -456,7 +456,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.post_answer_container:
                 if (feed.getAnswer().getReplyCount() > 0) {
-                    Utilities.GetComments getComments = new Utilities.GetComments(feed.getAnswer().getId(), fragmentManager);
+                    Utilities.GetComments getComments = new Utilities.GetComments(FeedItemActivity.this, feed.getAnswer().getId(), fragmentManager);
                     getComments.execute();
                 }
                 break;

@@ -1,6 +1,7 @@
 package com.cureinstant.cureinstant.util;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -642,12 +643,23 @@ public class Utilities {
     // Fetch and display replies to the comment
     public static class GetComments extends AsyncTask<Void, Void, ArrayList<Comment>> {
 
+        private Context context;
         private int id;
         private FragmentManager fragmentManager;
+        private ProgressDialog progressDialog;
 
-        public GetComments(int id, FragmentManager fragmentManager) {
+        public GetComments(Context context, int id, FragmentManager fragmentManager) {
+            this.context = context;
             this.id = id;
             this.fragmentManager = fragmentManager;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("loading...");
+            progressDialog.show();
         }
 
         @Override
@@ -711,6 +723,7 @@ public class Utilities {
         @Override
         protected void onPostExecute(ArrayList<Comment> comments) {
             super.onPostExecute(comments);
+            progressDialog.dismiss();
             RepliesBottomSheetFragment repliesBottomSheetFragment = RepliesBottomSheetFragment.getInstance();
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("replies", comments);
