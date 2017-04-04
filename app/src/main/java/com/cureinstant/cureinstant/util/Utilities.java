@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -716,6 +717,64 @@ public class Utilities {
             bundle.putParcelableArrayList("replies", comments);
             repliesBottomSheetFragment.setArguments(bundle);
             repliesBottomSheetFragment.show(fragmentManager, "Replies");
+        }
+    }
+
+    public static class FollowDoctor extends AsyncTask<Void, Void, Void> {
+
+        private Context context;
+        private boolean toFollow;
+        private int userID;
+        private Button followButton;
+
+        public FollowDoctor(Context context, boolean toFollow, int userID, Button followButton) {
+            this.context = context;
+            this.toFollow = toFollow;
+            this.userID = userID;
+            this.followButton = followButton;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+            String url = "http://www.cureinstant.com/api/connection/";
+            if (toFollow) {
+                url += "follow";
+            } else {
+                url += "unfollow";
+            }
+
+            RequestBody body = new FormBody.Builder()
+                    .add("id", String.valueOf(userID))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (toFollow) {
+                followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                followButton.setTextColor(context.getResources().getColor(R.color.white));
+                followButton.setText("Unfollow");
+            } else {
+                followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                followButton.setText("Follow");
+            }
         }
     }
 

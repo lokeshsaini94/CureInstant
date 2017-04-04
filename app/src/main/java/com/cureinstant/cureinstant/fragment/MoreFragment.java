@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 
@@ -125,6 +123,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             ArrayList<Follow> follows = new ArrayList<>();
             OkHttpClient client = new OkHttpClient();
             int followID = 0;
+            int userID = 0;
             String name = "";
             String username = "";
             String speciality = "";
@@ -148,7 +147,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             try {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
-                Log.e(TAG, "doInBackground: s " + s);
                 JSONObject followJson = new JSONObject(s);
                 JSONArray followArray;
                 if (type.equals("followers")) {
@@ -159,6 +157,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
                 for (int i = 0; i < followArray.length(); i++) {
                     followID = 0;
+                    userID = 0;
                     isFollowing = false;
                     name = "";
                     username = "";
@@ -169,6 +168,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                     switch (type) {
                         case "followers":
                             followID = followObject.getInt("id");
+                            userID = followObject.getInt("f_id");
                             isFollowing = followObject.getBoolean("following");
                             JSONObject followerObject = followObject.getJSONObject("follower");
                             name = followerObject.getString("name");
@@ -183,6 +183,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                             break;
                         default:
                             followID = followObject.getInt("id");
+                            userID = followObject.getInt("f_id");
                             JSONObject followingObject = followObject.getJSONObject("following");
                             name = followingObject.getString("name");
                             username = followingObject.getString("username");
@@ -196,7 +197,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                             break;
                     }
 
-                    follows.add(new Follow(followID, name, username, speciality, picture, isFollowing));
+                    follows.add(new Follow(followID, userID, name, username, speciality, picture, isFollowing));
                 }
 
                 return follows;

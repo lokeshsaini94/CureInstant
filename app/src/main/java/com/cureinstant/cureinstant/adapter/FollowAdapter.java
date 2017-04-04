@@ -53,7 +53,6 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ItemViewHo
         Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(holder.picture);
 
         if (type.equals("followers")) {
-            holder.followButton.setVisibility(View.VISIBLE);
             if (follows.get(position).isFollowing()) {
                 holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
@@ -64,7 +63,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ItemViewHo
                 holder.followButton.setText("Follow");
             }
         } else {
-            holder.followButton.setVisibility(View.GONE);
+            holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
+            holder.followButton.setText("Unfollow");
         }
 
 
@@ -73,6 +74,13 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ItemViewHo
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.doctor_follow_button:
+                        if (type.equals("followers") && !follows.get(holder.getAdapterPosition()).isFollowing()) {
+                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(context, true, follows.get(holder.getAdapterPosition()).getUserID(), holder.followButton);
+                            followDoctor.execute();
+                        } else {
+                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(context, false, follows.get(holder.getAdapterPosition()).getUserID(), holder.followButton);
+                            followDoctor.execute();
+                        }
                         break;
                     default:
                         Intent intentAnswer = new Intent(context, DoctorProfileActivity.class);
