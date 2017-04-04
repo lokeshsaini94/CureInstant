@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -722,16 +721,12 @@ public class Utilities {
 
     public static class FollowDoctor extends AsyncTask<Void, Void, Void> {
 
-        private Context context;
         private boolean toFollow;
         private int userID;
-        private Button followButton;
 
-        public FollowDoctor(Context context, boolean toFollow, int userID, Button followButton) {
-            this.context = context;
+        public FollowDoctor(boolean toFollow, int userID) {
             this.toFollow = toFollow;
             this.userID = userID;
-            this.followButton = followButton;
         }
 
         @Override
@@ -761,20 +756,6 @@ public class Utilities {
                 e.printStackTrace();
             }
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (toFollow) {
-                followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-                followButton.setTextColor(context.getResources().getColor(R.color.white));
-                followButton.setText("Unfollow");
-            } else {
-                followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
-                followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                followButton.setText("Follow");
-            }
         }
     }
 

@@ -17,9 +17,21 @@ import java.util.ArrayList;
  */
 
 public class Doctor implements Parcelable {
+    public static final Creator<Doctor> CREATOR = new Creator<Doctor>() {
+        @Override
+        public Doctor createFromParcel(Parcel source) {
+            return new Doctor(source);
+        }
+
+        @Override
+        public Doctor[] newArray(int size) {
+            return new Doctor[size];
+        }
+    };
     private int userID;
     private String accountType, name, username, sex, email, number, address, summary, speciality, profilePicture;
     private int followers, followings;
+    private boolean following;
     private ArrayList<String> album;
     private ArrayList<DoctorEduDetail> doctorEduDetails;
     private ArrayList<DoctorSkill> doctorSkills;
@@ -28,7 +40,7 @@ public class Doctor implements Parcelable {
     private ArrayList<DoctorPublication> doctorPublications;
     private ArrayList<DoctorFeedback> doctorFeedbacks;
 
-    public Doctor(int userID, String accountType, String name, String username, String sex, String email, String number, String address, String summary, String speciality, String profilePicture, int followers, int followings, ArrayList<String> album, ArrayList<DoctorEduDetail> doctorEduDetails, ArrayList<DoctorSkill> doctorSkills, ArrayList<DoctorWorkDetail> doctorWorkDetails, ArrayList<DoctorAchievement> doctorAchievements, ArrayList<DoctorPublication> doctorPublications, ArrayList<DoctorFeedback> doctorFeedbacks) {
+    public Doctor(int userID, String accountType, String name, String username, String sex, String email, String number, String address, String summary, String speciality, String profilePicture, int followers, int followings, boolean following, ArrayList<String> album, ArrayList<DoctorEduDetail> doctorEduDetails, ArrayList<DoctorSkill> doctorSkills, ArrayList<DoctorWorkDetail> doctorWorkDetails, ArrayList<DoctorAchievement> doctorAchievements, ArrayList<DoctorPublication> doctorPublications, ArrayList<DoctorFeedback> doctorFeedbacks) {
         this.userID = userID;
         this.accountType = accountType;
         this.name = name;
@@ -42,6 +54,7 @@ public class Doctor implements Parcelable {
         this.profilePicture = profilePicture;
         this.followers = followers;
         this.followings = followings;
+        this.following = following;
         this.album = album;
         this.doctorEduDetails = doctorEduDetails;
         this.doctorSkills = doctorSkills;
@@ -49,6 +62,30 @@ public class Doctor implements Parcelable {
         this.doctorAchievements = doctorAchievements;
         this.doctorPublications = doctorPublications;
         this.doctorFeedbacks = doctorFeedbacks;
+    }
+
+    protected Doctor(Parcel in) {
+        this.userID = in.readInt();
+        this.accountType = in.readString();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.sex = in.readString();
+        this.email = in.readString();
+        this.number = in.readString();
+        this.address = in.readString();
+        this.summary = in.readString();
+        this.speciality = in.readString();
+        this.profilePicture = in.readString();
+        this.followers = in.readInt();
+        this.followings = in.readInt();
+        this.following = in.readByte() != 0;
+        this.album = in.createStringArrayList();
+        this.doctorEduDetails = in.createTypedArrayList(DoctorEduDetail.CREATOR);
+        this.doctorSkills = in.createTypedArrayList(DoctorSkill.CREATOR);
+        this.doctorWorkDetails = in.createTypedArrayList(DoctorWorkDetail.CREATOR);
+        this.doctorAchievements = in.createTypedArrayList(DoctorAchievement.CREATOR);
+        this.doctorPublications = in.createTypedArrayList(DoctorPublication.CREATOR);
+        this.doctorFeedbacks = in.createTypedArrayList(DoctorFeedback.CREATOR);
     }
 
     public int getUserID() {
@@ -155,6 +192,14 @@ public class Doctor implements Parcelable {
         this.followings = followings;
     }
 
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
     public ArrayList<String> getAlbum() {
         return album;
     }
@@ -211,7 +256,6 @@ public class Doctor implements Parcelable {
         this.doctorFeedbacks = doctorFeedbacks;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -232,6 +276,7 @@ public class Doctor implements Parcelable {
         dest.writeString(this.profilePicture);
         dest.writeInt(this.followers);
         dest.writeInt(this.followings);
+        dest.writeByte(this.following ? (byte) 1 : (byte) 0);
         dest.writeStringList(this.album);
         dest.writeTypedList(this.doctorEduDetails);
         dest.writeTypedList(this.doctorSkills);
@@ -240,39 +285,4 @@ public class Doctor implements Parcelable {
         dest.writeTypedList(this.doctorPublications);
         dest.writeTypedList(this.doctorFeedbacks);
     }
-
-    protected Doctor(Parcel in) {
-        this.userID = in.readInt();
-        this.accountType = in.readString();
-        this.name = in.readString();
-        this.username = in.readString();
-        this.sex = in.readString();
-        this.email = in.readString();
-        this.number = in.readString();
-        this.address = in.readString();
-        this.summary = in.readString();
-        this.speciality = in.readString();
-        this.profilePicture = in.readString();
-        this.followers = in.readInt();
-        this.followings = in.readInt();
-        this.album = in.createStringArrayList();
-        this.doctorEduDetails = in.createTypedArrayList(DoctorEduDetail.CREATOR);
-        this.doctorSkills = in.createTypedArrayList(DoctorSkill.CREATOR);
-        this.doctorWorkDetails = in.createTypedArrayList(DoctorWorkDetail.CREATOR);
-        this.doctorAchievements = in.createTypedArrayList(DoctorAchievement.CREATOR);
-        this.doctorPublications = in.createTypedArrayList(DoctorPublication.CREATOR);
-        this.doctorFeedbacks = in.createTypedArrayList(DoctorFeedback.CREATOR);
-    }
-
-    public static final Creator<Doctor> CREATOR = new Creator<Doctor>() {
-        @Override
-        public Doctor createFromParcel(Parcel source) {
-            return new Doctor(source);
-        }
-
-        @Override
-        public Doctor[] newArray(int size) {
-            return new Doctor[size];
-        }
-    };
 }

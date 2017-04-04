@@ -75,11 +75,17 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ItemViewHo
                 switch (v.getId()) {
                     case R.id.doctor_follow_button:
                         if (type.equals("followers") && !follows.get(holder.getAdapterPosition()).isFollowing()) {
-                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(context, true, follows.get(holder.getAdapterPosition()).getUserID(), holder.followButton);
+                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(true, follows.get(holder.getAdapterPosition()).getUserID());
                             followDoctor.execute();
+                            holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.followButton.setTextColor(context.getResources().getColor(R.color.white));
+                            holder.followButton.setText("Unfollow");
                         } else {
-                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(context, false, follows.get(holder.getAdapterPosition()).getUserID(), holder.followButton);
+                            Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(false, follows.get(holder.getAdapterPosition()).getUserID());
                             followDoctor.execute();
+                            holder.followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
+                            holder.followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.followButton.setText("Follow");
                         }
                         break;
                     default:

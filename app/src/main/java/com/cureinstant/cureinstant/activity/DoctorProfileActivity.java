@@ -53,6 +53,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
 
     View rootView;
     int userID;
+    boolean isFollowing;
     Button followButton;
     Button bookButton;
     ProgressDialog progressDialog;
@@ -194,6 +195,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
 
         String sex = "", email = "", number = "", address = "", summary = "", speciality = "";
         int followers = 0, followings = 0;
+        boolean following = false;
         ArrayList<String> album = new ArrayList<>();
         ArrayList<DoctorEduDetail> doctorEduDetails = new ArrayList<>();
         ArrayList<DoctorSkill> doctorSkills = new ArrayList<>();
@@ -219,6 +221,9 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             }
             if (!feedJson.isNull("followers")) {
                 followers = followObject.getInt("followers");
+            }
+            if (!feedJson.isNull("followed")) {
+                following = true;
             }
 
             JSONArray albumArray = feedJson.getJSONArray("album");
@@ -331,7 +336,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         }
 
         return new Doctor(userID, accountType, name, username, sex, email, number, address, summary,
-                speciality, profilePicture, followers, followings, album, doctorEduDetails,
+                speciality, profilePicture, followers, followings, following, album, doctorEduDetails,
                 doctorSkills, doctorWorkDetails, doctorAchievements, doctorPublications, doctorFeedbacks);
     }
 
@@ -339,8 +344,21 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.doctor_follow_button:
-                Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(DoctorProfileActivity.this, true, userID, (Button)v);
-                followDoctor.execute();
+                if (!isFollowing) {
+                    Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(true, userID);
+                    followDoctor.execute();
+                    followButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    followButton.setTextColor(getResources().getColor(R.color.white));
+                    followButton.setText("Unfollow");
+                    isFollowing = true;
+                } else {
+                    Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(false, userID);
+                    followDoctor.execute();
+                    followButton.setBackgroundColor(getResources().getColor(R.color.white));
+                    followButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    followButton.setText("Follow");
+                    isFollowing = false;
+                }
                 break;
             case R.id.doctor_book_button:
                 Toast.makeText(DoctorProfileActivity.this, "This feature is coming soon!", Toast.LENGTH_SHORT).show();
@@ -430,6 +448,17 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             followings.setText(String.format(getString(R.string.following_count), doctor.getFollowings()));
             TextView followers = (TextView) findViewById(R.id.doctor_followers);
             followers.setText(String.format(getString(R.string.followers_count), doctor.getFollowers()));
+
+            isFollowing = doctor.isFollowing();
+            if (doctor.isFollowing()) {
+                followButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                followButton.setTextColor(getResources().getColor(R.color.white));
+                followButton.setText("Unfollow");
+            } else {
+                followButton.setBackgroundColor(getResources().getColor(R.color.white));
+                followButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                followButton.setText("Follow");
+            }
 
             if (!doctor.getAlbum().isEmpty()) {
                 doctorAlbumList.setVisibility(View.VISIBLE);
