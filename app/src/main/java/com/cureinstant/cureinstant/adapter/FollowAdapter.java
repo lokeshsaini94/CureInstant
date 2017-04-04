@@ -80,7 +80,6 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ItemViewHo
                         b.putString("name", follows.get(holder.getAdapterPosition()).getName());
                         b.putString("username", follows.get(holder.getAdapterPosition()).getUsername());
                         intentAnswer.putExtras(b);
-                        intentAnswer.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intentAnswer);
                         break;
                 }

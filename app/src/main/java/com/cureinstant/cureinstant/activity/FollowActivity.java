@@ -35,7 +35,7 @@ public class FollowActivity extends AppCompatActivity {
         }
 
         if (type == null) {
-            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FollowActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -50,8 +50,8 @@ public class FollowActivity extends AppCompatActivity {
 
 
         followList = (RecyclerView) findViewById(R.id.follow_recycler_view);
-        followList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        followAdapter = new FollowAdapter(getApplicationContext(), type, follows);
+        followList.setLayoutManager(new LinearLayoutManager(FollowActivity.this));
+        followAdapter = new FollowAdapter(FollowActivity.this, type, follows);
         followList.setAdapter(followAdapter);
         followList.setItemAnimator(new DefaultItemAnimator());
         followList.addItemDecoration(new SimpleDividerItemDecoration(this));

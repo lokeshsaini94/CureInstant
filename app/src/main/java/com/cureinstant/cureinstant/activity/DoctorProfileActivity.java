@@ -96,7 +96,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         });
 
         doctorWorkDetailsList = (RecyclerView) findViewById(R.id.doctor_work_details_item);
-        doctorWorkDetailsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorWorkDetailsList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -107,7 +107,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         doctorWorkDetailsList.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         doctorSkillsList = (RecyclerView) findViewById(R.id.doctor_specialisation_item);
-        doctorSkillsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorSkillsList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -117,7 +117,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         doctorSkillsList.setItemAnimator(new DefaultItemAnimator());
 
         doctorEduList = (RecyclerView) findViewById(R.id.doctor_edu_item);
-        doctorEduList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorEduList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -128,7 +128,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         doctorEduList.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         doctorFeedbackList = (RecyclerView) findViewById(R.id.doctor_feedback_item);
-        doctorFeedbackList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorFeedbackList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -139,7 +139,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         doctorFeedbackList.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         doctorPublicationList = (RecyclerView) findViewById(R.id.doctor_publication_item);
-        doctorPublicationList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorPublicationList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -150,7 +150,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
         doctorPublicationList.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         doctorAchievementList = (RecyclerView) findViewById(R.id.doctor_achievement_item);
-        doctorAchievementList.setLayoutManager(new LinearLayoutManager(getApplicationContext()) {
+        doctorAchievementList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -169,7 +169,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
             RequestUserData requestUserData = new RequestUserData(username);
             requestUserData.execute();
         } else {
-            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+            Toast.makeText(DoctorProfileActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -407,7 +407,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
 
             if (!doctor.getAlbum().isEmpty()) {
                 doctorAlbumList.setVisibility(View.VISIBLE);
-                doctorAlbumAdapter = new DoctorAlbumAdapter(getApplicationContext(), doctor.getAlbum());
+                doctorAlbumAdapter = new DoctorAlbumAdapter(DoctorProfileActivity.this, doctor.getAlbum());
                 doctorAlbumList.setAdapter(doctorAlbumAdapter);
             }
 
@@ -420,47 +420,47 @@ public class DoctorProfileActivity extends AppCompatActivity {
 
             ImageView userPicture = (ImageView) findViewById(R.id.user_picture);
             String imageURL = Utilities.profilePicSmallBaseUrl + doctor.getProfilePicture();
-            Glide.with(getApplicationContext()).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(userPicture);
+            Glide.with(DoctorProfileActivity.this).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(userPicture);
 
             if (!doctor.getDoctorWorkDetails().isEmpty()) {
                 findViewById(R.id.doctor_work_details).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_work_details_title).setVisibility(View.VISIBLE);
-                workDetailsAdapter = new DoctorWorkDetailsAdapter(getApplicationContext(), doctor.getDoctorWorkDetails());
+                workDetailsAdapter = new DoctorWorkDetailsAdapter(DoctorProfileActivity.this, doctor.getDoctorWorkDetails());
                 doctorWorkDetailsList.setAdapter(workDetailsAdapter);
             }
 
             if (!doctor.getDoctorSkills().isEmpty()) {
                 findViewById(R.id.doctor_specialisation).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_specialisation_title).setVisibility(View.VISIBLE);
-                doctorSkillsAdapter = new DoctorSkillsAdapter(getApplicationContext(), doctor.getDoctorSkills());
+                doctorSkillsAdapter = new DoctorSkillsAdapter(DoctorProfileActivity.this, doctor.getDoctorSkills());
                 doctorSkillsList.setAdapter(doctorSkillsAdapter);
             }
 
             if (!doctor.getDoctorEduDetails().isEmpty()) {
                 findViewById(R.id.doctor_edu).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_edu_title).setVisibility(View.VISIBLE);
-                doctorEduAdapter = new DoctorEduAdapter(getApplicationContext(), doctor.getDoctorEduDetails());
+                doctorEduAdapter = new DoctorEduAdapter(DoctorProfileActivity.this, doctor.getDoctorEduDetails());
                 doctorEduList.setAdapter(doctorEduAdapter);
             }
 
             if (!doctor.getDoctorFeedbacks().isEmpty()) {
                 findViewById(R.id.doctor_feedback).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_feedback_title).setVisibility(View.VISIBLE);
-                doctorFeedbackAdapter = new DoctorFeedbackAdapter(getApplicationContext(), doctor.getDoctorFeedbacks());
+                doctorFeedbackAdapter = new DoctorFeedbackAdapter(DoctorProfileActivity.this, doctor.getDoctorFeedbacks());
                 doctorFeedbackList.setAdapter(doctorFeedbackAdapter);
             }
 
             if (!doctor.getDoctorPublications().isEmpty()) {
                 findViewById(R.id.doctor_publication).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_publication_title).setVisibility(View.VISIBLE);
-                doctorPublicationAdapter = new DoctorPublicationAdapter(getApplicationContext(), doctor.getDoctorPublications());
+                doctorPublicationAdapter = new DoctorPublicationAdapter(DoctorProfileActivity.this, doctor.getDoctorPublications());
                 doctorPublicationList.setAdapter(doctorPublicationAdapter);
             }
 
             if (!doctor.getDoctorAchievements().isEmpty()) {
                 findViewById(R.id.doctor_achievements).setVisibility(View.VISIBLE);
                 findViewById(R.id.doctor_achievements_title).setVisibility(View.VISIBLE);
-                doctorAchievementsAdapter = new DoctorAchievementsAdapter(getApplicationContext(), doctor.getDoctorAchievements());
+                doctorAchievementsAdapter = new DoctorAchievementsAdapter(DoctorProfileActivity.this, doctor.getDoctorAchievements());
                 doctorAchievementList.setAdapter(doctorAchievementsAdapter);
             }
         }
