@@ -58,6 +58,7 @@ public class DoctorAlbumAdapter extends RecyclerView.Adapter<DoctorAlbumAdapter.
 
                 final ProgressDialog pd = new ProgressDialog(context);
                 pd.setMessage("loading...");
+                pd.show();
 
                 // Saves image is ExternalCacheDir and opens a viewer intent
                 new AsyncTask<Void, Void, Uri>() {
@@ -65,7 +66,6 @@ public class DoctorAlbumAdapter extends RecyclerView.Adapter<DoctorAlbumAdapter.
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
-                        pd.show();
                     }
 
                     @Override

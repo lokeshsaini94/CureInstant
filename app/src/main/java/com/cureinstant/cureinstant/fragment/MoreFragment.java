@@ -1,32 +1,41 @@
 package com.cureinstant.cureinstant.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.FollowActivity;
 import com.cureinstant.cureinstant.activity.MyPreferencesActivity;
 import com.cureinstant.cureinstant.activity.ProfileActivity;
+import com.cureinstant.cureinstant.model.Follow;
 import com.cureinstant.cureinstant.model.User;
 import com.cureinstant.cureinstant.util.Utilities;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.content.ContentValues.TAG;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 
@@ -34,6 +43,8 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
  * A simple {@link Fragment} subclass.
  */
 public class MoreFragment extends Fragment implements View.OnClickListener {
+
+    ProgressDialog progressDialog;
 
     private User userInfo = null;
     private ImageView userPicture;
@@ -50,6 +61,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_more, container, false);
 
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading...");
+
         userPicture = (ImageView) rootView.findViewById(R.id.user_picture);
         userName = (TextView) rootView.findViewById(R.id.user_name);
 
@@ -57,6 +71,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         profileView.setOnClickListener(this);
         View settings = rootView.findViewById(R.id.more_settings);
         settings.setOnClickListener(this);
+
+        View following = rootView.findViewById(R.id.more_following);
+        View followers = rootView.findViewById(R.id.more_followers);
+        following.setOnClickListener(this);
+        followers.setOnClickListener(this);
 
         RequestUserData requestUserData = new RequestUserData();
         requestUserData.execute();
@@ -75,8 +94,132 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 Intent settingsIntent = new Intent(getContext(), MyPreferencesActivity.class);
                 startActivity(settingsIntent);
                 break;
+            case R.id.more_following:
+                RequestFollowData requestFollowingData = new RequestFollowData("followings");
+                requestFollowingData.execute();
+                break;
+            case R.id.more_followers:
+                RequestFollowData requestFollowersData = new RequestFollowData("followers");
+                requestFollowersData.execute();
+                break;
         }
 
+    }
+
+    private class RequestFollowData extends AsyncTask<Void, Void, ArrayList<Follow>> {
+
+        private String type;
+
+        public RequestFollowData(String type) {
+            this.type = type;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected ArrayList<Follow> doInBackground(Void... params) {
+            ArrayList<Follow> follows = new ArrayList<>();
+            OkHttpClient client = new OkHttpClient();
+            int followID = 0;
+            String name = "";
+            String username = "";
+            String speciality = "";
+            String picture = "";
+            boolean isFollowing = false;
+
+            String url = "http://www.cureinstant.com/api/";
+            if (type.equals("followers")) {
+                url += "followers/fetch";
+            } else {
+                url += "followings/fetch";
+            }
+
+            RequestBody body = RequestBody.create(null, new byte[]{});
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+                Log.e(TAG, "doInBackground: s " + s);
+                JSONObject followJson = new JSONObject(s);
+                JSONArray followArray;
+                if (type.equals("followers")) {
+                    followArray = followJson.getJSONArray("followers");
+                } else {
+                    followArray = followJson.getJSONArray("followings");
+                }
+
+                for (int i = 0; i < followArray.length(); i++) {
+                    followID = 0;
+                    isFollowing = false;
+                    name = "";
+                    username = "";
+                    speciality = "";
+                    picture = "";
+
+                    JSONObject followObject = followArray.getJSONObject(i);
+                    switch (type) {
+                        case "followers":
+                            followID = followObject.getInt("id");
+                            isFollowing = followObject.getBoolean("following");
+                            JSONObject followerObject = followObject.getJSONObject("follower");
+                            name = followerObject.getString("name");
+                            username = followerObject.getString("username");
+                            if (!followerObject.isNull("speciality")) {
+                                speciality = followerObject.getString("speciality");
+                            }
+                            if (!followerObject.isNull("profile_pic")) {
+                                JSONObject pictureObject = followerObject.getJSONObject("profile_pic");
+                                picture = pictureObject.getString("pic_name");
+                            }
+                            break;
+                        default:
+                            followID = followObject.getInt("id");
+                            JSONObject followingObject = followObject.getJSONObject("following");
+                            name = followingObject.getString("name");
+                            username = followingObject.getString("username");
+                            if (!followingObject.isNull("speciality")) {
+                                speciality = followingObject.getString("speciality");
+                            }
+                            if (!followingObject.isNull("profile_pic")) {
+                                JSONObject pictureObject = followingObject.getJSONObject("profile_pic");
+                                picture = pictureObject.getString("pic_name");
+                            }
+                            break;
+                    }
+
+                    follows.add(new Follow(followID, name, username, speciality, picture, isFollowing));
+                }
+
+                return follows;
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Follow> follows) {
+            super.onPostExecute(follows);
+            progressDialog.dismiss();
+            if (follows.size() < 1) {
+                Toast.makeText(getContext(), "No " + type + "!", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent followersIntent = new Intent(getContext(), FollowActivity.class);
+                followersIntent.putExtra("type", type);
+                followersIntent.putParcelableArrayListExtra("follows", follows);
+                startActivity(followersIntent);
+            }
+        }
     }
 
 

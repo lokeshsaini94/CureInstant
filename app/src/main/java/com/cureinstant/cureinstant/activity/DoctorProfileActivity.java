@@ -280,6 +280,13 @@ public class DoctorProfileActivity extends AppCompatActivity {
                 link = achievementObject.getString("link");
                 image = achievementObject.getString("image");
 
+                if (!link.startsWith("www.") && !link.startsWith("http://") && !link.startsWith("https://")) {
+                    link = "www." + link;
+                }
+                if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                    link = "http://" + link;
+                }
+
                 doctorAchievements.add(new DoctorAchievement(title, desc, link, image));
             }
 
@@ -311,8 +318,6 @@ public class DoctorProfileActivity extends AppCompatActivity {
                 }
             }
         }
-
-        String imageURL = Utilities.profilePicSmallBaseUrl + profilePicture;
 
         return new Doctor(accountType, name, username, sex, email, number, address, summary,
                 speciality, profilePicture, followers, followings, album, doctorEduDetails,

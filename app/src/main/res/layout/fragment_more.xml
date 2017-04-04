@@ -33,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="Name"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -97,6 +96,34 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Following"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/more_followers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_follow"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Followers"
                 android:textSize="18sp" />
 
         </LinearLayout>
