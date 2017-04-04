@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,9 +49,12 @@ import okhttp3.Response;
 
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
-public class DoctorProfileActivity extends AppCompatActivity {
+public class DoctorProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     View rootView;
+    int userID;
+    Button followButton;
+    Button bookButton;
     ProgressDialog progressDialog;
     RecyclerView doctorAlbumList;
     DoctorAlbumAdapter doctorAlbumAdapter;
@@ -94,6 +98,11 @@ public class DoctorProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        followButton = (Button) findViewById(R.id.doctor_follow_button);
+        followButton.setOnClickListener(this);
+        bookButton = (Button) findViewById(R.id.doctor_book_button);
+        bookButton.setOnClickListener(this);
 
         doctorWorkDetailsList = (RecyclerView) findViewById(R.id.doctor_work_details_item);
         doctorWorkDetailsList.setLayoutManager(new LinearLayoutManager(DoctorProfileActivity.this) {
@@ -175,6 +184,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
     }
 
     private Doctor getDoctorDetails(String s) throws JSONException {
+        int userID = 0;
         String name = "", username = "", profilePicture = "", accountType = "";
         JSONObject feedJson = new JSONObject(s);
         accountType = feedJson.getString("account_type");
@@ -194,6 +204,7 @@ public class DoctorProfileActivity extends AppCompatActivity {
 
         if (accountType.equals("P")) {
             speciality = feedJson.getString("speciality");
+            userID = feedJson.getInt("profile_id");
 
             if (!feedJson.isNull("about")) {
                 JSONObject aboutObject = feedJson.getJSONObject("about");
@@ -319,9 +330,22 @@ public class DoctorProfileActivity extends AppCompatActivity {
             }
         }
 
-        return new Doctor(accountType, name, username, sex, email, number, address, summary,
+        return new Doctor(userID, accountType, name, username, sex, email, number, address, summary,
                 speciality, profilePicture, followers, followings, album, doctorEduDetails,
                 doctorSkills, doctorWorkDetails, doctorAchievements, doctorPublications, doctorFeedbacks);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.doctor_follow_button:
+                Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(DoctorProfileActivity.this, true, userID, (Button)v);
+                followDoctor.execute();
+                break;
+            case R.id.doctor_book_button:
+                Toast.makeText(DoctorProfileActivity.this, "This feature is coming soon!", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private class RequestUserData extends AsyncTask<Void, Void, Doctor> {
@@ -373,6 +397,8 @@ public class DoctorProfileActivity extends AppCompatActivity {
             progressDialog.dismiss();
             rootView.setVisibility(View.VISIBLE);
             // TODO: 01-04-2017 Process doctor details and display them
+
+            userID = doctor.getUserID();
 
             TextView name = (TextView) findViewById(R.id.doctor_name);
             name.setText(doctor.getName());
