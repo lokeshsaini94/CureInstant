@@ -205,7 +205,9 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         ArrayList<DoctorFeedback> doctorFeedbacks = new ArrayList<>();
 
         if (accountType.equals("P")) {
-            speciality = feedJson.getString("speciality");
+            if (!feedJson.isNull("speciality")) {
+                speciality = feedJson.getString("speciality");
+            }
             userID = feedJson.getInt("profile_id");
 
             if (!feedJson.isNull("about")) {
