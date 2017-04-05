@@ -216,10 +216,10 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             }
 
             JSONObject followObject = feedJson.getJSONObject("followCount");
-            if (!feedJson.isNull("followings")) {
+            if (!followObject.isNull("followings")) {
                 followings = followObject.getInt("followings");
             }
-            if (!feedJson.isNull("followers")) {
+            if (!followObject.isNull("followers")) {
                 followers = followObject.getInt("followers");
             }
             if (!feedJson.isNull("followed")) {
