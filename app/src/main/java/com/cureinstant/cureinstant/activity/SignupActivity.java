@@ -277,7 +277,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
      * Represents an asynchronous registration task used to authenticate
      * the user.
      */
-    public class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
 //        private final String firstName;
 //        private final String LastName;

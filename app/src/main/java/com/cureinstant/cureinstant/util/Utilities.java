@@ -120,11 +120,11 @@ public class Utilities {
         }
     }
 
-    public static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
                 if (!success) {
                     return false;
                 }
@@ -132,7 +132,7 @@ public class Utilities {
         }
 
         // The directory is now empty so delete it
-        return dir.delete();
+        return dir != null && dir.delete();
     }
 
     public static void hideSoftKeyboard(Activity activity) {

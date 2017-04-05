@@ -102,9 +102,7 @@ public class AddRecordActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            return;
-        } else if (requestCode == SELECT_PICTURE) {
+        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) {
             View view = findViewById(R.id.add_record_title_container);
             view.setVisibility(View.VISIBLE);
             addRecord.setVisibility(View.VISIBLE);

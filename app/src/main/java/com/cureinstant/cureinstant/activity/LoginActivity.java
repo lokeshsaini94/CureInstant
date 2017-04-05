@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
      * Represents an asynchronous login task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUsername;
         private final String mPassword;

@@ -72,9 +72,12 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             int column_index = 0;
             if (cursor != null) {
                 column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                return cursor.getString(column_index);
             }
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
+            else {
+                return null;
+            }
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -309,7 +312,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
 
         private File file;
 
-        public UploadImage(Uri selectedImageUri) {
+        UploadImage(Uri selectedImageUri) {
             file = getFileFrom(selectedImageUri);
         }
 
@@ -375,7 +378,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         String desc;
         ArrayList<String> images;
 
-        public PostQuestion(String title, String desc, ArrayList<String> images) {
+        PostQuestion(String title, String desc, ArrayList<String> images) {
             this.title = title;
             this.desc = desc;
             this.images = images;

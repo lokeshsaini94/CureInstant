@@ -81,6 +81,7 @@ public class FollowActivity extends AppCompatActivity {
         });
     }
 
+    // Requests more followers or Followings data from api call
     private class RequestMoreFollowData extends AsyncTask<Void, Void, ArrayList<Follow>> {
 
         ArrayList<Follow> newFollows = new ArrayList<>();
@@ -89,7 +90,7 @@ public class FollowActivity extends AppCompatActivity {
         private String type;
         private int lastFollowID;
 
-        public RequestMoreFollowData(String type, int lastFollowID) {
+        RequestMoreFollowData(String type, int lastFollowID) {
             this.type = type;
             this.lastFollowID = lastFollowID;
         }
@@ -213,5 +214,4 @@ public class FollowActivity extends AppCompatActivity {
             }
         }
     }
-
 }

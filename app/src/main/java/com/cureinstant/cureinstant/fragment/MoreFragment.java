@@ -104,11 +104,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    // Requests followers or Followings data from api call
     private class RequestFollowData extends AsyncTask<Void, Void, ArrayList<Follow>> {
 
         private String type;
 
-        public RequestFollowData(String type) {
+        RequestFollowData(String type) {
             this.type = type;
         }
 

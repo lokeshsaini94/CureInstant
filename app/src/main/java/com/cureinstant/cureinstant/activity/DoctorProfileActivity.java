@@ -174,7 +174,6 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         doctorAlbumList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         doctorAlbumList.setItemAnimator(new DefaultItemAnimator());
 
-
         if (username != null) {
             RequestUserData requestUserData = new RequestUserData(username);
             requestUserData.execute();
@@ -372,7 +371,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
 
         String username;
 
-        public RequestUserData(String username) {
+        RequestUserData(String username) {
             this.username = username;
         }
 
