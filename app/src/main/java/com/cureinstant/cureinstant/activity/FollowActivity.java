@@ -135,8 +135,6 @@ public class FollowActivity extends AppCompatActivity {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
 
-                follows.remove(follows.size() - 1); // Remove progressView
-
                 JSONObject followJson = new JSONObject(s);
                 JSONArray followArray;
                 if (type.equals("followers")) {
@@ -201,10 +199,13 @@ public class FollowActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Follow> newFollows) {
             super.onPostExecute(newFollows);
+            follows.remove(follows.size() - 1); // Remove progressView
+
             if (newFollows != null && !newFollows.isEmpty()) {
                 if (newFollows.size() > oldFeedItemCount) {
                     follows.clear();
                     follows.addAll(newFollows);
+                    followList.getRecycledViewPool().clear();
                     followAdapter.setLoaded();
                 } else {
                     followAdapter.notifyItemRemoved(follows.size() - 1);
