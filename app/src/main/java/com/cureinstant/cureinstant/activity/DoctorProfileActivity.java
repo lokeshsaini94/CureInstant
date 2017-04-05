@@ -416,7 +416,6 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             super.onPostExecute(doctor);
             progressDialog.dismiss();
             rootView.setVisibility(View.VISIBLE);
-            // TODO: 01-04-2017 Process doctor details and display them
 
             userID = doctor.getUserID();
 
