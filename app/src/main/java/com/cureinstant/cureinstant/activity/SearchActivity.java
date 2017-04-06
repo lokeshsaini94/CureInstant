@@ -97,6 +97,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             Utilities.hideSoftKeyboard(SearchActivity.this);
             progressDialog.show();
+            currentPage = 1;
             if (!searchProfiles.isEmpty()) {
                 searchProfiles.clear();
                 searchAdapter.notifyDataSetChanged();
