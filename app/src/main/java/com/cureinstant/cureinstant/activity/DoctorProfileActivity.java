@@ -185,9 +185,10 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
 
     private Doctor getDoctorDetails(String s) throws JSONException {
         int userID = 0;
-        String name = "", username = "", profilePicture = "", accountType = "";
+        String name = "", username = "", profilePicture = "", accountType = "", subAccountType = "";
         JSONObject feedJson = new JSONObject(s);
         accountType = feedJson.getString("account_type");
+        subAccountType = feedJson.getString("account_subtype");
         name = feedJson.getString("name");
         username = feedJson.getString("username");
         profilePicture = feedJson.getString("profile_pic");
@@ -203,7 +204,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         ArrayList<DoctorPublication> doctorPublications = new ArrayList<>();
         ArrayList<DoctorFeedback> doctorFeedbacks = new ArrayList<>();
 
-        if (accountType.equals("P")) {
+        if (accountType.equals("P") && subAccountType.equals("Doctor")) {
             if (!feedJson.isNull("speciality")) {
                 speciality = feedJson.getString("speciality");
             }
