@@ -709,8 +709,11 @@ public class Utilities {
                     JSONObject userObject = replyObject.getJSONObject("user");
                     String name = userObject.getString("name");
                     String username = userObject.getString("username");
-                    JSONObject userPicObject = userObject.getJSONObject("profile_pic");
-                    String picture = userPicObject.getString("pic_name");
+                    String picture = "";
+                    if (!userObject.isNull("profile_pic")) {
+                        JSONObject userPicObject = userObject.getJSONObject("profile_pic");
+                        picture = userPicObject.getString("pic_name");
+                    }
                     replies.add(new Comment(commentString, time, id, replyCount, likes, liked, name, username, picture));
                 }
                 String status = feedJson.getString("success");
