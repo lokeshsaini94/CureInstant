@@ -90,7 +90,7 @@ public class ReadFragment extends Fragment {
 
     public void refreshFeedFrag() {
         if (feedFragment != null) {
-            feedFragment.refreshData();
+            feedFragment.goBackUp();
         }
     }
 

@@ -139,8 +139,11 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         }
     }
 
-    public void refreshData() {
+    public void goBackUp() {
         recyclerView.smoothScrollToPosition(0);
+    }
+
+    public void refreshData() {
         RequestData requestData = new RequestData();
         requestData.execute();
     }
