@@ -118,8 +118,10 @@ public class AppointmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (finalLocality.isEmpty() || finalCity.isEmpty()) {
+                    locationAutoComplete.requestFocus();
                     locationAutoComplete.setError(getString(R.string.error_field_required));
                 } else if (finalSpeciality.isEmpty()) {
+                    specialityAutoComplete.requestFocus();
                     specialityAutoComplete.setError(getString(R.string.error_field_required));
                 } else {
                     // TODO: 07-04-2017 Show doctors list
