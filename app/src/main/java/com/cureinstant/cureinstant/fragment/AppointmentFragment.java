@@ -66,7 +66,7 @@ public class AppointmentFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String term = s.toString();
 
-                if (fetchSpeciality != null) {
+                if (fetchLocation != null) {
                     //close the current task if it # null
                     fetchLocation.cancel(true);
                     fetchLocation = null;
