@@ -66,7 +66,10 @@
         <activity
             android:name=".activity.FeedItemActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.FollowActivity"
+        <activity
+            android:name=".activity.FollowActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.BookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

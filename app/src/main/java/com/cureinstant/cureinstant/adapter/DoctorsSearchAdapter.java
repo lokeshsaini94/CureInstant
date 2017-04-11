@@ -1,6 +1,7 @@
 package com.cureinstant.cureinstant.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.BookActivity;
 import com.cureinstant.cureinstant.model.BookDoctor;
 import com.cureinstant.cureinstant.util.Utilities;
 
@@ -57,6 +59,9 @@ public class DoctorsSearchAdapter extends RecyclerView.Adapter<DoctorsSearchAdap
                 switch (v.getId()) {
                     case R.id.book_doctor_button:
                         // TODO: 11-04-2017 Add doctor booking activity intent here
+                        Intent intent = new Intent(context, BookActivity.class);
+                        intent.putExtra("BookDoctor", bookDoctor);
+                        context.startActivity(intent);
                         break;
                 }
             }
