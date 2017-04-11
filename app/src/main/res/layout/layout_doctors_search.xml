@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:text="Doctors"
+        android:textColor="@color/white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/doctors_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

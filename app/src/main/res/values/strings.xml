@@ -55,5 +55,6 @@
     <string name="male_string">MALE</string>
     <string name="female_string">FEMALE</string>
     <string name="attachments_count">%d Attachment(s)</string>
+    <string name="doctor_fee">Fee: %s</string>
 
 </resources>

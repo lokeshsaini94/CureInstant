@@ -359,7 +359,11 @@ public class AppointmentFragment extends Fragment {
                 if (bookDoctors.isEmpty()) {
                     Toast.makeText(getContext(), "No " + speciality + " found in this area", Toast.LENGTH_LONG).show();
                 } else {
-                    // TODO: 08-04-2017 Open list of doctors in a bottomsheet
+                    DoctorsBottomSheetFragment doctorsBottomSheetFragment = DoctorsBottomSheetFragment.getInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("doctors", bookDoctors);
+                    doctorsBottomSheetFragment.setArguments(bundle);
+                    doctorsBottomSheetFragment.show(getFragmentManager(), "BookDoctors");
                 }
             } else {
                 Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_height="70dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -17,20 +15,10 @@
         android:src="@drawable/doctor_placeholder" />
 
     <TextView
-        android:id="@+id/book_doctor_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/book_doctor_picture"
-        android:text="@string/doctor_name"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/book_doctor_speciality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/book_doctor_name"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/book_doctor_picture"
         android:text="@string/doctor_speciality" />
 
@@ -43,27 +31,38 @@
         android:text="All india medical" />
 
     <TextView
+        android:id="@+id/book_doctor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/book_doctor_speciality"
+        android:layout_toRightOf="@id/book_doctor_picture"
+        android:text="@string/doctor_name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/book_doctor_fee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="8dp"
-        android:text="Fee: 500"/>
+        android:layout_marginTop="8dp"
+        android:text="Fee: 500" />
 
     <Button
         android:id="@+id/book_doctor_button"
         style="?attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/book_doctor_fee"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         android:clickable="true"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:padding="8dp"
         android:text="Book"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/white" />
 </RelativeLayout>
