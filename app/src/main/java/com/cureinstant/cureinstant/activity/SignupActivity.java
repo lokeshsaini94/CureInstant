@@ -34,13 +34,13 @@ import okhttp3.Response;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetDatePickerDialog.OnDateSetListener {
 
     private static final String PASSWORD_PATTERN =
-            "(" +                       // Start of group
-                    "(?=.*\\d)" +       // must contains one digit from 0-9
-                    "(?=.*[a-zA-Z])" +  // must contains one characters
+            "(" +                           // Start of group
+                    "(?=.*\\d)" +           // must contains one digit from 0-9
+                    "(?=.*[a-zA-Z])" +      // must contains one characters
                     "(?=.*[@#$_*!.-])" +    // must contains one special symbols in the list "@#$_*!.-"
-                    "." +               // match anything with previous condition checking
-                    "{6,25}" +          // length at least 6 characters and maximum of 25
-                    ")";                // End of group
+                    "." +                   // match anything with previous condition checking
+                    "{6,25}" +              // length at least 6 characters and maximum of 25
+                    ")";                    // End of group
 
     ProgressDialog progressDialog;
     AlertDialog.Builder otpDialog;
@@ -54,8 +54,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private String password;
     private boolean isNumberVerified = false;
 
-    // UI references.
-    private Button verifyOTP;
     private EditText dobET;
     private EditText numberET;
     private EditText otpET;
@@ -90,7 +88,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         buttonSignUp2.setOnClickListener(this);
         buttonSignUp3.setOnClickListener(this);
 
-        verifyOTP = (Button) findViewById(R.id.otp_button);
+        Button verifyOTP = (Button) findViewById(R.id.otp_button);
         verifyOTP.setOnClickListener(this);
         numberET = (EditText) findViewById(R.id.number);
         dobET = (EditText) findViewById(R.id.dob);
@@ -142,6 +140,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // starts the date picker for the date of birth input
     private void openDatePicker() {
         Calendar now = Calendar.getInstance();
         BottomSheetDatePickerDialog date = BottomSheetDatePickerDialog.newInstance(
@@ -162,6 +161,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         dobET.setText(year + "-" + month + "-" + dayOfMonth);
     }
 
+    // validates the 1st signup page
     private Boolean validateInput1() {
         EditText mFirstName = (EditText) findViewById(R.id.firstname);
         EditText mLastName = (EditText) findViewById(R.id.lastname);
@@ -221,6 +221,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // validates the 3rd signup page
     private Boolean validateInput3() {
         EditText mPassword = (EditText) findViewById(R.id.password);
         EditText mPasswordConfirm = (EditText) findViewById(R.id.password_confirm);
@@ -266,10 +267,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // checks if entered email is in valid format
     private boolean isEmailValid(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    // validates the password on the given pattern
     private boolean isPasswordValid(String password) {
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
@@ -285,6 +288,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    // Validates the entered mobile number and starts RequestOTP task on success
     private class CheckNumber extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -345,6 +349,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // Requests OTP on the the entered Mobile number
     private class RequestOTP extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -380,6 +385,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // Validates email and otp and starts next step on success
     private class CheckEmailAndOtpValid extends AsyncTask<Void, Void, boolean[]> {
 
         EditText mEmail = (EditText) findViewById(R.id.email);

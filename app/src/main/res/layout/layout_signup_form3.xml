@@ -10,7 +10,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Password must contain at least 6 characters, 1 alphabet, 1 number and 1 special character (@#$_*!.-)"
+        android:text="Password must be at least 6 characters long with at least 1 alphabet, 1 number and 1 special character (@#$_*!.-)"
         android:textColor="@color/text_gray" />
 
     <android.support.design.widget.TextInputLayout
