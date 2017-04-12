@@ -1,7 +1,9 @@
 package com.cureinstant.cureinstant.activity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,24 +14,51 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
-import com.cureinstant.cureinstant.util.Utilities;
 import com.philliphsu.bottomsheetpickers.date.BottomSheetDatePickerDialog;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetDatePickerDialog.OnDateSetListener {
 
-    String firstName;
-    String lastName;
-    String dob;
-    String email;
-    String number;
-    String username;
-    String password;
-    Boolean isMale;
-    EditText dobET;
+    private static final String PASSWORD_PATTERN =
+            "(" +                       // Start of group
+                    "(?=.*\\d)" +       // must contains one digit from 0-9
+                    "(?=.*[a-zA-Z])" +  // must contains one characters
+                    "(?=.*[@#$_*!.-])" +    // must contains one special symbols in the list "@#$_*!.-"
+                    "." +               // match anything with previous condition checking
+                    "{6,25}" +          // length at least 6 characters and maximum of 25
+                    ")";                // End of group
+
+    ProgressDialog progressDialog;
+    AlertDialog.Builder otpDialog;
+    private String firstName;
+    private String lastName;
+    private String dob;
+    private int sex;
+    private String email = "";
+    private String number;
+    private String otpFinal;
+    private String password;
+    private boolean isNumberVerified = false;
+
     // UI references.
+    private Button verifyOTP;
+    private EditText dobET;
+    private EditText numberET;
+    private EditText otpET;
     private View mProgressView;
     private View mSignUpFormView;
     private View emailSignUpForm1;
@@ -40,6 +69,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        otpDialog = new AlertDialog.Builder(SignupActivity.this);
+        progressDialog = new ProgressDialog(SignupActivity.this);
+        progressDialog.setMessage("Please Wait...");
 
         emailSignUpForm1 = findViewById(R.id.email_signup_form1);
         emailSignUpForm2 = findViewById(R.id.email_signup_form2);
@@ -57,8 +90,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         buttonSignUp2.setOnClickListener(this);
         buttonSignUp3.setOnClickListener(this);
 
+        verifyOTP = (Button) findViewById(R.id.otp_button);
+        verifyOTP.setOnClickListener(this);
+        numberET = (EditText) findViewById(R.id.number);
         dobET = (EditText) findViewById(R.id.dob);
-//        dobET.setOnClickListener(this);
+        otpET = (EditText) findViewById(R.id.otp);
         dobET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -83,17 +119,26 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.sign_up_button2:
-                if (validateInput2()) {
-                    emailSignUpForm2.setVisibility(View.GONE);
-                    emailSignUpForm3.setVisibility(View.VISIBLE);
+                if (isNumberVerified) {
+                    CheckEmailAndOtpValid checkEmailAndOtpValid = new CheckEmailAndOtpValid();
+                    checkEmailAndOtpValid.execute();
+                } else {
+                    numberET.setError("Please Verify your number first");
+                    numberET.requestFocus();
                 }
                 break;
             case R.id.sign_up_button3:
                 if (validateInput3()) {
                     UserSignUpTask userSignUpTask = new UserSignUpTask();
-                    userSignUpTask.execute((Void) null);
+                    userSignUpTask.execute();
                 }
                 break;
+            case R.id.otp_button:
+                numberET.setError(null);
+                CheckNumber checkNumber = new CheckNumber();
+                checkNumber.execute();
+                break;
+
         }
     }
 
@@ -109,7 +154,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        dobET.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+        monthOfYear += 1;
+        String month = String.valueOf(monthOfYear);
+        if (monthOfYear < 10) {
+            month = "0" + (monthOfYear);
+        }
+        dobET.setText(year + "-" + month + "-" + dayOfMonth);
     }
 
     private Boolean validateInput1() {
@@ -118,6 +168,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         EditText mDob = (EditText) findViewById(R.id.dob);
         RadioButton mMale = (RadioButton) findViewById(R.id.radioMale);
         RadioButton mFemale = (RadioButton) findViewById(R.id.radioFemale);
+        RadioButton mOther = (RadioButton) findViewById(R.id.radioOther);
 
         // Reset errors.
         mFirstName.setError(null);
@@ -129,9 +180,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         lastName = mLastName.getText().toString();
         dob = mDob.getText().toString();
         if (mMale.isChecked()) {
-            isMale = true;
+            sex = 1;
         } else if (mFemale.isChecked()) {
-            isMale = false;
+            sex = 2;
+        } else if (mOther.isChecked()) {
+            sex = 3;
         }
 
         boolean cancel = false;
@@ -168,70 +221,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private Boolean validateInput2() {
-        EditText mEmail = (EditText) findViewById(R.id.email);
-        EditText mNumber = (EditText) findViewById(R.id.number);
-
-        // Reset errors.
-        mEmail.setError(null);
-        mNumber.setError(null);
-
-        // Store values at the time of validation.
-        email = mEmail.getText().toString();
-        number = mNumber.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check if the user entered a valid Email.
-        if (TextUtils.isEmpty(email)) {
-            mEmail.setError(getString(R.string.error_field_required));
-            focusView = mEmail;
-            cancel = true;
-        } else if (!TextUtils.isEmpty(email) && !isEmailValid(email)) {
-            mEmail.setError("Invalid Email");
-            focusView = mEmail;
-            cancel = true;
-        }
-
-        // Check if the user entered a valid Number.
-        if (TextUtils.isEmpty(number)) {
-            mNumber.setError(getString(R.string.error_field_required));
-            focusView = mNumber;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt sign up and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     private Boolean validateInput3() {
-        EditText mUsername = (EditText) findViewById(R.id.username);
         EditText mPassword = (EditText) findViewById(R.id.password);
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.password_confirm);
 
         // Reset errors.
-        mUsername.setError(null);
         mPassword.setError(null);
+        mPasswordConfirm.setError(null);
 
         // Store values at the time of validation.
-        username = mUsername.getText().toString();
         password = mPassword.getText().toString();
+        String passwordConfirm = mPasswordConfirm.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        // Check if the user entered a valid Username.
-        if (TextUtils.isEmpty(username)) {
-            mUsername.setError(getString(R.string.error_field_required));
-            focusView = mUsername;
-            cancel = true;
-        }
 
         // Check if the user entered a valid Password.
         if (TextUtils.isEmpty(password)) {
@@ -241,6 +244,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         } else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPassword.setError(getString(R.string.error_invalid_password));
             focusView = mPassword;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(passwordConfirm)) {
+            mPasswordConfirm.setError(getString(R.string.error_field_required));
+            focusView = mPasswordConfirm;
+            cancel = true;
+        } else if (!TextUtils.isEmpty(passwordConfirm) && !password.equals(passwordConfirm)) {
+            mPasswordConfirm.setError(getString(R.string.error_invalid_password_not_a_match));
+            focusView = mPasswordConfirm;
             cancel = true;
         }
 
@@ -255,13 +267,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     /**
@@ -273,52 +285,279 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private class CheckNumber extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            number = numberET.getText().toString();
+            progressDialog.show();
+
+            // Check if the user entered a valid Number.
+            if (TextUtils.isEmpty(number)) {
+                this.cancel(true);
+                progressDialog.dismiss();
+                numberET.setError(getString(R.string.error_field_required));
+                numberET.requestFocus();
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody bodyNumber = new FormBody.Builder()
+                    .add("mobile", number)
+                    .build();
+
+            String urlNumber = "http://www.cureinstant.com/api/registration-query/mobile";
+
+            Request requestNumber = new Request.Builder()
+                    .url(urlNumber)
+                    .post(bodyNumber)
+                    .build();
+            Response responseNumber;
+            try {
+                responseNumber = client.newCall(requestNumber).execute();
+                String resultJsonString = responseNumber.body().string();
+                JSONObject resultJson = new JSONObject(resultJsonString);
+                String result = resultJson.getString("mobile");
+                if (result.equals("Available.")) {
+                    return true;
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (!aBoolean) {
+                progressDialog.dismiss();
+                numberET.setError("Number not available!");
+                numberET.requestFocus();
+            } else {
+                RequestOTP requestOTP = new RequestOTP();
+                requestOTP.execute();
+            }
+        }
+    }
+
+    private class RequestOTP extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody bodyNumber = new FormBody.Builder()
+                    .add("mobile", number)
+                    .build();
+
+            String urlNumber = "http://www.cureinstant.com/api/registration-query/send-otp";
+
+            Request requestNumber = new Request.Builder()
+                    .url(urlNumber)
+                    .post(bodyNumber)
+                    .build();
+            Response responseNumber;
+            try {
+                responseNumber = client.newCall(requestNumber).execute();
+                String resultJsonString = responseNumber.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            Toast.makeText(SignupActivity.this, "OTP sent.", Toast.LENGTH_SHORT).show();
+            isNumberVerified = true;
+        }
+    }
+
+    private class CheckEmailAndOtpValid extends AsyncTask<Void, Void, boolean[]> {
+
+        EditText mEmail = (EditText) findViewById(R.id.email);
+
+        CheckEmailAndOtpValid() {
+            email = mEmail.getText().toString();
+            otpFinal = otpET.getText().toString();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            // Reset errors.
+            mEmail.setError(null);
+            otpET.setError(null);
+
+            boolean cancel = false;
+            View focusView = null;
+
+            // Check if the user entered a valid Email.
+            if (!TextUtils.isEmpty(email) && !isEmailValid(email)) {
+                mEmail.setError("Invalid Email");
+                focusView = mEmail;
+                cancel = true;
+            }
+
+            // Check if the user entered a valid Number.
+            if (TextUtils.isEmpty(otpFinal)) {
+                otpET.setError(getString(R.string.error_field_required));
+                focusView = otpET;
+                cancel = true;
+            }
+
+            if (cancel) {
+                // There was an error; don't attempt sign up and focus the first
+                // form field with an error.
+                focusView.requestFocus();
+                this.cancel(true);
+            }
+        }
+
+        @Override
+        protected boolean[] doInBackground(Void... params) {
+            boolean[] validation = new boolean[2];
+            validation[0] = false;
+            validation[1] = false;
+
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody bodyEmail = new FormBody.Builder()
+                    .add("email", email)
+                    .build();
+
+            String urlEmail = "http://www.cureinstant.com/api/registration-query/email";
+
+            Request requestEmail = new Request.Builder()
+                    .url(urlEmail)
+                    .post(bodyEmail)
+                    .build();
+            Response responseEmail;
+            try {
+                responseEmail = client.newCall(requestEmail).execute();
+                String resultJsonString = responseEmail.body().string();
+                JSONObject resultJson = new JSONObject(resultJsonString);
+                String result = resultJson.getString("email");
+                if (result.equals("Available.")) {
+                    validation[0] = true;
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            RequestBody bodyOtp = new FormBody.Builder()
+                    .add("mobile", number)
+                    .add("otp", otpFinal)
+                    .build();
+
+            String urlOtp = "http://www.cureinstant.com/api/registration-query/invalidate-otp";
+
+            Request requestOtp = new Request.Builder()
+                    .url(urlOtp)
+                    .post(bodyOtp)
+                    .build();
+            Response responseOtp;
+            try {
+                responseOtp = client.newCall(requestOtp).execute();
+                String resultJsonString = responseOtp.body().string();
+                JSONObject resultJson = new JSONObject(resultJsonString);
+                if (resultJson.has("success")) {
+                    String status = resultJson.getString("success");
+                    if (status.equals("success")) {
+                        validation[1] = true;
+                    }
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return validation;
+        }
+
+        @Override
+        protected void onPostExecute(boolean[] booleen) {
+            super.onPostExecute(booleen);
+            if (booleen[0] && booleen[1]) {
+                emailSignUpForm2.setVisibility(View.GONE);
+                emailSignUpForm3.setVisibility(View.VISIBLE);
+            } else {
+                if (!booleen[0]) {
+                    mEmail.setError("Email not available!");
+                    mEmail.requestFocus();
+                }
+                if (!booleen[1]) {
+                    otpET.setError("OTP not a match!");
+                    otpET.requestFocus();
+                }
+            }
+        }
+    }
+
     /**
      * Represents an asynchronous registration task used to authenticate
      * the user.
      */
     private class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
-//        private final String firstName;
-//        private final String LastName;
-//        private final String dob;
-//        private final String email;
-//        private final String number;
-//        private final String username;
-//        private final String password;
-//        private final Boolean isMale;
-//
-//        public UserSignUpTask(String firstName, String lastName, String dob, String email, String number, String username, String password, Boolean isMale) {
-//            this.firstName = firstName;
-//            LastName = lastName;
-//            this.dob = dob;
-//            this.email = email;
-//            this.number = number;
-//            this.username = username;
-//            this.password = password;
-//            this.isMale = isMale;
-//        }
-
+        String genderFinal;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             showProgress(true);
+            if (sex == 1) {
+                genderFinal = "MALE";
+            } else if (sex == 2) {
+                genderFinal = "FEMALE";
+            } else if (sex == 3) {
+                genderFinal = "OTHER";
+            }
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            OkHttpClient client = new OkHttpClient();
 
+            RequestBody bodyNumber = new FormBody.Builder()
+                    .add("first_name", firstName)
+                    .add("last_name", lastName)
+                    .add("email", email)
+                    .add("mobile", number)
+                    .add("otp", otpFinal)
+                    .add("dob", dob)
+                    .add("password", password)
+                    .add("gender", genderFinal)
+                    .build();
+
+            String urlNumber = "http://www.cureinstant.com/api/user-registration";
+
+            Request requestNumber = new Request.Builder()
+                    .url(urlNumber)
+                    .post(bodyNumber)
+                    .build();
+            Response responseNumber;
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-
-                // Sign up and return a boolean.
-                return true;
-            } catch (InterruptedException e) {
-                return false;
+                responseNumber = client.newCall(requestNumber).execute();
+                String resultJsonString = responseNumber.body().string();
+                JSONObject resultObject = new JSONObject(resultJsonString);
+                if (resultObject.has("success")) {
+                    String status = resultObject.getString("success");
+                    if (status.equals("registered")) {
+                        return true;
+                    }
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
             }
+            return false;
         }
 
         @Override
@@ -326,8 +565,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             showProgress(false);
 
             if (success) {
-                Utilities.loggedInBool(getApplicationContext(), true);
-                finish();
+                // TODO: 12-04-2017 Log user in after signup is a success
+//                Utilities.loggedInBool(getApplicationContext(), true);
+//                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
             }
