@@ -188,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://www.cureinstant.com/oauth/token")
+                    .url("http://www.cureinstant.com/api/login")
                     .post(body)
                     .build();
 
