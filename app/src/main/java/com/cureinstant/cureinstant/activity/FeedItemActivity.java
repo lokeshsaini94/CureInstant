@@ -319,7 +319,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         } else {
             linksTextView.setVisibility(View.VISIBLE);
             String s = "";
-            for (int i=0; i<feed.getLinks().size(); i++) {
+            for (int i = 0; i < feed.getLinks().size(); i++) {
                 s += feed.getLinks().get(i);
                 s += " | ";
             }

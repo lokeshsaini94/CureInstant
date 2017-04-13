@@ -14,8 +14,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabMode="fixed" />
     </android.support.design.widget.AppBarLayout>
