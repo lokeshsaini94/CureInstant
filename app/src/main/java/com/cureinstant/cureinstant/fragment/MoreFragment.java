@@ -238,15 +238,18 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             OkHttpClient client = new OkHttpClient();
             String name = "";
             String username = "";
-            String sex = "";
+            String sex = "Male";
             String email = "";
             String number = "";
             String dob = "";
             String picture = "";
 
+            RequestBody body = RequestBody.create(null, new byte[]{});
+
             Request request = new Request.Builder()
-                    .url("http://www.cureinstant.com/api/user-info")
+                    .url("http://www.cureinstant.com/api/profile/fetch")
                     .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
                     .build();
             try {
                 Response response = client.newCall(request).execute();
@@ -254,12 +257,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 JSONObject profileJson = new JSONObject(s);
                 name = profileJson.getString("name");
                 username = profileJson.getString("username");
-                sex = profileJson.getString("gender");
-                email = profileJson.getString("email");
-                number = profileJson.getString("mobile");
+//                sex = profileJson.getString("gender");
+                JSONObject userInfoObject = profileJson.getJSONObject("user_info");
+                email = userInfoObject.getString("email");
+                number = userInfoObject.getString("mobile");
                 dob = profileJson.getString("dob");
-                JSONObject pictureData = profileJson.getJSONObject("profile_pic");
-                picture = pictureData.getString("pic_name");
+                picture = profileJson.getString("profile_pic");
 
                 return new User(name, username, sex, email, number, dob, picture);
 
