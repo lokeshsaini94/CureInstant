@@ -57,7 +57,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private String number;
     private String otpFinal;
     private String password;
-    private boolean isNumberVerified = false;
+    private boolean isOtpSent = false;
 
     private EditText dobET;
     private EditText numberET;
@@ -122,7 +122,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.sign_up_button2:
-                if (isNumberVerified) {
+                if (isOtpSent) {
                     CheckEmailAndOtpValid checkEmailAndOtpValid = new CheckEmailAndOtpValid();
                     checkEmailAndOtpValid.execute();
                 } else {
@@ -386,7 +386,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             Toast.makeText(SignupActivity.this, "OTP sent.", Toast.LENGTH_SHORT).show();
-            isNumberVerified = true;
+            isOtpSent = true;
         }
     }
 
