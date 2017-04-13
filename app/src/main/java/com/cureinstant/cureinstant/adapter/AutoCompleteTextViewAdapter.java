@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 07-04-2017.
  */
 
+// Adapter to show list of suggestions on an AutoComplete EditText
 public class AutoCompleteTextViewAdapter extends ArrayAdapter<String> implements Filterable {
 
     private ArrayList<String> fullList;

@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
  * Created by lokeshsaini94 on 14-02-2017.
  */
 
+// A Helper class for Bottom Navigation View to remove item shift animation/effect
 public class BottomNavigationViewHelper {
     public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);

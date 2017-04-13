@@ -74,8 +74,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
                 column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 return cursor.getString(column_index);
-            }
-            else {
+            } else {
                 return null;
             }
         } finally {
@@ -308,6 +307,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
+    // AsyncTask to upload images for a new question
     private class UploadImage extends AsyncTask<Void, Void, String> {
 
         private File file;
@@ -372,6 +372,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    // AsyncTask to post a new question
     private class PostQuestion extends AsyncTask<Void, Void, Boolean> {
 
         String title;

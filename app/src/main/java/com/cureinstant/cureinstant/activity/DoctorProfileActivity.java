@@ -183,6 +183,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    // Parse Doctor details from provided json
     private Doctor getDoctorDetails(String s) throws JSONException {
         int userID = 0;
         String name = "", username = "", profilePicture = "", accountType = "", subAccountType = "";
@@ -368,6 +369,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    // Fetches Profile data for a given username
     private class RequestUserData extends AsyncTask<Void, Void, Doctor> {
 
         String username;

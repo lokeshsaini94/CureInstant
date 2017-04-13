@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 03-04-2017.
  */
 
+// Adapter to show list of Publications of a doctor
 public class DoctorPublicationAdapter extends RecyclerView.Adapter<DoctorPublicationAdapter.MyViewHolder> {
 
     private Context context;

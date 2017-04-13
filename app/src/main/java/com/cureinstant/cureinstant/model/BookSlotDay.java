@@ -11,6 +11,17 @@ import java.util.ArrayList;
 
 public class BookSlotDay implements Parcelable {
 
+    public static final Creator<BookSlotDay> CREATOR = new Creator<BookSlotDay>() {
+        @Override
+        public BookSlotDay createFromParcel(Parcel source) {
+            return new BookSlotDay(source);
+        }
+
+        @Override
+        public BookSlotDay[] newArray(int size) {
+            return new BookSlotDay[size];
+        }
+    };
     private int dayIndex;
     private String day, date, startTime, endTime, interval;
     private int availID;
@@ -25,6 +36,17 @@ public class BookSlotDay implements Parcelable {
         this.interval = interval;
         this.availID = availID;
         this.bookSlots = bookSlots;
+    }
+
+    protected BookSlotDay(Parcel in) {
+        this.dayIndex = in.readInt();
+        this.day = in.readString();
+        this.date = in.readString();
+        this.startTime = in.readString();
+        this.endTime = in.readString();
+        this.interval = in.readString();
+        this.availID = in.readInt();
+        this.bookSlots = in.createTypedArrayList(BookSlot.CREATOR);
     }
 
     public int getDayIndex() {
@@ -91,7 +113,6 @@ public class BookSlotDay implements Parcelable {
         this.bookSlots = bookSlots;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -108,27 +129,4 @@ public class BookSlotDay implements Parcelable {
         dest.writeInt(this.availID);
         dest.writeTypedList(this.bookSlots);
     }
-
-    protected BookSlotDay(Parcel in) {
-        this.dayIndex = in.readInt();
-        this.day = in.readString();
-        this.date = in.readString();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-        this.interval = in.readString();
-        this.availID = in.readInt();
-        this.bookSlots = in.createTypedArrayList(BookSlot.CREATOR);
-    }
-
-    public static final Creator<BookSlotDay> CREATOR = new Creator<BookSlotDay>() {
-        @Override
-        public BookSlotDay createFromParcel(Parcel source) {
-            return new BookSlotDay(source);
-        }
-
-        @Override
-        public BookSlotDay[] newArray(int size) {
-            return new BookSlotDay[size];
-        }
-    };
 }

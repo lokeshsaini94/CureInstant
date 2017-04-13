@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 11-04-2017.
  */
 
+// A BottomSheet Fragment to show list of searched doctors
 public class DoctorsBottomSheetFragment extends BottomSheetDialogFragment {
     public static DoctorsBottomSheetFragment getInstance() {
         return new DoctorsBottomSheetFragment();

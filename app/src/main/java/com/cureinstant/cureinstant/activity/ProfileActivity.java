@@ -100,6 +100,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // Dialog to get new Name input
     private void nameDialog() {
         final EditText edittext = new EditText(getApplicationContext());
         edittext.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -125,6 +126,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         nameDialog.show();
     }
 
+    // Dialog to get new Email input
     private void emailDialog() {
         final EditText edittext = new EditText(getApplicationContext());
         edittext.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -151,6 +153,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         emailDialog.show();
     }
 
+    // Dialog to get new Sex input
     private void sexDialog() {
         AlertDialog.Builder sexDialog = new AlertDialog.Builder(this);
         sexDialog.setTitle("Select Your Sex");
@@ -170,6 +173,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sexDialog.show();
     }
 
+    // Dialog to get new DOB input
     private void dateDialog() {
         Calendar now = Calendar.getInstance();
         BottomSheetDatePickerDialog date = BottomSheetDatePickerDialog.newInstance(

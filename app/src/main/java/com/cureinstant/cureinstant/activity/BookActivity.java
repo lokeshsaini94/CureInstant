@@ -47,6 +47,7 @@ public class BookActivity extends AppCompatActivity {
         fetchSlots.execute();
     }
 
+    // Fetches Time Slots for a doctor's appointment
     private class FetchSlots extends AsyncTask<Void, Void, ArrayList<BookSlotDay>> {
 
         @Override

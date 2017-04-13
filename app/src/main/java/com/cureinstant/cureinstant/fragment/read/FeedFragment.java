@@ -139,10 +139,12 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         }
     }
 
+    // Scrolls Feed back to the 1st item
     public void goBackUp() {
         recyclerView.smoothScrollToPosition(0);
     }
 
+    // Refresh the Feed data
     public void refreshData() {
         RequestData requestData = new RequestData();
         requestData.execute();

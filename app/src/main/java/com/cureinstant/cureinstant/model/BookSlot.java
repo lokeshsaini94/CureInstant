@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class BookSlot implements Parcelable {
 
+    public static final Parcelable.Creator<BookSlot> CREATOR = new Parcelable.Creator<BookSlot>() {
+        @Override
+        public BookSlot createFromParcel(Parcel source) {
+            return new BookSlot(source);
+        }
+
+        @Override
+        public BookSlot[] newArray(int size) {
+            return new BookSlot[size];
+        }
+    };
     private int slotID;
     private String startTime, endTime;
 
@@ -16,6 +27,12 @@ public class BookSlot implements Parcelable {
         this.slotID = slotID;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    protected BookSlot(Parcel in) {
+        this.slotID = in.readInt();
+        this.startTime = in.readString();
+        this.endTime = in.readString();
     }
 
     public int getSlotID() {
@@ -53,22 +70,4 @@ public class BookSlot implements Parcelable {
         dest.writeString(this.startTime);
         dest.writeString(this.endTime);
     }
-
-    protected BookSlot(Parcel in) {
-        this.slotID = in.readInt();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-    }
-
-    public static final Parcelable.Creator<BookSlot> CREATOR = new Parcelable.Creator<BookSlot>() {
-        @Override
-        public BookSlot createFromParcel(Parcel source) {
-            return new BookSlot(source);
-        }
-
-        @Override
-        public BookSlot[] newArray(int size) {
-            return new BookSlot[size];
-        }
-    };
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 25-03-2017.
  */
 
+// A BottomSheet Fragment to show list of Replies on a given comment or answer
 public class RepliesBottomSheetFragment extends BottomSheetDialogFragment {
     public static RepliesBottomSheetFragment getInstance() {
         return new RepliesBottomSheetFragment();

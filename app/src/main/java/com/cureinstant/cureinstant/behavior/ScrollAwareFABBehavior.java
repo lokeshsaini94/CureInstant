@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator;
  * Created by lokeshsaini94 on 03-03-2017.
  */
 
+// Adds Hide/Show behaviour to a FAB with animation on scroll of parent view or relative child items
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {

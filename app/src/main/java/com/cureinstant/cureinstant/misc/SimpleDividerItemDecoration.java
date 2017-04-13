@@ -13,11 +13,12 @@ import com.cureinstant.cureinstant.R;
  * Created by lokeshsaini94 on 29-03-2017.
  */
 
+// ItemDecoration for RecyclerView. It adds a divider  in between child views
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     public SimpleDividerItemDecoration(Context context) {
-        mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
+        mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
     }
 
     @Override

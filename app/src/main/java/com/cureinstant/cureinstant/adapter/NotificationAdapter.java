@@ -15,6 +15,7 @@ import java.util.List;
  * Created by lokeshsaini94 on 14-02-2017.
  */
 
+// Adapter to show list of notifications
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
 
     private List<Notification> notificationList;

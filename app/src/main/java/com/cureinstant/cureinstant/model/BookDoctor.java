@@ -11,6 +11,17 @@ import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkPlace;
 
 public class BookDoctor implements Parcelable {
 
+    public static final Creator<BookDoctor> CREATOR = new Creator<BookDoctor>() {
+        @Override
+        public BookDoctor createFromParcel(Parcel source) {
+            return new BookDoctor(source);
+        }
+
+        @Override
+        public BookDoctor[] newArray(int size) {
+            return new BookDoctor[size];
+        }
+    };
     private int userID, workID;
     private String name, username, speciality, picture, fee;
     private DoctorWorkPlace doctorWorkPlace;
@@ -24,6 +35,17 @@ public class BookDoctor implements Parcelable {
         this.picture = picture;
         this.fee = fee;
         this.doctorWorkPlace = doctorWorkPlace;
+    }
+
+    protected BookDoctor(Parcel in) {
+        this.userID = in.readInt();
+        this.workID = in.readInt();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.speciality = in.readString();
+        this.picture = in.readString();
+        this.fee = in.readString();
+        this.doctorWorkPlace = in.readParcelable(DoctorWorkPlace.class.getClassLoader());
     }
 
     public int getUserID() {
@@ -90,7 +112,6 @@ public class BookDoctor implements Parcelable {
         this.doctorWorkPlace = doctorWorkPlace;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -107,27 +128,4 @@ public class BookDoctor implements Parcelable {
         dest.writeString(this.fee);
         dest.writeParcelable(this.doctorWorkPlace, flags);
     }
-
-    protected BookDoctor(Parcel in) {
-        this.userID = in.readInt();
-        this.workID = in.readInt();
-        this.name = in.readString();
-        this.username = in.readString();
-        this.speciality = in.readString();
-        this.picture = in.readString();
-        this.fee = in.readString();
-        this.doctorWorkPlace = in.readParcelable(DoctorWorkPlace.class.getClassLoader());
-    }
-
-    public static final Creator<BookDoctor> CREATOR = new Creator<BookDoctor>() {
-        @Override
-        public BookDoctor createFromParcel(Parcel source) {
-            return new BookDoctor(source);
-        }
-
-        @Override
-        public BookDoctor[] newArray(int size) {
-            return new BookDoctor[size];
-        }
-    };
 }

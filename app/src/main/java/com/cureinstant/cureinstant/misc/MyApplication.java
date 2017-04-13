@@ -22,8 +22,8 @@ public class MyApplication extends Application {
         if (file != null) {
             if (file.isDirectory()) {
                 String[] children = file.list();
-                for (int i = 0; i < children.length; i++) {
-                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                for (String aChildren : children) {
+                    deletedAll = deleteFile(new File(file, aChildren)) && deletedAll;
                 }
             } else {
                 deletedAll = file.delete();

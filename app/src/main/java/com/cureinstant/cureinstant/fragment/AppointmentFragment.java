@@ -138,6 +138,7 @@ public class AppointmentFragment extends Fragment {
         return rootView;
     }
 
+    // Fetches available locations from a given term that user types
     private class FetchLocation extends AsyncTask<Void, Void, ArrayList<String>> {
 
         String term;
@@ -206,6 +207,7 @@ public class AppointmentFragment extends Fragment {
         }
     }
 
+    // Fetches available Doctor Specialities from a given term that user types
     private class FetchSpeciality extends AsyncTask<Void, Void, ArrayList<String>> {
 
         String term;
@@ -268,6 +270,7 @@ public class AppointmentFragment extends Fragment {
         }
     }
 
+    // Fetches list of Doctors from given location and speciality and displays them using a BottomSheet Fragment
     private class FetchBookDoctors extends AsyncTask<Void, Void, ArrayList<BookDoctor>> {
 
         String city, locality, speciality;

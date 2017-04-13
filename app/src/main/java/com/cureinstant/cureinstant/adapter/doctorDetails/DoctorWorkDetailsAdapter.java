@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 03-04-2017.
  */
 
+// Adapter to show list of Work Details of a doctor
 public class DoctorWorkDetailsAdapter extends RecyclerView.Adapter<DoctorWorkDetailsAdapter.MyViewHolder> {
 
     private Context context;

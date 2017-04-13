@@ -32,6 +32,7 @@ import java.util.List;
  * Created by lokeshsaini94 on 15-03-2017.
  */
 
+// Adapter to show list of Feed items including all queries, posts, articles
 public class FeedAdapter extends RecyclerView.Adapter {
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;

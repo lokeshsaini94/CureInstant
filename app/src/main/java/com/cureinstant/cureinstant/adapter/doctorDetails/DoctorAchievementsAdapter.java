@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
  * Created by lokeshsaini94 on 03-04-2017.
  */
 
+// Adapter to show list of Achievements of a doctor
 public class DoctorAchievementsAdapter extends RecyclerView.Adapter<DoctorAchievementsAdapter.MyViewHolder> {
 
     private Context context;

@@ -10,8 +10,8 @@ import android.net.NetworkInfo;
  * Created by lokeshsaini94 on 18-03-2017.
  */
 
-public class ConnectivityReceiver
-        extends BroadcastReceiver {
+// A Broadcast Receiver to check if there's Internet connection available
+public class ConnectivityReceiver extends BroadcastReceiver {
 
     public static ConnectivityReceiverListener connectivityReceiverListener;
 

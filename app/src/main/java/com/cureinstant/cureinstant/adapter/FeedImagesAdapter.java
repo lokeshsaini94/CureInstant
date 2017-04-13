@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
  * Created by lokeshsaini94 on 22-03-2017.
  */
 
+// Adapter to show list of images in a given feed Item
 public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.ItemViewHolder> {
 
     private Context context;

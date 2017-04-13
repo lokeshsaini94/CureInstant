@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 24-03-2017.
  */
 
+// Adapter to show list of comments on a given query, article, post
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemViewHolder> {
 
     private Context context;

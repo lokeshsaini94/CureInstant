@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 11-04-2017.
  */
 
+// Adapter to show list of Searched doctors for booking appointments
 public class DoctorsSearchAdapter extends RecyclerView.Adapter<DoctorsSearchAdapter.ItemViewHolder> {
 
     private Context context;

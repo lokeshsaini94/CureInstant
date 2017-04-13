@@ -26,6 +26,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 04-04-2017.
  */
 
+// Adapter to show list of followings and followers of the user
 public class FollowAdapter extends RecyclerView.Adapter {
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;

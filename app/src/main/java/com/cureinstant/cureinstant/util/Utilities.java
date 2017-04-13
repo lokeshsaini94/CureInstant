@@ -105,6 +105,7 @@ public class Utilities {
         System.exit(0);
     }
 
+    // Deletes all the cache stored in Internal and External Directory
     public static void trimCache(Context context) {
         try {
             File dir = context.getCacheDir();
@@ -120,6 +121,7 @@ public class Utilities {
         }
     }
 
+    // Deletes the provided directory from the storage
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -223,6 +225,7 @@ public class Utilities {
         nameDialog.show();
     }
 
+    // Fetches Blog data from json and returns a Feed object
     public static Feed getBlogData(Feed feed, JSONObject feedJson) {
 
         JSONObject feedData = null;
@@ -316,6 +319,7 @@ public class Utilities {
         return feed;
     }
 
+    // Fetches Post data from json and returns a Feed object
     public static Feed getPostData(Feed feed, JSONObject feedJson) {
 
         JSONObject feedData = null;
@@ -406,6 +410,7 @@ public class Utilities {
         return feed;
     }
 
+    // Fetches Query data from json and returns a Feed object
     public static Feed getQueryData(Feed feed, JSONObject feedJson) {
 
         JSONObject feedData = null;
@@ -735,6 +740,7 @@ public class Utilities {
         }
     }
 
+    // Follows and Unfollows the provided UserID
     public static class FollowDoctor extends AsyncTask<Void, Void, Void> {
 
         private boolean toFollow;

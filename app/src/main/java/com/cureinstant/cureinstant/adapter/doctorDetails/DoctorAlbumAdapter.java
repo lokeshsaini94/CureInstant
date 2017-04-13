@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
  * Created by lokeshsaini94 on 03-04-2017.
  */
 
+// Adapter to show list of Photos(album) of a doctor
 public class DoctorAlbumAdapter extends RecyclerView.Adapter<DoctorAlbumAdapter.ItemViewHolder> {
 
     private Context context;

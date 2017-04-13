@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 28-03-2017.
  */
 
+// Adapter to show list of Youtube videos in a given feed Item
 public class FeedYoutubeAdapter extends RecyclerView.Adapter<FeedYoutubeAdapter.ItemViewHolder> {
 
     private Context context;

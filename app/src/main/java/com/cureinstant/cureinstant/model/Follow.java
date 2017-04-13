@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class Follow implements Parcelable {
 
+    public static final Parcelable.Creator<Follow> CREATOR = new Parcelable.Creator<Follow>() {
+        @Override
+        public Follow createFromParcel(Parcel source) {
+            return new Follow(source);
+        }
+
+        @Override
+        public Follow[] newArray(int size) {
+            return new Follow[size];
+        }
+    };
     private int followID, userID;
     private String name, username, speciality, picture;
     private boolean following;
@@ -21,6 +32,16 @@ public class Follow implements Parcelable {
         this.speciality = speciality;
         this.picture = picture;
         this.following = following;
+    }
+
+    protected Follow(Parcel in) {
+        this.followID = in.readInt();
+        this.userID = in.readInt();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.speciality = in.readString();
+        this.picture = in.readString();
+        this.following = in.readByte() != 0;
     }
 
     public int getFollowID() {
@@ -79,7 +100,6 @@ public class Follow implements Parcelable {
         this.following = following;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -95,26 +115,4 @@ public class Follow implements Parcelable {
         dest.writeString(this.picture);
         dest.writeByte(this.following ? (byte) 1 : (byte) 0);
     }
-
-    protected Follow(Parcel in) {
-        this.followID = in.readInt();
-        this.userID = in.readInt();
-        this.name = in.readString();
-        this.username = in.readString();
-        this.speciality = in.readString();
-        this.picture = in.readString();
-        this.following = in.readByte() != 0;
-    }
-
-    public static final Parcelable.Creator<Follow> CREATOR = new Parcelable.Creator<Follow>() {
-        @Override
-        public Follow createFromParcel(Parcel source) {
-            return new Follow(source);
-        }
-
-        @Override
-        public Follow[] newArray(int size) {
-            return new Follow[size];
-        }
-    };
 }

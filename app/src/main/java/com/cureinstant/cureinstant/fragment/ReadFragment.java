@@ -88,12 +88,14 @@ public class ReadFragment extends Fragment {
         return rootView;
     }
 
+    // Moves FeedFragment to its 1st item
     public void refreshFeedFrag() {
         if (feedFragment != null) {
             feedFragment.goBackUp();
         }
     }
 
+    // Setup Feed and Trending Fragments
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         if (feedFragment == null) {
@@ -107,6 +109,7 @@ public class ReadFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
+    // Setup tabs for Feed and Trending Fragments
     private void setupTabIcons() {
 
         View customTab1 = LayoutInflater.from(getContext()).inflate(R.layout.layout_custom_tab, null);

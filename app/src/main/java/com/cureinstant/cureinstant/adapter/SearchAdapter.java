@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 06-04-2017.
  */
 
+// Adapter to show list of search results (only doctors for now)
 public class SearchAdapter extends RecyclerView.Adapter {
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
@@ -100,33 +101,33 @@ public class SearchAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
 
-        ((ItemViewHolder) holder).doctorName.setText(searchProfiles.get(position).getName());
-        ((ItemViewHolder) holder).doctorSpeciality.setText(searchProfiles.get(position).getSpeciality());
-        String imageURL = Utilities.profilePicSmallBaseUrl + searchProfiles.get(position).getPicture();
-        Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(((ItemViewHolder) holder).doctorPicture);
+            ((ItemViewHolder) holder).doctorName.setText(searchProfiles.get(position).getName());
+            ((ItemViewHolder) holder).doctorSpeciality.setText(searchProfiles.get(position).getSpeciality());
+            String imageURL = Utilities.profilePicSmallBaseUrl + searchProfiles.get(position).getPicture();
+            Glide.with(context).load(imageURL).placeholder(R.drawable.doctor_placeholder).into(((ItemViewHolder) holder).doctorPicture);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.search_root_view:
-                        Intent intent = new Intent(context, DoctorProfileActivity.class);
-                        Bundle b = new Bundle();
-                        b.putString("name", searchProfiles.get(holder.getAdapterPosition()).getName());
-                        b.putString("username", searchProfiles.get(holder.getAdapterPosition()).getUsername());
-                        intent.putExtras(b);
-                        context.startActivity(intent);
-                        break;
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.search_root_view:
+                            Intent intent = new Intent(context, DoctorProfileActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("name", searchProfiles.get(holder.getAdapterPosition()).getName());
+                            b.putString("username", searchProfiles.get(holder.getAdapterPosition()).getUsername());
+                            intent.putExtras(b);
+                            context.startActivity(intent);
+                            break;
+                    }
                 }
-            }
-        };
+            };
 
-        ((ItemViewHolder) holder).rootView.setOnClickListener(onClickListener);
+            ((ItemViewHolder) holder).rootView.setOnClickListener(onClickListener);
 
-    } else {
-        ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+        } else {
+            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+        }
     }
-}
 
     @Override
     public int getItemCount() {

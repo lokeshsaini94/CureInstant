@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 03-04-2017.
  */
 
+// Adapter to show list of Education of a doctor
 public class DoctorEduAdapter extends RecyclerView.Adapter<DoctorEduAdapter.MyViewHolder> {
 
     private Context context;

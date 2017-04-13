@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by lokeshsaini94 on 28-03-2017.
  */
 
+// Adapter to show list of Replies on a given comment or answer
 public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ItemViewHolder> {
 
     private Context context;
