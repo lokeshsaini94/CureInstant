@@ -25,6 +25,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -69,7 +70,8 @@
         <activity
             android:name=".activity.FollowActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.BookActivity"
+        <activity
+            android:name=".activity.BookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
