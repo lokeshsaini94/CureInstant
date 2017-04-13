@@ -82,11 +82,9 @@ public class FollowActivity extends AppCompatActivity {
     }
 
     // Requests more followers or Followings data from api call
-    private class RequestMoreFollowData extends AsyncTask<Void, Void, ArrayList<Follow>> {
+    private class RequestMoreFollowData extends AsyncTask<Void, Void, Void> {
 
-        ArrayList<Follow> newFollows = new ArrayList<>();
         private int oldFeedItemCount = follows.size() - 1;
-        private int addedFeedItemCount = 0;
         private String type;
         private int lastFollowID;
 
@@ -98,15 +96,13 @@ public class FollowActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            newFollows.clear();
-            newFollows.addAll(follows);
             //add null , so the adapter will check view_type and show progress bar at bottom
             follows.add(null);
             followAdapter.notifyItemInserted(follows.size() - 1);
         }
 
         @Override
-        protected ArrayList<Follow> doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             OkHttpClient client = new OkHttpClient();
             int followID = 0;
             int userID = 0;
@@ -135,6 +131,8 @@ public class FollowActivity extends AppCompatActivity {
             try {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
+
+                follows.remove(follows.size() - 1); // Remove progressView
 
                 JSONObject followJson = new JSONObject(s);
                 JSONArray followArray;
@@ -186,10 +184,8 @@ public class FollowActivity extends AppCompatActivity {
                             break;
                     }
 
-                    newFollows.add(new Follow(followID, userID, name, username, speciality, picture, isFollowing));
+                    follows.add(new Follow(followID, userID, name, username, speciality, picture, isFollowing));
                 }
-
-                return newFollows;
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -198,19 +194,13 @@ public class FollowActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Follow> newFollows) {
-            super.onPostExecute(newFollows);
-            follows.remove(follows.size() - 1); // Remove progressView
-
-            if (newFollows != null && !newFollows.isEmpty()) {
-                if (newFollows.size() > oldFeedItemCount) {
-                    follows.clear();
-                    follows.addAll(newFollows);
-                    followList.getRecycledViewPool().clear();
-                    followAdapter.setLoaded();
-                } else {
-                    followAdapter.notifyItemRemoved(follows.size() - 1);
-                }
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (follows.size() > oldFeedItemCount) {
+                followAdapter.notifyItemRangeChanged((oldFeedItemCount + 1), follows.size());
+                followAdapter.setLoaded();
+            } else {
+                followAdapter.notifyItemRemoved(follows.size() - 1);
             }
         }
     }

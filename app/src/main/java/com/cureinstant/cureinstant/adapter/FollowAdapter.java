@@ -164,7 +164,6 @@ public class FollowAdapter extends RecyclerView.Adapter {
     }
 
     public void setLoaded() {
-        this.notifyDataSetChanged();
         loading = false;
     }
 
