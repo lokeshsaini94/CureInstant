@@ -1,8 +1,10 @@
 package com.cureinstant.cureinstant.activity;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -14,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.util.Utilities;
 import com.philliphsu.bottomsheetpickers.date.BottomSheetDatePickerDialog;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
@@ -41,6 +44,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     "." +                   // match anything with previous condition checking
                     "{6,25}" +              // length at least 6 characters and maximum of 25
                     ")";                    // End of group
+    String accessToken;
+    String refreshToken;
 
     ProgressDialog progressDialog;
     AlertDialog.Builder otpDialog;
@@ -571,11 +576,87 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             showProgress(false);
 
             if (success) {
-                // TODO: 12-04-2017 Log user in after signup is a success
-//                Utilities.loggedInBool(getApplicationContext(), true);
-//                finish();
+                UserLoginTask userLoginTask = new UserLoginTask(number, password);
+                userLoginTask.execute();
             } else {
                 Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            showProgress(false);
+        }
+    }
+
+    /**
+     * Represents an asynchronous login task used to authenticate
+     * the user.
+     */
+    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mUsername;
+        private final String mPassword;
+
+        UserLoginTask(String username, String password) {
+            mUsername = username;
+            mPassword = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                    .add("grant_type", "password")
+                    .add("client_id", "3")
+                    .add("client_secret", "4RI6m61rJi5XZLjArXSTNogD1qwRn5CVXXYVJxTW")
+                    .add("username", mUsername)
+                    .add("password", mPassword)
+                    .add("scope", "*")
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://www.cureinstant.com/api/login")
+                    .post(body)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+                JSONObject reader = new JSONObject(s);
+                accessToken = reader.getString("access_token");
+                refreshToken = reader.getString("refresh_token");
+                if (!accessToken.isEmpty() && !refreshToken.isEmpty()) {
+                    return true;
+                }
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            showProgress(false);
+
+            if (success) {
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(Utilities.accessTokenKey, accessToken);
+                editor.putString(Utilities.refreshTokenKey, refreshToken);
+                editor.commit();
+                Utilities.loggedInBool(getApplicationContext(), true);
+                finish();
+            } else {
+                Snackbar.make(getCurrentFocus(), R.string.error_incorrect_username_password, Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
             }
         }
 
