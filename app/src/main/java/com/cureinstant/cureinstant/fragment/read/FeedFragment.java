@@ -323,7 +323,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            feedAdapter.notifyDataSetChanged();
+            feedAdapter.notifyItemRangeChanged(0, feedList.size());
             swipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -386,7 +386,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             super.onPostExecute(aVoid);
 
             if (feedList.size() > oldFeedItemCount) {
-                feedAdapter.notifyDataSetChanged();
+                feedAdapter.notifyItemRangeChanged((oldFeedItemCount+1), feedList.size());
                 feedAdapter.setLoaded();
             } else {
                 feedAdapter.notifyItemRemoved(feedList.size() - 1);
