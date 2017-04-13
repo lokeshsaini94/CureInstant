@@ -258,10 +258,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 name = profileJson.getString("name");
                 username = profileJson.getString("username");
 //                sex = profileJson.getString("gender");
-                JSONObject userInfoObject = profileJson.getJSONObject("user_info");
-                email = userInfoObject.getString("email");
-                number = userInfoObject.getString("mobile");
-                dob = profileJson.getString("dob");
+                JSONObject aboutObject = profileJson.getJSONObject("about");
+                email = aboutObject.getString("email");
+                number = aboutObject.getString("mobile");
+                dob = aboutObject.getString("birthday");
                 picture = profileJson.getString("profile_pic");
 
                 return new User(name, username, sex, email, number, dob, picture);
