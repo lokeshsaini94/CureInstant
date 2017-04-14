@@ -5,7 +5,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.model.BookDoctor;
@@ -27,10 +33,18 @@ import okhttp3.Response;
 
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
-public class BookActivity extends AppCompatActivity {
+public class BookActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     BookDoctor bookDoctor;
     ProgressDialog progressDialog;
+
+    ArrayList<BookSlotDay> bookSlotDaysFinal;
+
+    ListView morningSlots;
+
+    int selectedDay = 0;
+
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +54,53 @@ public class BookActivity extends AppCompatActivity {
         Intent i = getIntent();
         bookDoctor = i.getParcelableExtra("BookDoctor");
 
+        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
+        bar.setTitle(bookDoctor.getName());
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("loading...");
 
+        spinner = (Spinner) findViewById(R.id.book_slot_spinner);
+
+        morningSlots = (ListView) findViewById(R.id.slots_list);
+
         FetchSlots fetchSlots = new FetchSlots();
         fetchSlots.execute();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        ArrayList<BookSlot> bookSlots = bookSlotDaysFinal.get(position).getBookSlots();
+        ArrayList<String> timeSlots = new ArrayList<>();
+        selectedDay = position;
+        if (bookSlots == null) {
+            timeSlots.add("No Appointments available");
+        } else {
+            for (int i = 0; i < bookSlots.size(); i++) {
+                timeSlots.add(bookSlots.get(i).getStartTime());
+            }
+        }
+        ArrayAdapter<String> slotsAdapter = new ArrayAdapter<>(BookActivity.this, android.R.layout.simple_list_item_1, timeSlots);
+        morningSlots.setAdapter(slotsAdapter);
+        morningSlots.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BookAppointment bookAppointment = new BookAppointment(position);
+                bookAppointment.execute();
+            }
+        });
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     // Fetches Time Slots for a doctor's appointment
@@ -82,40 +138,32 @@ public class BookActivity extends AppCompatActivity {
                 for (int i = 0; i < 7; i++) {
                     JSONObject slotsDay = slotsDays.getJSONObject(String.valueOf(i + 1));
                     String date = slotsDay.getString("date");
-                    Log.e("TAG", "doInBackground: " + i);
+                    String day = slotsDay.getString("day");
                     if (slotsDay.has("slots")) {
-                        Log.e("TAG", "doInBackground: has slot");
                         JSONArray daySlotsArray = slotsDay.getJSONArray("slots");
                         for (int x = 0; x < daySlotsArray.length(); x++) {
                             JSONObject daySlotObject = daySlotsArray.getJSONObject(x);
-                            String day = daySlotObject.getString("day");
                             String startTime = daySlotObject.getString("start_time");
                             String endTime = daySlotObject.getString("end_time");
                             String interval = daySlotObject.getString("slot_interval");
                             int availID = daySlotObject.getInt("id");
-                            Log.e("TAG", "doInBackground: day slot fetching done");
+                            int workID = daySlotObject.getInt("work_id");
 
                             ArrayList<BookSlot> bookSlots = new ArrayList<>();
                             JSONArray slotArray = daySlotObject.getJSONArray("slots");
-                            Log.e("TAG", "doInBackground: slotArray.length() " + slotArray.length());
                             for (int z = 0; z < slotArray.length(); z++) {
-                                Log.e("TAG", "doInBackground: slotArray loop start " + (z + 1));
                                 // TODO: 11-04-2017 Fix the error here
-                                JSONObject bookSlotObject = slotArray.getJSONObject(i);
-                                Log.e("TAG", "doInBackground: bookSlotObject done ");
+                                JSONObject bookSlotObject = slotArray.getJSONObject(z);
                                 int slotID = bookSlotObject.getInt("id");
-                                Log.e("TAG", "doInBackground: slotID " + slotID);
                                 String slotStartTime = bookSlotObject.getString("start_time");
-                                Log.e("TAG", "doInBackground: slotStartTime " + slotStartTime);
                                 String slotEndTime = bookSlotObject.getString("end_time");
-                                Log.e("TAG", "doInBackground: slotEndTime " + slotEndTime);
                                 bookSlots.add(new BookSlot(slotID, slotStartTime, slotEndTime));
-                                Log.e("TAG", "doInBackground: slot " + (z + 1) + " done");
                             }
 
-                            bookSlotDays.add(new BookSlotDay(i, day, date, startTime, endTime, interval, availID, bookSlots));
-                            Log.e("TAG", "doInBackground: All done");
+                            bookSlotDays.add(new BookSlotDay(i, day, date, startTime, endTime, interval, availID, workID, bookSlots));
                         }
+                    } else {
+                        bookSlotDays.add(new BookSlotDay(i, day, date, null, null, null, 0, 0, null));
                     }
                 }
 
@@ -131,7 +179,80 @@ public class BookActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<BookSlotDay> bookSlotDays) {
             super.onPostExecute(bookSlotDays);
             progressDialog.dismiss();
-            Log.e("TAG", "onPostExecute: bookSlotDays.size() " + bookSlotDays.size());
+            bookSlotDaysFinal = bookSlotDays;
+
+            ArrayList<String> days = new ArrayList<>();
+            for (int i = 0; i < bookSlotDays.size(); i++) {
+                days.add(bookSlotDays.get(i).getDay());
+            }
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(BookActivity.this, android.R.layout.simple_spinner_item, days);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(dataAdapter);
+            spinner.setOnItemSelectedListener(BookActivity.this);
+        }
+    }
+
+    // Fetches Time Slots for a doctor's appointment
+    private class BookAppointment extends AsyncTask<Void, Void, Boolean> {
+
+        private int slotPosition = 0;
+
+        BookAppointment(int slotPosition) {
+            this.slotPosition = slotPosition;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient();
+            String url = "http://www.cureinstant.com/api/ams/appointment/book";
+
+            RequestBody body = new FormBody.Builder()
+                    .add("slot", String.valueOf(bookSlotDaysFinal.get(selectedDay).getBookSlots().get(slotPosition).getSlotID()))
+                    .add("work", String.valueOf(bookSlotDaysFinal.get(selectedDay).getWorkID()))
+                    .add("availability", String.valueOf(bookSlotDaysFinal.get(selectedDay).getAvailID()))
+                    .add("date", String.valueOf(bookSlotDaysFinal.get(selectedDay).getDate()))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", "Bearer " + accessTokenValue)
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                String s = response.body().string();
+                JSONObject bookResult = new JSONObject(s);
+                if (bookResult.has("success")) {
+                    String result = bookResult.getString("success");
+                    if (result.equals("success")) {
+                        return true;
+                    }
+                }
+
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            String result;
+            if (aBoolean) {
+                result = "Appointment successfully booked";
+            } else {
+                result = "Something went wrong!";
+            }
+            Toast.makeText(BookActivity.this, result, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
     }
 }

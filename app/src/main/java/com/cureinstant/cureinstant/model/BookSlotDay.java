@@ -11,23 +11,12 @@ import java.util.ArrayList;
 
 public class BookSlotDay implements Parcelable {
 
-    public static final Creator<BookSlotDay> CREATOR = new Creator<BookSlotDay>() {
-        @Override
-        public BookSlotDay createFromParcel(Parcel source) {
-            return new BookSlotDay(source);
-        }
-
-        @Override
-        public BookSlotDay[] newArray(int size) {
-            return new BookSlotDay[size];
-        }
-    };
     private int dayIndex;
     private String day, date, startTime, endTime, interval;
-    private int availID;
+    private int availID, workID;
     private ArrayList<BookSlot> bookSlots;
 
-    public BookSlotDay(int dayIndex, String day, String date, String startTime, String endTime, String interval, int availID, ArrayList<BookSlot> bookSlots) {
+    public BookSlotDay(int dayIndex, String day, String date, String startTime, String endTime, String interval, int availID, int workID, ArrayList<BookSlot> bookSlots) {
         this.dayIndex = dayIndex;
         this.day = day;
         this.date = date;
@@ -35,18 +24,8 @@ public class BookSlotDay implements Parcelable {
         this.endTime = endTime;
         this.interval = interval;
         this.availID = availID;
+        this.workID = workID;
         this.bookSlots = bookSlots;
-    }
-
-    protected BookSlotDay(Parcel in) {
-        this.dayIndex = in.readInt();
-        this.day = in.readString();
-        this.date = in.readString();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-        this.interval = in.readString();
-        this.availID = in.readInt();
-        this.bookSlots = in.createTypedArrayList(BookSlot.CREATOR);
     }
 
     public int getDayIndex() {
@@ -105,6 +84,14 @@ public class BookSlotDay implements Parcelable {
         this.availID = availID;
     }
 
+    public int getWorkID() {
+        return workID;
+    }
+
+    public void setWorkID(int workID) {
+        this.workID = workID;
+    }
+
     public ArrayList<BookSlot> getBookSlots() {
         return bookSlots;
     }
@@ -112,6 +99,7 @@ public class BookSlotDay implements Parcelable {
     public void setBookSlots(ArrayList<BookSlot> bookSlots) {
         this.bookSlots = bookSlots;
     }
+
 
     @Override
     public int describeContents() {
@@ -127,6 +115,31 @@ public class BookSlotDay implements Parcelable {
         dest.writeString(this.endTime);
         dest.writeString(this.interval);
         dest.writeInt(this.availID);
+        dest.writeInt(this.workID);
         dest.writeTypedList(this.bookSlots);
     }
+
+    protected BookSlotDay(Parcel in) {
+        this.dayIndex = in.readInt();
+        this.day = in.readString();
+        this.date = in.readString();
+        this.startTime = in.readString();
+        this.endTime = in.readString();
+        this.interval = in.readString();
+        this.availID = in.readInt();
+        this.workID = in.readInt();
+        this.bookSlots = in.createTypedArrayList(BookSlot.CREATOR);
+    }
+
+    public static final Creator<BookSlotDay> CREATOR = new Creator<BookSlotDay>() {
+        @Override
+        public BookSlotDay createFromParcel(Parcel source) {
+            return new BookSlotDay(source);
+        }
+
+        @Override
+        public BookSlotDay[] newArray(int size) {
+            return new BookSlotDay[size];
+        }
+    };
 }
