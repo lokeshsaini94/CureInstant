@@ -178,7 +178,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
         TextView comment, time, doctorName;
         TextView countHelpful, countReplies;
         ImageView doctorPicture;
-        View menuOverflow, rootView;
+        View rootView;
         Button helpfulButton, replyButton;
 
         ItemViewHolder(View itemView) {
@@ -189,7 +189,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             doctorPicture = (ImageView) itemView.findViewById(R.id.user_picture);
             countHelpful = (TextView) itemView.findViewById(R.id.comment_helpful_count);
             countReplies = (TextView) itemView.findViewById(R.id.comment_reply_count);
-            menuOverflow = itemView.findViewById(R.id.comment_menu_overflow);
             helpfulButton = (Button) itemView.findViewById(R.id.comment_helpful_button);
             replyButton = (Button) itemView.findViewById(R.id.comment_reply_button);
             rootView = itemView.findViewById(R.id.feed_comment_container);

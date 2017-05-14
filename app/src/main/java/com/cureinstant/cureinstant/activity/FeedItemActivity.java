@@ -9,14 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -154,7 +151,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView countComment = (TextView) findViewById(R.id.post_comment_count);
         Button commentButton = (Button) findViewById(R.id.post_comment_button);
         Button shareButton = (Button) findViewById(R.id.post_share_button);
-        View menuOverflow = findViewById(R.id.post_menu_overflow);
         View postAnswerContainer = findViewById(R.id.post_answer_container);
         View commentsListText = findViewById(R.id.post_comments_list_text);
         TextView answerContent = (TextView) findViewById(R.id.answer_desc);
@@ -165,7 +161,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView answerDoctorSpeciality = (TextView) findViewById(R.id.answer_doctor_speciality);
         ImageView answerDoctorPicture = (ImageView) findViewById(R.id.answer_doctor_picture);
         View answerDoctorProfileContainer = findViewById(R.id.answer_doctor_info_container);
-        View answerMenuOverflow = findViewById(R.id.answer_menu_overflow);
         TextView linksTextView = (TextView) findViewById(R.id.post_links);
 
 
@@ -336,7 +331,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             commentsRecyclerView.invalidate();
         }
 
-        menuOverflow.setOnClickListener(this);
         commentButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
         answerHelpfulButton.setOnClickListener(this);
@@ -394,19 +388,6 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
                 feed.setShares(feed.getShares() + 1);
                 countShare.setText(String.format(getString(R.string.shares_count), feed.getShares()));
-                break;
-            case R.id.post_menu_overflow:
-            case R.id.answer_menu_overflow:
-                ImageButton menuButton = (ImageButton) v;
-                PopupMenu popupMenu = new PopupMenu(this, menuButton);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        return false;
-                    }
-                });
-                popupMenu.show();
                 break;
             case R.id.answer_helpful_button:
                 if (feed.getAnswer().isLiked()) {

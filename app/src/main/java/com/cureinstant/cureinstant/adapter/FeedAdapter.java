@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -262,18 +259,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
                             feed.setComments(feed.getComments() + 1);
                             ((MyFeedViewHolder) holder).countComment.setText(String.format(context.getString(R.string.comments_count), feed.getComments()));
                             break;
-                        case R.id.post_menu_overflow:
-                            ImageButton menuButton = (ImageButton) v;
-                            PopupMenu popupMenu = new PopupMenu(context, menuButton);
-                            popupMenu.getMenuInflater().inflate(R.menu.popup_menu_main, popupMenu.getMenu());
-                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    return false;
-                                }
-                            });
-                            popupMenu.show();
-                            break;
                         case R.id.doctor_info_container:
                             Intent intent = new Intent(context, DoctorProfileActivity.class);
                             Bundle b = new Bundle();
@@ -295,7 +280,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
             ((MyFeedViewHolder) holder).helpfulButton.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).commentButton.setOnClickListener(onClickListener);
             ((MyFeedViewHolder) holder).shareButton.setOnClickListener(onClickListener);
-            ((MyFeedViewHolder) holder).menuOverflow.setOnClickListener(onClickListener);
 
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
@@ -330,7 +314,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
         TextView title, content, time, doctorName, doctorSpeciality;
         TextView countFollow, countHelpful, countComment, countShare;
         ImageView doctorPicture;
-        View actionContainer, doctorContainer, feedContainer, menuOverflow;
+        View actionContainer, doctorContainer, feedContainer;
         Button followButton, helpfulButton, commentButton, shareButton;
 
         MyFeedViewHolder(View itemView) {
@@ -354,7 +338,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
             helpfulButton = (Button) itemView.findViewById(R.id.post_helpful_button);
             commentButton = (Button) itemView.findViewById(R.id.post_comment_button);
             shareButton = (Button) itemView.findViewById(R.id.post_share_button);
-            menuOverflow = itemView.findViewById(R.id.post_menu_overflow);
             feedContainer = itemView.findViewById(R.id.feed_post_container);
         }
     }
