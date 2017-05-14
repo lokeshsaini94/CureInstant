@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.FollowActivity;
 import com.cureinstant.cureinstant.activity.MyPreferencesActivity;
+import com.cureinstant.cureinstant.activity.MyQueriesActivity;
 import com.cureinstant.cureinstant.activity.ProfileActivity;
 import com.cureinstant.cureinstant.model.Follow;
 import com.cureinstant.cureinstant.model.User;
@@ -69,6 +70,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         profileView.setOnClickListener(this);
         View settings = rootView.findViewById(R.id.more_settings);
         settings.setOnClickListener(this);
+        View myQueries = rootView.findViewById(R.id.more_questions);
+        myQueries.setOnClickListener(this);
 
         View following = rootView.findViewById(R.id.more_following);
         View followers = rootView.findViewById(R.id.more_followers);
@@ -87,6 +90,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
                 profileIntent.putExtra("user_info", userInfo);
                 startActivity(profileIntent);
+                break;
+            case R.id.more_questions:
+                Intent myQueriesIntent = new Intent(getContext(), MyQueriesActivity.class);
+                startActivity(myQueriesIntent);
                 break;
             case R.id.more_settings:
                 Intent settingsIntent = new Intent(getContext(), MyPreferencesActivity.class);

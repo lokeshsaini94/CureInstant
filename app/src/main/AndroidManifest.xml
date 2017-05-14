@@ -73,6 +73,8 @@
         <activity
             android:name=".activity.BookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.MyQueriesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
