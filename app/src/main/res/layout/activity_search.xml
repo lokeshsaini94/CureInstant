@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:hint="Questions, doctors and more..."
+                android:hint="Search doctors..."
                 android:imeOptions="actionSearch"
                 android:maxLines="1"
                 android:singleLine="true"
