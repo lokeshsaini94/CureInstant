@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 /**
@@ -106,7 +104,6 @@ public class TrendingFragment extends Fragment {
             try {
                 Response response = client.newCall(request).execute();
                 String s = response.body().string();
-                Log.e(TAG, "doInBackground: s " + s);
                 JSONObject feedJson = new JSONObject(s);
                 JSONArray feedData = feedJson.getJSONArray("trending");
                 for (int i = 0; i < feedData.length(); i++) {
@@ -129,7 +126,6 @@ public class TrendingFragment extends Fragment {
 
                     answeredFeedList.add(new Feed("QUERY", actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, images, links, youtubeVideos, commentsList, answer, doctorName, doctorUsername, doctorSpec, doctorPicture));
                 }
-                Log.e(TAG, "doInBackground: answeredFeedList.size() " + answeredFeedList.size());
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -142,7 +138,6 @@ public class TrendingFragment extends Fragment {
             try {
                 Response response2 = client.newCall(request2).execute();
                 String s2 = response2.body().string();
-                Log.e(TAG, "doInBackground: s2 " + s2);
                 JSONObject feedJsonC = new JSONObject(s2);
                 JSONArray feedDataC = feedJsonC.getJSONArray("trending");
                 for (int i = 0; i < feedDataC.length(); i++) {
@@ -165,7 +160,6 @@ public class TrendingFragment extends Fragment {
 
                     commentedFeedList.add(new Feed("QUERY", actionName, actionType, id, title, content, time, likes, followings, comments, shares, liked, followed, images, links, youtubeVideos, commentsList, answer, doctorName, doctorUsername, doctorSpec, doctorPicture));
                 }
-                Log.e(TAG, "doInBackground: commentedFeedList.size() " + commentedFeedList.size());
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
