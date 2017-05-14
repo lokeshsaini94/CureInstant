@@ -92,7 +92,7 @@ public class MyQueriesActivity extends AppCompatActivity {
                 JSONObject feedJson = new JSONObject(s);
                 JSONObject questions = feedJson.getJSONObject("questions");
                 JSONArray data = questions.getJSONArray("data");
-                for (int i=0; i<data.length(); i++) {
+                for (int i = 0; i < data.length(); i++) {
                     JSONObject feedItem = data.getJSONObject(i);
                     String title = "", actionName = "", actionType = "", id, content, time, doctorName = null, doctorUsername = null, doctorSpec = null, doctorPicture = null;
                     int likes = 0, followings = 0, comments = 0, shares = 0;
