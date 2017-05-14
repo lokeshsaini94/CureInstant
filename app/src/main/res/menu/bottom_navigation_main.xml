@@ -14,12 +14,6 @@
         android:title="@string/nav_title_appointments"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_records"
-        android:enabled="true"
-        android:icon="@drawable/ic_records"
-        android:title="@string/nav_title_records"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_more"
         android:enabled="true"
         android:icon="@drawable/ic_menu_hamburger"

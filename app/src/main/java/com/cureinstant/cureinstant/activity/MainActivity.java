@@ -17,7 +17,6 @@ import com.cureinstant.cureinstant.fragment.AppointmentFragment;
 import com.cureinstant.cureinstant.fragment.MoreFragment;
 import com.cureinstant.cureinstant.fragment.NotificationFragment;
 import com.cureinstant.cureinstant.fragment.ReadFragment;
-import com.cureinstant.cureinstant.fragment.RecordsFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
 
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenKey;
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ReadFragment readFragment;
     private AppointmentFragment appointmentFragment;
-    private RecordsFragment recordFragment;
     private MoreFragment moreFragment;
 
     @Override
@@ -52,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (appointmentFragment == null) {
                     appointmentFragment = (AppointmentFragment) fragmentManager.findFragmentByTag("appointmentFragment");
-                }
-                if (recordFragment == null) {
-                    recordFragment = (RecordsFragment) fragmentManager.findFragmentByTag("recordFragment");
                 }
                 if (moreFragment == null) {
                     moreFragment = (MoreFragment) fragmentManager.findFragmentByTag("moreFragment");
@@ -163,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
         if (appointmentFragment == null) {
             appointmentFragment = new AppointmentFragment();
         }
-        if (recordFragment == null) {
-            recordFragment = new RecordsFragment();
-        }
         if (moreFragment == null) {
             moreFragment = new MoreFragment();
         }
@@ -176,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
             if (ft != null) {
                 ft.replace(R.id.read_fragment_container, readFragment, "readFragment");
                 ft.replace(R.id.appointment_fragment_container, appointmentFragment, "appointmentFragment");
-                ft.replace(R.id.record_fragment_container, recordFragment, "recordFragment");
                 ft.replace(R.id.more_fragment_container, moreFragment, "moreFragment");
                 ft.commit();
             }
@@ -205,13 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 // Action to perform when Bag Menu item is selected.
                 setFragmentsVisibility(2);
                 break;
-            case R.id.action_records:
-                // Action to perform when Bag Menu item is selected.
-                setFragmentsVisibility(3);
-                break;
             case R.id.action_more:
                 // Action to perform when Account Menu item is selected.
-                setFragmentsVisibility(4);
+                setFragmentsVisibility(3);
                 break;
         }
     }
@@ -220,18 +207,15 @@ public class MainActivity extends AppCompatActivity {
     private void setFragmentsVisibility(int i) {
         View readFragmentContainer = findViewById(R.id.read_fragment_container);
         View appointmentFragmentContainer = findViewById(R.id.appointment_fragment_container);
-        View recordFragmentContainer = findViewById(R.id.record_fragment_container);
         View moreFragmentContainer = findViewById(R.id.more_fragment_container);
 
         if (i == 0) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.GONE);
-            recordFragmentContainer.setVisibility(View.GONE);
             moreFragmentContainer.setVisibility(View.GONE);
         } else if (i == 1) {
             readFragmentContainer.setVisibility(View.VISIBLE);
             appointmentFragmentContainer.setVisibility(View.GONE);
-            recordFragmentContainer.setVisibility(View.GONE);
             moreFragmentContainer.setVisibility(View.GONE);
             readFragmentContainer
                     .animate()
@@ -241,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (i == 2) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.VISIBLE);
-            recordFragmentContainer.setVisibility(View.GONE);
             moreFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer
                     .animate()
@@ -251,23 +234,12 @@ public class MainActivity extends AppCompatActivity {
         } else if (i == 3) {
             readFragmentContainer.setVisibility(View.GONE);
             appointmentFragmentContainer.setVisibility(View.GONE);
-            recordFragmentContainer.setVisibility(View.VISIBLE);
-            moreFragmentContainer.setVisibility(View.GONE);
-            recordFragmentContainer
-                    .animate()
-                    .alpha(1.0f)
-                    .setDuration(300);
-            currentVisibleFrag = 3;
-        } else if (i == 4) {
-            readFragmentContainer.setVisibility(View.GONE);
-            appointmentFragmentContainer.setVisibility(View.GONE);
-            recordFragmentContainer.setVisibility(View.GONE);
             moreFragmentContainer.setVisibility(View.VISIBLE);
             moreFragmentContainer
                     .animate()
                     .alpha(1.0f)
                     .setDuration(300);
-            currentVisibleFrag = 4;
+            currentVisibleFrag = 3;
         }
     }
 }
