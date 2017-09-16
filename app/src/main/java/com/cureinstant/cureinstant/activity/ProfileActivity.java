@@ -107,17 +107,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         edittext.setText(name.getText().toString());
 
         AlertDialog.Builder nameDialog = new AlertDialog.Builder(this);
-        nameDialog.setTitle("Enter Your Name");
+        nameDialog.setTitle(R.string.text_enter_your_name);
         nameDialog.setView(edittext);
 
-        nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        nameDialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String editTextValue = edittext.getText().toString();
                 name.setText(editTextValue);
             }
         });
 
-        nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        nameDialog.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // what ever you want to do with No option.
             }
@@ -134,17 +134,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         edittext.setText(email.getText().toString());
 
         AlertDialog.Builder emailDialog = new AlertDialog.Builder(this);
-        emailDialog.setTitle("Enter Your Email");
+        emailDialog.setTitle(R.string.text_enter_your_email);
         emailDialog.setView(edittext);
 
-        emailDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        emailDialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String editTextValue = edittext.getText().toString();
                 email.setText(editTextValue);
             }
         });
 
-        emailDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        emailDialog.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // what ever you want to do with No option.
             }
@@ -156,15 +156,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     // Dialog to get new Sex input
     private void sexDialog() {
         AlertDialog.Builder sexDialog = new AlertDialog.Builder(this);
-        sexDialog.setTitle("Select Your Sex");
+        sexDialog.setTitle(R.string.text_select_your_sex);
 
-        sexDialog.setPositiveButton("Male", new DialogInterface.OnClickListener() {
+        sexDialog.setPositiveButton(R.string.male_string, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 sex.setText(R.string.male_string);
             }
         });
 
-        sexDialog.setNegativeButton("Female", new DialogInterface.OnClickListener() {
+        sexDialog.setNegativeButton(R.string.female_string, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 sex.setText(R.string.female_string);
             }

@@ -5,6 +5,8 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.lang.reflect.Field;
 
 /**
@@ -30,8 +32,10 @@ public class BottomNavigationViewHelper {
             }
         } catch (NoSuchFieldException e) {
             Log.e("BNVHelper", "Unable to get shift mode field", e);
+            FirebaseCrash.report(e);
         } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
+            FirebaseCrash.report(e);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.cureinstant.cureinstant.activity.ChatActivity;
 import com.cureinstant.cureinstant.activity.FollowActivity;
 import com.cureinstant.cureinstant.activity.MyPreferencesActivity;
 import com.cureinstant.cureinstant.activity.MyQueriesActivity;
@@ -22,6 +24,8 @@ import com.cureinstant.cureinstant.activity.ProfileActivity;
 import com.cureinstant.cureinstant.model.Follow;
 import com.cureinstant.cureinstant.model.User;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +39,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 
@@ -43,6 +48,8 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
  */
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "MoreFragment";
+    public static int REQUEST_INVITE = 98;
     ProgressDialog progressDialog;
 
     private User userInfo = null;
@@ -68,6 +75,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         View profileView = rootView.findViewById(R.id.user_details_container);
         profileView.setOnClickListener(this);
+        View chatView = rootView.findViewById(R.id.more_chat);
+        chatView.setOnClickListener(this);
         View settings = rootView.findViewById(R.id.more_settings);
         settings.setOnClickListener(this);
         View myQueries = rootView.findViewById(R.id.more_questions);
@@ -77,6 +86,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         View followers = rootView.findViewById(R.id.more_followers);
         following.setOnClickListener(this);
         followers.setOnClickListener(this);
+
+        View invite = rootView.findViewById(R.id.invite_others);
+        invite.setOnClickListener(this);
 
         RequestUserData requestUserData = new RequestUserData();
         requestUserData.execute();
@@ -90,6 +102,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
                 profileIntent.putExtra("user_info", userInfo);
                 startActivity(profileIntent);
+                break;
+            case R.id.more_chat:
+                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                chatIntent.putExtra("user_info", userInfo);
+                startActivity(chatIntent);
                 break;
             case R.id.more_questions:
                 Intent myQueriesIntent = new Intent(getContext(), MyQueriesActivity.class);
@@ -107,8 +124,33 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 RequestFollowData requestFollowersData = new RequestFollowData("followers");
                 requestFollowersData.execute();
                 break;
+            case R.id.invite_others:
+                Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                        .setMessage(getString(R.string.invitation_message))
+                        .setCallToActionText(getString(R.string.invitation_cta))
+                        .build();
+                startActivityForResult(intent, REQUEST_INVITE);
+                break;
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+
+        if (requestCode == REQUEST_INVITE) {
+            if (resultCode == RESULT_OK) {
+                // Get the invitation IDs of all sent messages
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                for (String id : ids) {
+                    Log.d(TAG, "onActivityResult: sent invitation " + id);
+                }
+            } else {
+                Toast.makeText(getContext(), R.string.text_invitation_cancelled, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     // Requests followers or Followings data from api call
@@ -212,6 +254,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -221,7 +264,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             super.onPostExecute(follows);
             progressDialog.dismiss();
             if (follows.size() < 1) {
-                Toast.makeText(getContext(), "No " + type + "!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.text_no + " " + type, Toast.LENGTH_SHORT).show();
             } else {
                 Intent followersIntent = new Intent(getContext(), FollowActivity.class);
                 followersIntent.putExtra("type", type);
@@ -276,6 +319,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -285,7 +329,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             super.onPostExecute(user);
             if (user != null) {
                 userName.setText(user.getName());
-                Glide.with(getContext()).load(Utilities.profilePicSmallBaseUrl + user.getPicture()).into(userPicture);
+                Glide.with(getContext()).load(Utilities.profilePicSmallBaseUrl + user.getPicture()).placeholder(R.drawable.doctor_placeholder).into(userPicture);
                 userInfo = user;
             }
         }

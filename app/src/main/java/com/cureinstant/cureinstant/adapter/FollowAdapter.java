@@ -111,11 +111,11 @@ public class FollowAdapter extends RecyclerView.Adapter {
             if (!type.equals("followers") || follows.get(position).isFollowing()) {
                 ((ItemViewHolder) holder).followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 ((ItemViewHolder) holder).followButton.setTextColor(context.getResources().getColor(R.color.white));
-                ((ItemViewHolder) holder).followButton.setText("Unfollow");
+                ((ItemViewHolder) holder).followButton.setText(R.string.title_unfollow);
             } else {
                 ((ItemViewHolder) holder).followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                 ((ItemViewHolder) holder).followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                ((ItemViewHolder) holder).followButton.setText("Follow");
+                ((ItemViewHolder) holder).followButton.setText(R.string.title_follow);
             }
 
 
@@ -129,13 +129,13 @@ public class FollowAdapter extends RecyclerView.Adapter {
                                 followDoctor.execute();
                                 ((ItemViewHolder) holder).followButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                                 ((ItemViewHolder) holder).followButton.setTextColor(context.getResources().getColor(R.color.white));
-                                ((ItemViewHolder) holder).followButton.setText("Unfollow");
+                                ((ItemViewHolder) holder).followButton.setText(R.string.title_unfollow);
                             } else {
                                 Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(false, follows.get(holder.getAdapterPosition()).getUserID());
                                 followDoctor.execute();
                                 ((ItemViewHolder) holder).followButton.setBackgroundColor(context.getResources().getColor(R.color.white));
                                 ((ItemViewHolder) holder).followButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                ((ItemViewHolder) holder).followButton.setText("Follow");
+                                ((ItemViewHolder) holder).followButton.setText(R.string.title_follow);
                             }
                             break;
                         default:

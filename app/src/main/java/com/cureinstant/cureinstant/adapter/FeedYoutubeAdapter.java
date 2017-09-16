@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
 
@@ -53,8 +54,9 @@ public class FeedYoutubeAdapter extends RecyclerView.Adapter<FeedYoutubeAdapter.
                         Uri.parse("http://www.youtube.com/watch?v=" + youtubeVideos.get(holder.getAdapterPosition())));
                 try {
                     context.startActivity(appIntent);
-                } catch (ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException e) {
                     context.startActivity(webIntent);
+                    FirebaseCrash.report(e);
                 }
             }
         });

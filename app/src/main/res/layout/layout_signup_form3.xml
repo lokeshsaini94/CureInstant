@@ -10,7 +10,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Password must be at least 6 characters long with at least 1 alphabet, 1 number and 1 special character (@#$_*!.-)"
+        android:text="@string/password_must_be_at_least_6_characters_long_with_at_least_1_alphabet_1_number_and_1_special_character"
         android:textColor="@color/text_gray" />
 
     <android.support.design.widget.TextInputLayout
@@ -27,7 +27,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password_hint"
             android:inputType="textPassword"
             android:singleLine="true" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/password_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm Password"
+            android:hint="@string/hint_confirm_password"
             android:inputType="textPassword"
             android:singleLine="true" />
 

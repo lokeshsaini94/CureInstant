@@ -17,6 +17,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.model.BookDoctor;
 import com.cureinstant.cureinstant.model.BookSlot;
 import com.cureinstant.cureinstant.model.BookSlotDay;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +65,7 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("loading...");
+        progressDialog.setMessage(getString(R.string.text_loading));
 
         spinner = (Spinner) findViewById(R.id.book_slot_spinner);
 
@@ -81,7 +82,7 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
         ArrayList<String> timeSlots = new ArrayList<>();
         selectedDay = position;
         if (bookSlots == null) {
-            timeSlots.add("No Appointments available");
+            timeSlots.add(getString(R.string.text_no_appointments_available));
         } else {
             for (int i = 0; i < bookSlots.size(); i++) {
                 timeSlots.add(bookSlots.get(i).getStartTime());
@@ -89,13 +90,15 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         ArrayAdapter<String> slotsAdapter = new ArrayAdapter<>(BookActivity.this, android.R.layout.simple_list_item_1, timeSlots);
         morningSlots.setAdapter(slotsAdapter);
-        morningSlots.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BookAppointment bookAppointment = new BookAppointment(position);
-                bookAppointment.execute();
-            }
-        });
+        if (bookSlots != null) {
+            morningSlots.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    BookAppointment bookAppointment = new BookAppointment(position);
+                    bookAppointment.execute();
+                }
+            });
+        }
 
     }
 
@@ -152,7 +155,6 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
                             ArrayList<BookSlot> bookSlots = new ArrayList<>();
                             JSONArray slotArray = daySlotObject.getJSONArray("slots");
                             for (int z = 0; z < slotArray.length(); z++) {
-                                // TODO: 11-04-2017 Fix the error here
                                 JSONObject bookSlotObject = slotArray.getJSONObject(z);
                                 int slotID = bookSlotObject.getInt("id");
                                 String slotStartTime = bookSlotObject.getString("start_time");
@@ -171,6 +173,7 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -238,6 +241,7 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -247,9 +251,9 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
             super.onPostExecute(aBoolean);
             String result;
             if (aBoolean) {
-                result = "Appointment successfully booked";
+                result = getString(R.string.text_appointment_successfully_booked);
             } else {
-                result = "Something went wrong!";
+                result = getString(R.string.text_something_went_wrong);
             }
             Toast.makeText(BookActivity.this, result, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();

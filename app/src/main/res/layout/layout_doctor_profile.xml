@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginBottom="8dp"
-                    android:text="Name"
+                    android:text="@string/title_name"
                     android:textColor="@android:color/secondary_text_light"
                     android:textStyle="bold" />
 
@@ -43,6 +43,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/doctor_name_title"
                     android:layout_toRightOf="@id/doctor_name_title"
                     android:text="@string/doctor_name"
                     android:textColor="@android:color/primary_text_light" />
@@ -54,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_name_title"
                     android:layout_marginBottom="8dp"
-                    android:text="Sex"
+                    android:text="@string/title_sex"
                     android:textColor="@android:color/secondary_text_light"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -65,8 +66,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_name_title"
+                    android:layout_toEndOf="@id/doctor_sex_title"
                     android:layout_toRightOf="@id/doctor_sex_title"
-                    android:text="Male"
+                    android:text="@string/title_male"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -77,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_sex_title"
                     android:layout_marginBottom="8dp"
-                    android:text="Location"
+                    android:text="@string/title_location"
                     android:textColor="@android:color/secondary_text_light"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -88,8 +90,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_sex_title"
+                    android:layout_toEndOf="@id/doctor_location_title"
                     android:layout_toRightOf="@id/doctor_location_title"
-                    android:text="Delhi, IN"
+                    android:text="@string/text_delhi_in"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -100,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_location_title"
                     android:layout_marginBottom="8dp"
-                    android:text="Number"
+                    android:text="@string/title_number"
                     android:textColor="@android:color/secondary_text_light"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -111,8 +114,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_location_title"
+                    android:layout_toEndOf="@id/doctor_number_title"
                     android:layout_toRightOf="@id/doctor_number_title"
-                    android:text="9876543210"
+                    android:text="@string/text_9876543210"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -123,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_number_title"
                     android:layout_marginBottom="8dp"
-                    android:text="Email"
+                    android:text="@string/title_email"
                     android:textColor="@android:color/secondary_text_light"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -134,8 +138,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctor_number_title"
+                    android:layout_toEndOf="@id/doctor_email_title"
                     android:layout_toRightOf="@id/doctor_email_title"
-                    android:text="xyz@gmail.com"
+                    android:text="@string/text_xyz_gmail_com"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -152,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
-                        android:text="0 Following"
+                        android:text="@string/text_following"
                         android:textColor="@android:color/primary_text_light" />
 
                     <TextView
@@ -162,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
-                        android:text="0 Followers"
+                        android:text="@string/text_followers"
                         android:textColor="@android:color/primary_text_light" />
                 </LinearLayout>
 
@@ -175,6 +180,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/desc_doctor_s_profile_picture"
             android:elevation="3dp"
             android:src="@drawable/doctor_placeholder" />
 
@@ -192,8 +198,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_images_list"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Summary"
+            android:text="@string/title_summary"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -210,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:text="Time and Space traveling adventures of a Gallifreyan Time Lord only known as the Doctor and his companions, traveling through time and space."
+                android:text="@string/text_time_and_space_traveling_adventures_of_a_gallifreyan_time_lord_only_known_as_the_doctor_and_his_companions_traveling_through_time_and_space"
                 android:textColor="@android:color/primary_text_light" />
 
         </android.support.v7.widget.CardView>
@@ -221,8 +228,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_summary"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Practices At"
+            android:text="@string/text_practices_at"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -246,8 +254,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_work_details"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Specialisation"
+            android:text="@string/title_specialisation"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -272,8 +281,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_specialisation"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Education"
+            android:text="@string/title_education"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -297,8 +307,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_edu"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Feedback"
+            android:text="@string/title_feedback"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -323,8 +334,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_feedback"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Publication"
+            android:text="@string/title_publication"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView
@@ -348,8 +360,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/doctor_publication"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Achievements"
+            android:text="@string/title_achievements"
             android:visibility="gone" />
 
         <android.support.v7.widget.CardView

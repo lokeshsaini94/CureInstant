@@ -59,7 +59,6 @@ public class DoctorsSearchAdapter extends RecyclerView.Adapter<DoctorsSearchAdap
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.book_doctor_button:
-                        // TODO: 11-04-2017 Add doctor booking activity intent here
                         Intent intent = new Intent(context, BookActivity.class);
                         intent.putExtra("BookDoctor", bookDoctor);
                         context.startActivity(intent);

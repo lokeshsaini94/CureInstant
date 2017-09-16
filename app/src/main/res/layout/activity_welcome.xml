@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/cardview_light_background"
-                    android:text="Log In"
+                    android:text="@string/title_log_in"
                     android:textColor="@color/colorPrimaryDark" />
 
                 <View
@@ -79,7 +79,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sign Up"
+                    android:text="@string/title_sign_up"
                     android:textColor="@color/colorPrimaryDark" />
 
             </android.support.v7.widget.ButtonBarLayout>

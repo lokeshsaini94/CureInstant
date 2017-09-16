@@ -21,6 +21,7 @@ import com.cureinstant.cureinstant.misc.OnLoadMoreListener;
 import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.SearchProfile;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_search);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("loading...");
+        progressDialog.setMessage(getString(R.string.text_loading));
 
         ImageButton closeSearch = (ImageButton) findViewById(R.id.search_close);
         closeSearch.setOnClickListener(this);
@@ -187,6 +188,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -201,8 +203,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             currentPage += 1;
             if (newSearchProfiles == null) {
-                final Snackbar snackBar = Snackbar.make(findViewById(R.id.search_root_view), "No results found", Snackbar.LENGTH_LONG);
-                snackBar.setAction("Dismiss", new View.OnClickListener() {
+                final Snackbar snackBar = Snackbar.make(findViewById(R.id.search_root_view), R.string.text_no_results_found, Snackbar.LENGTH_LONG);
+                snackBar.setAction(R.string.text_dismiss, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         snackBar.dismiss();

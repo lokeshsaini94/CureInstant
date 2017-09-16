@@ -22,16 +22,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="utsav Gupta"
+            android:text="@string/text_utsav_gupta"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_action_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/post_action_name"
             android:layout_toRightOf="@id/post_action_name"
-            android:text=" commented on this"
+            android:text="@string/text_commented_on_this"
             android:textSize="12sp" />
 
         <View
@@ -88,7 +90,9 @@
             android:id="@+id/doctor_picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:contentDescription="@string/desc_doctor_profile_picture"
             android:scaleType="fitCenter"
             android:src="@drawable/doctor_placeholder" />
 
@@ -98,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/doctor_picture"
             android:layout_toRightOf="@id/doctor_picture"
             android:text="@string/doctor_name"
             android:textSize="16sp"
@@ -110,6 +115,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/doctor_name"
             android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@id/doctor_picture"
             android:layout_toRightOf="@id/doctor_picture"
             android:text="@string/doctor_speciality" />
 
@@ -135,8 +141,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Following"
+            android:text="@string/text_following"
             android:textSize="12sp" />
 
         <TextView
@@ -145,8 +152,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Helpful"
+            android:text="@string/text_helpful"
             android:textSize="12sp" />
 
         <TextView
@@ -155,8 +163,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Comments"
+            android:text="@string/text_comments"
             android:textSize="12sp" />
 
         <TextView
@@ -165,8 +174,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Share"
+            android:text="@string/text_share"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -193,7 +203,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Helpful"
+            android:text="@string/title_helpful"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -206,7 +216,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Follow"
+            android:text="@string/title_follow"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -219,7 +229,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Comment"
+            android:text="@string/title_comment"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -232,7 +242,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Share"
+            android:text="@string/title_share"
             android:textColor="@color/colorPrimary" />
 
     </LinearLayout>

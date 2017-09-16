@@ -22,6 +22,7 @@ import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,8 +65,8 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             feedList = savedInstanceState.getParcelableArrayList("feedList");
         }
 
-        snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Check Internet connection", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
+        snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.text_check_internet_connection, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(R.string.text_dismiss, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 snackbar.dismiss();
@@ -316,6 +317,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -377,6 +379,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -386,7 +389,7 @@ public class FeedFragment extends Fragment implements ConnectivityReceiver.Conne
             super.onPostExecute(aVoid);
 
             if (feedList.size() > oldFeedItemCount) {
-                feedAdapter.notifyItemRangeChanged((oldFeedItemCount+1), feedList.size());
+                feedAdapter.notifyItemRangeChanged((oldFeedItemCount + 1), feedList.size());
                 feedAdapter.setLoaded();
             } else {
                 feedAdapter.notifyItemRemoved(feedList.size() - 1);

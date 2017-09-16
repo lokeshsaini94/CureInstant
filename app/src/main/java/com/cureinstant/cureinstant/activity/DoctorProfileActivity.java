@@ -33,6 +33,7 @@ import com.cureinstant.cureinstant.model.doctorDetails.DoctorSkill;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkDetail;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkPlace;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +90,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
         rootView.setVisibility(View.GONE);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("loading...");
+        progressDialog.setMessage(this.getString(R.string.text_loading));
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         bar.setTitle(name);
@@ -178,7 +179,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             RequestUserData requestUserData = new RequestUserData(username);
             requestUserData.execute();
         } else {
-            Toast.makeText(DoctorProfileActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+            Toast.makeText(DoctorProfileActivity.this, R.string.text_something_went_wrong, Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -309,8 +310,6 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
                 doctorAchievements.add(new DoctorAchievement(title, desc, link, image));
             }
 
-            // TODO: 01-04-2017 publication and feedback not in json. add when in json
-
             if (feedJson.has("publications_det")) {
                 String publicationTitle, publicationContent;
                 JSONArray doctorPublicationsArray = feedJson.getJSONArray("publications_det");
@@ -352,19 +351,19 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
                     followDoctor.execute();
                     followButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     followButton.setTextColor(getResources().getColor(R.color.white));
-                    followButton.setText("Unfollow");
+                    followButton.setText(R.string.title_unfollow);
                     isFollowing = true;
                 } else {
                     Utilities.FollowDoctor followDoctor = new Utilities.FollowDoctor(false, userID);
                     followDoctor.execute();
                     followButton.setBackgroundColor(getResources().getColor(R.color.white));
                     followButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    followButton.setText("Follow");
+                    followButton.setText(R.string.title_follow);
                     isFollowing = false;
                 }
                 break;
             case R.id.doctor_book_button:
-                Toast.makeText(DoctorProfileActivity.this, "This feature is coming soon!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DoctorProfileActivity.this, R.string.text_feature_comming_soon, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -409,6 +408,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -456,11 +456,11 @@ public class DoctorProfileActivity extends AppCompatActivity implements View.OnC
             if (doctor.isFollowing()) {
                 followButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 followButton.setTextColor(getResources().getColor(R.color.white));
-                followButton.setText("Unfollow");
+                followButton.setText(R.string.title_unfollow);
             } else {
                 followButton.setBackgroundColor(getResources().getColor(R.color.white));
                 followButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                followButton.setText("Follow");
+                followButton.setText(R.string.title_follow);
             }
 
             if (!doctor.getAlbum().isEmpty()) {

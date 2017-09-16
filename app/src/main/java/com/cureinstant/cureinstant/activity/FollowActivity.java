@@ -16,6 +16,7 @@ import com.cureinstant.cureinstant.misc.OnLoadMoreListener;
 import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.Follow;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +52,7 @@ public class FollowActivity extends AppCompatActivity {
         }
 
         if (type == null) {
-            Toast.makeText(FollowActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FollowActivity.this, R.string.text_something_went_wrong, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -189,6 +190,7 @@ public class FollowActivity extends AppCompatActivity {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }

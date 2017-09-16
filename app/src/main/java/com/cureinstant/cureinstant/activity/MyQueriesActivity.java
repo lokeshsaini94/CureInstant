@@ -15,6 +15,7 @@ import com.cureinstant.cureinstant.adapter.FeedAdapter;
 import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.model.Feed;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +44,7 @@ public class MyQueriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_queries);
 
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        bar.setTitle("My Questions");
+        bar.setTitle(R.string.title_my_questions);
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +53,7 @@ public class MyQueriesActivity extends AppCompatActivity {
         });
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("loading...");
+        progressDialog.setMessage(getString(R.string.text_loading));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_queries_list);
 
@@ -115,6 +116,7 @@ public class MyQueriesActivity extends AppCompatActivity {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }

@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -115,8 +116,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 mAuthTask = new UserLoginTask(username, password);
                 mAuthTask.execute((Void) null);
             } else {
-                final Snackbar snackbar = Snackbar.make(this.findViewById(android.R.id.content), "Check Internet connection", Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                final Snackbar snackbar = Snackbar.make(this.findViewById(android.R.id.content), R.string.text_check_internet_connection, Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(R.string.text_dismiss, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         snackbar.dismiss();
@@ -128,7 +129,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -203,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 }
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return false;
         }

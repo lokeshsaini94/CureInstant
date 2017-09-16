@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:contentDescription="@string/desc_cureinstant_logo"
         android:scaleType="centerInside"
         android:src="@drawable/cure_instant_logo" />
 

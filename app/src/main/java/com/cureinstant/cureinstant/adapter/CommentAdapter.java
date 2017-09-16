@@ -21,6 +21,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.activity.DoctorProfileActivity;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
             }
         } catch (ParseException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), comment.getLikes()));
@@ -124,20 +126,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ItemView
                         edittext.setTextColor(context.getResources().getColor(R.color.colorPrimary));
 
                         final AlertDialog.Builder nameDialog = new AlertDialog.Builder(context);
-                        nameDialog.setTitle("Enter your reply");
+                        nameDialog.setTitle(R.string.text_enter_your_reply);
                         nameDialog.setView(edittext);
 
-                        nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        nameDialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String editTextValue = edittext.getText().toString();
                                 Utilities.ActionComment actionComment = new Utilities.ActionComment("reply", comment.getId(), editTextValue);
                                 actionComment.execute();
-                                Toast.makeText(context, "Reply posted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.text_reply_posted_2, Toast.LENGTH_SHORT).show();
 
                             }
                         });
 
-                        nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        nameDialog.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
                             }

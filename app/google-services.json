@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "196642640040",
+    "firebase_url": "https://cureinstant-d51f4.firebaseio.com",
+    "project_id": "cureinstant-d51f4",
+    "storage_bucket": "cureinstant-d51f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196642640040:android:e99f6a005b18a7c2",
+        "android_client_info": {
+          "package_name": "com.cureinstant.cureinstant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196642640040-p5dsi0ol00edvusfscaj0de3onl6ib75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4opu5EDPOPQgE1_AEr15paW-fCPwhdFk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

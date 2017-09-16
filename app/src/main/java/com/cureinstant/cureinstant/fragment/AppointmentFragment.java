@@ -20,6 +20,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.adapter.AutoCompleteTextViewAdapter;
 import com.cureinstant.cureinstant.model.BookDoctor;
 import com.cureinstant.cureinstant.model.doctorDetails.DoctorWorkPlace;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -181,6 +182,7 @@ public class AppointmentFragment extends Fragment {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -246,6 +248,7 @@ public class AppointmentFragment extends Fragment {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -350,6 +353,7 @@ public class AppointmentFragment extends Fragment {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -360,7 +364,7 @@ public class AppointmentFragment extends Fragment {
             progressDialog.dismiss();
             if (bookDoctors != null) {
                 if (bookDoctors.isEmpty()) {
-                    Toast.makeText(getContext(), "No " + speciality + " found in this area", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.text_no) + " " + speciality + " " + getString(R.string.text_fount_in_this_area), Toast.LENGTH_LONG).show();
                 } else {
                     DoctorsBottomSheetFragment doctorsBottomSheetFragment = DoctorsBottomSheetFragment.getInstance();
                     Bundle bundle = new Bundle();
@@ -369,7 +373,7 @@ public class AppointmentFragment extends Fragment {
                     doctorsBottomSheetFragment.show(getFragmentManager(), "BookDoctors");
                 }
             } else {
-                Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.text_something_went_wrong), Toast.LENGTH_LONG).show();
             }
         }
     }

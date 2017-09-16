@@ -26,6 +26,7 @@ import com.cureinstant.cureinstant.adapter.FeedYoutubeAdapter;
 import com.cureinstant.cureinstant.misc.SimpleDividerItemDecoration;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,16 +73,16 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         switch (feed.getType()) {
             case "BLOG":
-                bar.setTitle("Article");
+                bar.setTitle(R.string.title_article);
                 break;
             case "POST":
-                bar.setTitle("Post");
+                bar.setTitle(R.string.title_post);
                 break;
             case "QUERY":
-                bar.setTitle("Question");
+                bar.setTitle(R.string.title_question);
                 break;
             default:
-                bar.setTitle("Feed");
+                bar.setTitle(R.string.title_feed);
                 break;
         }
         bar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -182,16 +183,16 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
         TextView type = (TextView) findViewById(R.id.post_type);
         switch (feed.getType()) {
             case "BLOG":
-                type.setText("Article");
+                type.setText(R.string.title_article);
                 break;
             case "POST":
-                type.setText("Post");
+                type.setText(R.string.title_post);
                 break;
             case "QUERY":
-                type.setText("Question");
+                type.setText(R.string.title_question);
                 break;
             default:
-                type.setText("Feed");
+                type.setText(R.string.title_feed);
                 break;
         }
 
@@ -224,6 +225,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             }
         } catch (ParseException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         if (feed.getType().equals("QUERY") && !feed.getActionType().equals(" answered this")) {
             doctorContainer.setVisibility(View.GONE);
@@ -301,6 +303,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
                 answerDoctorName.setText(feed.getAnswer().getName());
                 answerDoctorSpeciality.setText(feed.getAnswer().getSpeciality());
@@ -385,7 +388,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
             case R.id.post_share_button:
                 actionFeed[0] = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
                 actionFeed[0].execute();
-                Toast.makeText(this, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, feed.getType() + getString(R.string.text_shared), Toast.LENGTH_SHORT).show();
                 feed.setShares(feed.getShares() + 1);
                 countShare.setText(String.format(getString(R.string.shares_count), feed.getShares()));
                 break;
@@ -412,20 +415,20 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
                 edittext.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 final AlertDialog.Builder nameDialog = new AlertDialog.Builder(this);
-                nameDialog.setTitle("Enter your reply");
+                nameDialog.setTitle(R.string.text_enter_your_reply);
                 nameDialog.setView(edittext);
 
-                nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                nameDialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String editTextValue = edittext.getText().toString();
                         actionFeed[0] = new Utilities.ActionFeed("ANSWER", "comment", "" + feed.getAnswer().getId(), editTextValue);
                         actionFeed[0].execute();
-                        Toast.makeText(getApplicationContext(), "Reply posted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.text_reply_posted, Toast.LENGTH_SHORT).show();
 
                     }
                 });
 
-                nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                nameDialog.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // what ever you want to do with No option.
                     }
@@ -519,6 +522,7 @@ public class FeedItemActivity extends AppCompatActivity implements View.OnClickL
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }

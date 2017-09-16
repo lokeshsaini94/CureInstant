@@ -3,7 +3,9 @@
     android:id="@+id/post_image"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
     android:adjustViewBounds="true"
     android:clickable="true"
+    android:contentDescription="@string/desc_feed_item_image"
     android:src="@drawable/doctor_placeholder" />

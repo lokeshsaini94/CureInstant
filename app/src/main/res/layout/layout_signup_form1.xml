@@ -20,7 +20,7 @@
                 android:id="@+id/firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name"
+                android:hint="@string/hint_first_name"
                 android:inputType="textPersonName|textCapWords"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -37,7 +37,7 @@
                 android:id="@+id/lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last Name"
+                android:hint="@string/hint_last_name"
                 android:inputType="textPersonName|textCapWords"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -59,7 +59,7 @@
             android:id="@+id/dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date of Birth"
+            android:hint="@string/hint_date_of_birth"
             android:inputType="date"
             android:maxLines="1"
             android:singleLine="true" />
@@ -83,21 +83,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Male" />
+            android:text="@string/title_male" />
 
         <RadioButton
             android:id="@+id/radioFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="Female" />
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/title_female" />
 
         <RadioButton
             android:id="@+id/radioOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="Other" />
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/title_other" />
 
     </RadioGroup>
 

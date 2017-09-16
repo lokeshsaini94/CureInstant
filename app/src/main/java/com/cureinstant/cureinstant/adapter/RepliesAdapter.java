@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ItemView
             }
         } catch (ParseException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         holder.countHelpful.setText(String.format(context.getString(R.string.helpful_count), reply.getLikes()));

@@ -21,6 +21,7 @@ import com.cureinstant.cureinstant.activity.FeedItemActivity;
 import com.cureinstant.cureinstant.misc.OnLoadMoreListener;
 import com.cureinstant.cureinstant.model.Feed;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.text.ParseException;
 import java.util.List;
@@ -107,11 +108,11 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
             final Feed feed = feedList.get(position);
             if (feed.getType().equals("POST")) {
-                ((MyFeedViewHolder) holder).type.setText("Post");
+                ((MyFeedViewHolder) holder).type.setText(R.string.title_post);
             } else if (feed.getType().equals("BLOG")) {
-                ((MyFeedViewHolder) holder).type.setText("Article");
+                ((MyFeedViewHolder) holder).type.setText(R.string.title_article);
             } else if (feed.getType().equals("QUERY")) {
-                ((MyFeedViewHolder) holder).type.setText("Question");
+                ((MyFeedViewHolder) holder).type.setText(R.string.title_question);
             } else {
                 ((MyFeedViewHolder) holder).type.setVisibility(View.GONE);
             }
@@ -151,6 +152,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             if (feed.getType().equals("QUERY") && !feed.getActionType().equals(" answered this")) {
                 ((MyFeedViewHolder) holder).doctorContainer.setVisibility(View.GONE);
@@ -248,7 +250,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                         case R.id.post_share_button:
                             actionFeed = new Utilities.ActionFeed(feed.getType(), "share", feed.getId(), "");
                             actionFeed.execute();
-                            Toast.makeText(context, feed.getType() + " shared", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, feed.getType() + context.getString(R.string.text_shared_2), Toast.LENGTH_SHORT).show();
                             feed.setShares(feed.getShares() + 1);
                             ((MyFeedViewHolder) holder).countHelpful.setText(String.format(context.getString(R.string.helpful_count), feed.getLikes()));
                             ((MyFeedViewHolder) holder).countComment.setText(String.format(context.getString(R.string.comments_count), feed.getComments()));

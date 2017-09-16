@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -94,6 +95,7 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
                                     .get();
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
+                            FirebaseCrash.report(e);
                         }
 
                         Uri fileUri;
@@ -115,6 +117,7 @@ public class FeedImagesAdapter extends RecyclerView.Adapter<FeedImagesAdapter.It
                             out.close();
                         } catch (IOException e) {
                             e.printStackTrace();
+                            FirebaseCrash.report(e);
                         }
 
                         return fileUri;

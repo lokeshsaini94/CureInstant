@@ -11,9 +11,11 @@
         android:background="@color/colorPrimary"
         android:elevation="2dp"
         android:gravity="center_vertical"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:text="Doctors"
+        android:text="@string/title_doctors"
         android:textColor="@color/white" />
 
     <android.support.v7.widget.RecyclerView

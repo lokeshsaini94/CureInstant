@@ -16,7 +16,8 @@
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/dot_shape"
         android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:text="Ramanuj Clinic"
+        android:drawableStart="@drawable/dot_shape"
+        android:text="@string/text_ramanuj_clinic"
         android:textColor="@android:color/primary_text_light" />
 
     <TextView
@@ -25,7 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="32dp"
-        android:text="BN-14, Kaushambi, Ghaziabad"
+        android:layout_marginStart="32dp"
+        android:text="@string/text_bn_14_kaushambi_ghaziabad"
         android:textColor="@android:color/secondary_text_light" />
 
 </LinearLayout>

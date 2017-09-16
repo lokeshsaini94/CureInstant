@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="Follow"
+            android:text="@string/title_follow"
             android:textColor="@color/colorPrimary" />
 
         <View
@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorAccent"
-            android:text="Book"
+            android:text="@string/title_book"
             android:textColor="@color/primary_text" />
     </android.support.v7.widget.ButtonBarLayout>
 </FrameLayout>

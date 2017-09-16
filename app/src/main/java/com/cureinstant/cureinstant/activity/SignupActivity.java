@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
+import com.google.firebase.crash.FirebaseCrash;
 import com.philliphsu.bottomsheetpickers.date.BottomSheetDatePickerDialog;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
@@ -75,7 +76,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         otpDialog = new AlertDialog.Builder(SignupActivity.this);
         progressDialog = new ProgressDialog(SignupActivity.this);
-        progressDialog.setMessage("Please Wait...");
+        progressDialog.setMessage(getString(R.string.text_please_wait));
 
         emailSignUpForm1 = findViewById(R.id.email_signup_form1);
         emailSignUpForm2 = findViewById(R.id.email_signup_form2);
@@ -336,6 +337,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return false;
         }
@@ -377,6 +379,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 String resultJsonString = responseNumber.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -385,7 +388,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            Toast.makeText(SignupActivity.this, "OTP sent.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignupActivity.this, R.string.text_otp_sent, Toast.LENGTH_SHORT).show();
             isOtpSent = true;
         }
     }
@@ -462,6 +465,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
 
             RequestBody bodyOtp = new FormBody.Builder()
@@ -488,6 +492,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
 
             return validation;
@@ -567,6 +572,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return false;
         }
@@ -579,7 +585,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 UserLoginTask userLoginTask = new UserLoginTask(number, password);
                 userLoginTask.execute();
             } else {
-                Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.text_something_went_wrong), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -638,6 +644,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return false;
         }
@@ -656,7 +663,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
             } else {
                 Snackbar.make(getCurrentFocus(), R.string.error_incorrect_username_password, Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                        .setAction(R.string.text_dismiss, null).show();
             }
         }
 

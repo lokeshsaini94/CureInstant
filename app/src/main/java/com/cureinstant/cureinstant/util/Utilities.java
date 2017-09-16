@@ -24,6 +24,7 @@ import com.cureinstant.cureinstant.misc.MyApplication;
 import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.model.Feed;
+import com.google.firebase.crash.FirebaseCrash;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import org.json.JSONArray;
@@ -118,6 +119,7 @@ public class Utilities {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -163,6 +165,7 @@ public class Utilities {
             value = formatter.parse(postDate);
         } catch (ParseException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         // Makes date object with current timezone
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
@@ -203,20 +206,20 @@ public class Utilities {
         edittext.setTextColor(context.getResources().getColor(R.color.colorPrimary));
 
         final AlertDialog.Builder nameDialog = new AlertDialog.Builder(context);
-        nameDialog.setTitle("Enter your comment");
+        nameDialog.setTitle(R.string.title_enter_your_comment);
         nameDialog.setView(edittext);
 
-        nameDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        nameDialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String editTextValue = edittext.getText().toString();
                 ActionFeed actionFeed = new ActionFeed(type, "comment", id, editTextValue);
                 actionFeed.execute();
-                Toast.makeText(context, "Comment posted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.text_comment_posted_2, Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        nameDialog.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // what ever you want to do with No option.
             }
@@ -314,6 +317,7 @@ public class Utilities {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         return feed;
@@ -405,6 +409,7 @@ public class Utilities {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         return feed;
@@ -495,6 +500,7 @@ public class Utilities {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         return feed;
@@ -580,6 +586,7 @@ public class Utilities {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -640,6 +647,7 @@ public class Utilities {
                 String status = feedJson.getString("success");
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -724,6 +732,7 @@ public class Utilities {
                 String status = feedJson.getString("success");
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return replies;
         }
@@ -776,6 +785,7 @@ public class Utilities {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }

@@ -14,7 +14,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email (optional)"
+            android:hint="@string/hint_email_optional"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true" />
@@ -41,7 +41,7 @@
                 android:id="@+id/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Number"
+                android:hint="@string/hint_number"
                 android:inputType="number"
                 android:maxLength="10"
                 android:maxLines="1"
@@ -57,7 +57,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:clickable="true"
-            android:text="Send OTP" />
+            android:text="@string/title_send_otp" />
 
     </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            android:hint="Enter One Time Password"
+            android:hint="@string/hint_enter_one_time_password"
             android:inputType="textCapCharacters"
             android:maxLength="6"
             android:maxLines="1"

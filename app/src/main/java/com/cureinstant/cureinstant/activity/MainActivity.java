@@ -15,9 +15,10 @@ import android.view.View;
 import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.fragment.AppointmentFragment;
 import com.cureinstant.cureinstant.fragment.MoreFragment;
-import com.cureinstant.cureinstant.fragment.NotificationFragment;
 import com.cureinstant.cureinstant.fragment.ReadFragment;
 import com.cureinstant.cureinstant.helper.BottomNavigationViewHelper;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenKey;
 import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
@@ -36,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private AppointmentFragment appointmentFragment;
     private MoreFragment moreFragment;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // Restore fragments if its instance already exists
         if (savedInstanceState != null) {
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             trimCache(this);
         } catch (Exception e) {
             e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -96,11 +102,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_notification:
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                NotificationFragment frag = new NotificationFragment();
-                frag.show(fragmentManager, "notif_frag");
-                return true;
             case R.id.action_search:
                 Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(searchIntent);
@@ -201,6 +202,9 @@ public class MainActivity extends AppCompatActivity {
                 setFragmentsVisibility(3);
                 break;
         }
+        Bundle params = new Bundle();
+        params.putString("fragment_selected", String.valueOf(item.getItemId()));
+        mFirebaseAnalytics.logEvent("main_navigation", params);
     }
 
     // Show and animate fragment that is selected and hide other fragments

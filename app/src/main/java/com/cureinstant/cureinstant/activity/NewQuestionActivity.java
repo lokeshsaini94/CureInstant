@@ -1,17 +1,26 @@
 package com.cureinstant.cureinstant.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,6 +35,7 @@ import com.cureinstant.cureinstant.R;
 import com.cureinstant.cureinstant.util.Utilities;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.ImagePickerSheetView;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +45,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -49,8 +62,11 @@ import static com.cureinstant.cureinstant.util.Utilities.accessTokenValue;
 
 public class NewQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    public static final int REQUEST_ID_PERMISSIONS = 1;
     public static final MediaType MEDIA_TYPE_MARKDOWN
             = MediaType.parse("image/jpeg");
+    private static final String TAG = "NewQuestionActivity";
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static boolean isUploading = false;
@@ -129,7 +145,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.question_button:
                 if (isUploading) {
-                    Toast.makeText(this, "Please wait! Uploading Image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.text_uploading_image, Toast.LENGTH_SHORT).show();
                 } else {
                     String title = questionTitle.getText().toString();
                     String desc = questionDesc.getText().toString();
@@ -142,12 +158,13 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.attachment_container:
-                showSheetView();
+                if (checkAndRequestPermissions()) {
+                    showSheetView();
+                }
                 break;
         }
     }
 
-    // TODO: 30-03-2017 Handle WRITE_EXTERNAL_STORAGE and CAMERA permissions
     // Displays ImagePicker Bottom Sheet
     private void showSheetView() {
         ImagePickerSheetView sheetView = new ImagePickerSheetView.Builder(this)
@@ -180,7 +197,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
                 })
-                .setTitle("Choose an image...")
+                .setTitle(R.string.title_choose_an_image)
                 .create();
 
         bottomSheetLayout.showWithSheetView(sheetView);
@@ -255,11 +272,15 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             // Create the File where the photo should go
             try {
                 File imageFile = createImageFile();
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+                Uri photoURI = FileProvider.getUriForFile(NewQuestionActivity.this,
+                        getString(R.string.file_provider_authority),
+                        imageFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             } catch (IOException e) {
                 // Error occurred while creating the File
                 genericError("Could not create imageFile for camera");
+                FirebaseCrash.report(e);
             }
         }
     }
@@ -297,7 +318,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void genericError(String message) {
-        Toast.makeText(this, message == null ? "Something went wrong!" : message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message == null ? getString(R.string.text_something_went_wrong) : message, Toast.LENGTH_SHORT).show();
     }
 
     private void returnIntent() {
@@ -305,6 +326,84 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         data.putExtra("newQuestionDone", true);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int permissionWriteStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionFineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        Log.d(TAG, "Permission callback called-------");
+        switch (requestCode) {
+            case REQUEST_ID_PERMISSIONS: {
+
+                Map<String, Integer> perms = new HashMap<>();
+                // Initialize the map with both permissions
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d(TAG, "Storage and Location services permission granted");
+                        showSheetView();
+                    } else {
+                        Log.d(TAG, "Some permissions are not granted ask again ");
+                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
+                        //shouldShowRequestPermissionRationale will return true
+                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                            showDialogOK(getString(R.string.text_permission_required),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestPermissions();
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
+                        //permission is denied (and never ask again is  checked)
+                        //shouldShowRequestPermissionRationale will return false
+                        else {
+                            Toast.makeText(this, R.string.text_go_to_settings_and_enable_permissions, Toast.LENGTH_LONG)
+                                    .show();
+                            finish();
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton(R.string.text_ok, okListener)
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     // AsyncTask to upload images for a new question
@@ -321,10 +420,10 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             super.onPreExecute();
             if (file.exists()) {
                 isUploading = true;
-                Toast.makeText(getApplicationContext(), "Uploading Image", Toast.LENGTH_SHORT).show();
-                attachmentCount.setText("Uploading Image");
+                Toast.makeText(getApplicationContext(), R.string.text_uploading_image_2, Toast.LENGTH_SHORT).show();
+                attachmentCount.setText(R.string.title_uploading_image);
             } else {
-                Toast.makeText(getApplicationContext(), "Invalid Image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.text_invalid_image, Toast.LENGTH_SHORT).show();
                 this.cancel(true);
             }
         }
@@ -355,6 +454,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }
@@ -365,7 +465,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             if (s != null) {
                 images.add(s);
             } else {
-                Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.text_something_went_wrong), Toast.LENGTH_LONG).show();
             }
             isUploading = false;
             attachmentCount.setText(String.format(getString(R.string.attachments_count), images.size()));
@@ -416,6 +516,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return false;
         }
@@ -426,7 +527,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             if (aBoolean) {
                 returnIntent();
             } else {
-                Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.text_something_went_wrong), Toast.LENGTH_LONG).show();
             }
         }
     }

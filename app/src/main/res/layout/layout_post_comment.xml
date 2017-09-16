@@ -19,7 +19,9 @@
             android:id="@+id/user_picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:contentDescription="@string/desc_user_profile_picture"
             android:scaleType="fitCenter"
             android:src="@drawable/doctor_placeholder" />
 
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/user_picture"
             android:layout_toRightOf="@id/user_picture"
             android:text="@string/doctor_name"
             android:textSize="16sp"
@@ -40,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/user_name"
             android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@id/user_picture"
             android:layout_toRightOf="@id/user_picture"
             android:ellipsize="end"
             android:maxLines="3"
@@ -53,8 +57,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/user_picture"
             android:layout_toRightOf="@id/doctor_name"
-            android:gravity="right|end"
+            android:gravity="end"
             android:text="@string/post_time"
             android:textSize="12sp" />
 
@@ -71,8 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Helpful"
+            android:text="@string/text_helpful"
             android:textSize="12sp" />
 
         <TextView
@@ -81,8 +87,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="0 Replies"
+            android:text="@string/text_replies"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -109,7 +116,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Helpful"
+            android:text="@string/title_helpful"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -122,7 +129,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:padding="8dp"
-            android:text="Reply"
+            android:text="@string/title_reply"
             android:textColor="@color/colorPrimary" />
 
     </LinearLayout>

@@ -17,7 +17,7 @@
             android:layout_marginBottom="8dp"
             android:background="@color/colorPrimary"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="Most Answered"
+            android:text="@string/title_most_answered"
             android:textColor="@color/primary_text"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="Most Commented"
+            android:text="@string/title_most_commented"
             android:textColor="@color/primary_text"
             android:textStyle="bold" />
 

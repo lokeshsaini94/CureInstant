@@ -16,6 +16,7 @@ import com.cureinstant.cureinstant.adapter.FeedAdapter;
 import com.cureinstant.cureinstant.model.Answer;
 import com.cureinstant.cureinstant.model.Comment;
 import com.cureinstant.cureinstant.model.Feed;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,6 +130,7 @@ public class TrendingFragment extends Fragment {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             Request request2 = new Request.Builder()
                     .url("http://www.cureinstant.com/api/trending/most-commented")
@@ -163,6 +165,7 @@ public class TrendingFragment extends Fragment {
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                FirebaseCrash.report(e);
             }
             return null;
         }

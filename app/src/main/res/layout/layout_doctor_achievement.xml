@@ -35,6 +35,7 @@
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
         android:clickable="true"
+        android:contentDescription="@string/desc_doctor_s_achivements_image"
         android:src="@drawable/doctor_placeholder" />
 
 
